@@ -3,9 +3,9 @@ main:
   - title: "Software"
     url: /software/
   - title: "Hardware"
-    url: /software/
+    url: /hardware/
   - title: "FLOSS"
-    url: /software/
+    url: /floss/
 
   # - title: "About"
   #   url: https://mmistakes.github.io/minimal-mistakes/about/

@@ -95,7 +95,7 @@ analytics:
 author:
   name             : "Lucas Seiki Oshiro"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Olá, seja bem vindo, stalker."
+  bio              : "Olá, seja bem vindo, stalker! Fique à vontade, pode olhar tudo. Sério."
   location         : 
   email            :
   links:
@@ -114,8 +114,16 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/lucasoshiro"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
+    - label: "GitLab"
+      icon: "fab fa-fw fa-gitlab"
+      url: "https://gitlab.com/lucasoshiro"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://linkedin.com/in/lucasseikioshiro"
+ 
+
+    # - label: "Instagram"
+    #   icon: "fab fa-fw fa-instagram"
       # url: "https://instagram.com/"
 
 # Site Footer
@@ -274,7 +282,6 @@ defaults:
       author_profile: true
       read_time: true
       comments: # true
-      share: truej
       related: true
 
   - scope:
@@ -283,7 +290,6 @@ defaults:
     values:
       layout: single
       author_profile: false
-      share: true
 
   - scope:
       path: ""
@@ -291,7 +297,6 @@ defaults:
     values:
       layout: single
       author_profile: false
-      share: true
 
   - scope:
       path: ""
@@ -299,7 +304,6 @@ defaults:
     values:
       layout: single
       author_profile: false
-      share: true
 
 
 collections:
@@ -310,6 +314,7 @@ collections:
   hardware:
     output: true
     permalink: /:collection/:path/
+
 
   floss:
     output: true
