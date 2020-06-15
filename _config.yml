@@ -95,7 +95,7 @@ analytics:
 author:
   name             : "Lucas Seiki Oshiro"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Olá, seja bem vindo, stalker! Fique à vontade, pode olhar tudo. Sério."
+  bio              : "Olá, seja bem vindo, stalker!"
   location         : 
   email            :
   links:
@@ -120,6 +120,7 @@ author:
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://linkedin.com/in/lucasseikioshiro"
+
  
 
     # - label: "Instagram"
