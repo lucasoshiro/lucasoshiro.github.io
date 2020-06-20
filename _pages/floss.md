@@ -5,6 +5,7 @@ permalink: /floss/
 collection: floss
 entries_layout: grid
 classes: wide
+author_profile: true
 ---
 
 

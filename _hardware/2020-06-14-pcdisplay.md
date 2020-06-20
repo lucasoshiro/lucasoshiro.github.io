@@ -1,6 +1,7 @@
 ---
 title: "PCDisplay"
 excerpt: "Display com informações do computador"
+author_profile: true
 ---
 
 Github: [https://github.com/lucasoshiro/pcdisplay](https://github.com/lucasoshiro/pcdisplay)

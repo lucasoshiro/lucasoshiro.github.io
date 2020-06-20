@@ -1,6 +1,7 @@
 ---
 title: "Raspberry Log"
 excerpt: "Utilitário para captura de dados da Raspberry Pi"
+author_profile: true
 ---
 
 Github: [https://github.com/lucasoshiro/raspberry-log](https://github.com/lucasoshiro/raspberry-log)
