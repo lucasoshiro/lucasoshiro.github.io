@@ -89,9 +89,14 @@
   position: relative;
   border-radius: $border-radius;
   overflow: hidden;
+  display: table-cell;
+  vertical-align: middle;
+  height: 200px;
 
   img {
-    width: 100%;
+      width: auto;
+      height: auto;
+      max-height: 200px;
   }
 }
 
