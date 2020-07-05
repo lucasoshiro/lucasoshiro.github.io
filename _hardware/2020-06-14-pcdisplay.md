@@ -37,6 +37,10 @@ gallery:
     "image_path": "/assets/images/hardware/2020-06-14-pcdisplay/musica.jpg"
     alt: "Música"
     title: "Música"
+
+header:
+   image: /assets/images/hardware/2020-06-14-pcdisplay/cpu.jpg
+   teaser: /assets/images/hardware/2020-06-14-pcdisplay/cpu.jpg
 ---
 
 Github: [https://github.com/lucasoshiro/pcdisplay](https://github.com/lucasoshiro/pcdisplay)

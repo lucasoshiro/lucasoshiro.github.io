@@ -2,10 +2,9 @@
 title: "Impressora 3D"
 excerpt: "Impressora 3D feita artesanalmente usando Arduino"
 
-author_profile: true
-
 header:
   image: /assets/images/hardware/2020-06-14-impressora_3d/hermione.jpg
+  teaser: /assets/images/hardware/2020-06-14-impressora_3d/hermione.jpg
 ---
 
 ### Introdução

@@ -2,6 +2,9 @@
 title: "Raspberry Log"
 excerpt: "Utilitário para captura de dados da Raspberry Pi"
 author_profile: true
+header:
+   teaser: "https://www.raspberrypi.org/app/uploads/2011/10/Raspi-PGB001-300x267.png"
+
 ---
 
 Github: [https://github.com/lucasoshiro/raspberry-log](https://github.com/lucasoshiro/raspberry-log)
