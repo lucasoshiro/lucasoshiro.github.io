@@ -4,6 +4,8 @@ excerpt: ""
 author_profile: true
 ---
 
+GitHub: [https://github.com/lucasoshiro/music2gcode](https://github.com/lucasoshiro/music2gcode)
+
 ## Como assim?
 
 Os ruídos de motores de passo são causados por suas vibrações. Quantos mais
@@ -257,4 +259,90 @@ com **milímetros por minuto**.
 
 ### Etapa 5: Posicionamento absoluto e G-Code
 
-[WIP]
+Esta é a última etapa, e é a mais delicada. Até agora, temos uma tabela que nos
+diz **quantos** mílimitros cada eixo deverá se mover, e a velocidade do
+movimento. O que queremos, no G-Code, é a posição **absoluta** para onde a
+impressora deverá movimentar a extrusora. Para isso, é necessário tomar cuidado
+para que os movimentos sejam todos feitos dentro do espaço de impressão, caso
+contrário, além de não funcionar poderá trazer danos à impressora.
+
+Em termos de código, queremos uma função assim:
+
+~~~haskell
+fromRelativeMovements :: Printer -> [Movement] -> GCode
+~~~
+
+ou seja, recebe informações sobre a impressora (no caso, o que importa aqui são
+os limites de cada eixo), a lista de movimentos relativos mencionados da etapa
+anterior, e devolve o G-Code resultante.
+
+A primeira posição é o ponto de partida para a sequência de movimentos
+seguintes, e está definida assim:
+
+~~~haskell
+fstPos = (x0, y0, z0, homeSpeed)
+~~~
+
+A partir de uma posição, podemos calcular a posição seguinte,
+recursivamente. Bom, tendo em mãos essa primeira posição, e a lista de
+movimentos relativos, podemos calcular as posições absolutas assim:
+
+~~~haskell
+absolutes = foldl nextSafePositions' [fstPos] movements
+  where nextSafePositions' l d = l ++ nextSafePositions printer (last l) d
+
+~~~
+
+Ou em português: a aplicação da função `nextSafeMovement` tendo como argumentos
+`printer` (as informações da impressora), uma posição absoluta, e a posição
+relativa referente ao próximo movimento relativo devolve quais são as posições
+necessárias para o cumprimento desse movimento. Bom, um pouco confuso, sim. O
+que o ocorre aqui é que um único movimento relativo poderá ser convertido em
+mais de um movimento absoluto, já que ele poderá ser "quebrado" em dois
+movimentos ou mais caso ele extrapole os limites da impressora.
+
+Tá, mas e o que é `nextSafeMovement`? Bom, uma função
+com essa assinatura:
+
+~~~haskell
+nextSafePositions :: Printer -> Position -> Movement -> [Position]
+~~~
+
+ou seja, nada além do mencionado anteriormente, recebe as informações da
+impressora, a última posição absoluta calculada, o movimento relativo que se
+quer aplicar, e devolve uma lista de posições relativas.
+
+O funcionamento interno dessa função é um pouco longo para ser descrito em mais
+detalhes aqui, porém, basta saber que:
+
+- o sentido da movimentação de cada eixo escolhido é o que se move em direção à
+  borda mais distante do eixo, dando mais espaço para a movimentação;
+
+- caso haja espaço suficiente para fazer um só movimento, ele é o que será usado;
+
+- caso não haja, a movimentação será feita até encontrar com uma borda. A
+  posição resultante e o movimento relativo restante é usado como parâmetros da
+  aplicação da mesma função. Essa chamada recursiva é feita até que não haja
+  mais movimento relativo restante;
+
+- a velocidade é sempre a mesma calculada no movimento relativo, não é
+  necessário alterar ela em nada.
+
+Temos então uma lista de para quais posições cada eixo deverá se movimentar, e
+qual a velocidade que eles devem se mover para cada posição. Isso, em si, já são
+os parâmetros do comando G0 do G-Code, ou seja, basta formatálos como descrito
+[láááááá no começo desse post]({{ site.baseurl
+}}/software/2020-07-31-musica_gcode/#saída).
+
+
+### Enfim, G-Code
+
+Já temos então o G-Code, que poderá ser colocado em um cartão de memória, ou
+enviado para a impressora através do software de sua preferência.
+
+## Possíveis features para o futuro
+
+- Mostrar a letra da música no display da impressora
+- Usar o motor da extrusora como um canal extra
+- Usar o buzzer como um canal extra
+- Adicionar suporte a impressoras dos tipos Delta e CoreXY
