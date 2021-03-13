@@ -21,7 +21,7 @@ title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Lucas Seiki Oshiro"
 description              : "Yet another computeiro"
-url                      : "https://lucasoshiro.github.io/"
+url                      : "https://lucasoshiro.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "lucasoshiro/lucasoshiro.github.io"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
