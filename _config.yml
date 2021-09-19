@@ -306,6 +306,12 @@ defaults:
       layout: single
       author_profile: false
 
+  - scope:
+      path: ""
+      type: listas
+    values:
+      layout: single
+      author_profile: false
 
 collections:
   software:
@@ -316,9 +322,11 @@ collections:
     output: true
     permalink: /:collection/:path/
 
-
   floss:
     output: true
     permalink: /:collection/:path/
 
+  listas:
+    output: true
+    permalink: /:collection/:path/
 

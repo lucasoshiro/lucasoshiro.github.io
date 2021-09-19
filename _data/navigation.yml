@@ -6,6 +6,9 @@ main:
     url: /hardware/
   - title: "FLOSS"
     url: /floss/
+  - title: "Listas"
+    url: /listas/
+
 
   # - title: "About"
   #   url: https://mmistakes.github.io/minimal-mistakes/about/
