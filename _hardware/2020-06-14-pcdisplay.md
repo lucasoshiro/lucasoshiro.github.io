@@ -182,3 +182,19 @@ o estado deverá ser trocado.
 
 ### Galeria
 {% include gallery caption="Galeria" %}
+
+
+### Update (10/2021)
+
+Depois de algum tempo, o display tinha dado problema e eu resolvi trocar por um
+novo, gráfico, de 128x64 pixels. Nesse novo display é possível mostrar todas as
+informações em uma só tela, não é necessário mais usar a máquina de estados.
+
+Quanto ao resto do código, permanece igual.
+
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/hardware/2020-06-14-pcdisplay/128.jpg">
+    <figcaption>Display gráfico, com informações de rede, CPU, memória, temperatura e música</figcaption>
+  </figure>
+</div>
