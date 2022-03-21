@@ -24,7 +24,8 @@ $ tree
 ├── algum_diretorio
 │   └── outro_arquivo.py
 └── biblioteca_que_fica_em_submodulo
-    └── arquivo_da_biblioteca.py
+│   └── arquivo_da_biblioteca.py
+└── .gitmodules
 ~~~
 
 Como essa biblioteca é incluída via submódulo, sua versão ficará **fixada** em
@@ -121,7 +122,7 @@ Cada _commit_ aponta para seu(s) _commit(s)_ pai(s), se houver:
   normalmente tem dois pais.
 
 Todo objeto é identificado por seu _hash_ SHA-1. Objetos são **únicos** e
-**imutáveis**. Isso significa por exemplo, que:
+**imutáveis**. Isso significa, por exemplo, que:
 - dois arquivos iguais são representados pelo mesmo _blob_;
 - dois diretórios iguais são representados pela mesma _tree_;
 - um arquivo que tem o mesmo conteúdo em _commits_ distintos é
@@ -166,7 +167,8 @@ Depois do _fast-forward_:
 
 Esse caso dispensa mais explicações quanto ao ponto principal do post, já que,
 obviamente, a biblioteca estará na mesma versão que a `pr_branch` após o
-_fast-forward_, já que ambas as _branches_ apontam para o mesmo _commit_.
+_fast-forward_, já que a `main` passa a apontar para o mesmo _commit_ que
+`pr-branch`.
 
 ### _Merge_ verdadeiro
 
@@ -177,7 +179,7 @@ forçado mesmo quando é possível um _fast-forward_, usando a _flag_ `--no-ff`.
 
 O `git merge` pode ter comportamentos distintos de acordo com a estratégia
 escolhida. Por padrão nas versões mais novas do Git a estratégia usada é a
-`ort`. Em versões um pouco mais antigas, a estretégia é a `recursive`.
+`ort`. Em versões um pouco mais antigas, a estretégia padrão é a `recursive`.
 
 Este post irá abordar a partir daqui, o comportamento da `ort`. Porém, o que for
 abordado também vale para a `recursive`, mas não para as outras.
@@ -255,14 +257,16 @@ Vimos que cada _tree_ representa o conteúdo de um diretório. Com o comando
 No nosso exemplo, seria algo parecido com isso:
 
 ~~~
+100644 blob 123abc456def123abc456def123abc456def9999 .gitmodules
 100644 blob 1a2b3c4d5e6f1a2b3c4d5e6f1a2b3c4d5e6f1234 algum_arquivo.py
 040000 tree aaaaabbbbbcccccdddddeeeeefffff1111122222 algum_diretorio
 160000 commit fedcba0123456789fedcba012345678912345678 biblioteca_que_fica_em_submodulo
 ~~~
 
-O _hash_ na linha do `algum_arquivo.py` indica o _blob_ que armazena seu conteúdo,
-e da mesma forma, o _hash_ na linha de `algum_diretorio` indica a _tree_ que
-armazena o conteúdo desse diretório.
+Os _hashes_ nas linhas do `algum_arquivo.py` e do `.gitmodules` indicam os
+_blobs_ que armazenam seus respectivos conteúdos, e da mesma forma, o _hash_ na
+linha de `algum_diretorio` indica a _tree_ que armazena o conteúdo desse
+diretório.
 
 Porém, na linha da `biblioteca_que_fica_em_submodulo`, o _hash_ que aparece é
 justamente o _hash_ do _commit_ do submódulo referente à versão atual da
@@ -278,6 +282,11 @@ Ilustrando isso, os submódulos ficam assim:
     <figcaption>Submódulos dentro do grafo dos objetos</figcaption>
   </figure>
 </div>
+
+Além disso, ainda temos o arquivo `.gitmodules`, que armazena propriedades dos
+submódulos, como, por exemplo, seu diretório (`path`) e a URL do repositório de
+onde ele é clonado (`url`). Mais informações sobre o `.gitmodules` estão na sua
+[manpage](https://git-scm.com/docs/gitmodules).
 
 ## _Three-way merge_ de submódulos
 
@@ -355,7 +364,8 @@ A `libgit2` é uma biblioteca em C que provê as funcionalidades do Git.
 Segundo o [README](https://github.com/libgit2/libgit2/blob/9c9405df21051791d0a9092d6f363dfce3fe4544/README.md) da `libgit2`,
 tanto o GitHub e o GitLab trabalham usando a `libgit2`. A
 `libgit2` não tenta resolver conflitos de submódulos, como pode ser visto
-[aqui, no código-fonte da libgit2](https://github.com/libgit2/libgit2/blob/2a0d0bd19b5d13e2ab7f3780e094404828cbb9a7/src/libgit2/merge.c#L862-L866).
+[aqui, no código-fonte da libgit2](https://github.com/libgit2/libgit2/blob/2a0d0bd19b5d13e2ab7f3780e094404828cbb9a7/src/libgit2/merge.c#L862-L866),
+e isso também vale para o GitHub e o GitLab.
 
 Para ver isso na prática:
 ~~~bash
@@ -390,9 +400,9 @@ Chegamos a uma situação parecida com esta:
 
 
 Localmente, nesse caso um `git checkout main && git merge pr-branch` funciona,
-porque o Git fará um _fast-forward_ do submódulo. Mas se você abrir um PR
-(GitHub) ou MR (GitLab) para a _branch_ `pr-branch`, vai ser indicado um
-conflito no submódulo.
+porque o Git fará um _fast-forward_ do submódulo. Mas se você abrir um Pull
+Request (GitHub) ou Merge Request (GitLab) para a _branch_ `pr-branch`, vai ser
+indicado um conflito no submódulo.
 
 ### Como resolver?
 
@@ -403,10 +413,10 @@ $ git fetch origin/main # supondo que seu remote se chame "origin"
 $ git checkout pr-branch
 $ git submodule update --init
 $ git merge origin/main
-$ git push origin pr-branch # supondo que seu remote se chame origin
+$ git push origin pr-branch # supondo que seu remote se chame "origin"
 ~~~
 
-O que deixará nesta situação:
+O que deixará o grafo de _commits_ nesta situação:
 
 <div class="img-container">
   <figure>
@@ -420,20 +430,22 @@ O PR/MR não estará mais com conflito. E por que funciona? Bom, fizemos um
 _merge_ da `main` na `pr-branch`, o que localmente é bem-sucedido já que o Git
 foi capaz de fazer um _fast-forward_ do submódulo.
 
-Quanto fizermos o `push`:
+Quando fizermos o `push`:
 1. Se ninguém alterar a `main` nesse meio-tempo, `pr-branch` será descendente da
-   `main`, o que permite um _fast-forward_
-2. Caso alguém tenha alterado a `main` nesse meio-tempo, ou você opte por não
-   fazer um _fast-forward_ no GitHub/GitLab, a `main` antiga será a melhor
-   ancestral comum, e a `main` nova e `pr-branch` suas descendentes. Caso a
-   `main` nova não tenha alterado o submódulo em relação à `main`, antiga, o
-   submódulo da `pr-branch` será escolhido no _three-way merge_
+   `main`, o que permite um _fast-forward_;
+2. Caso alguém tenha alterado a `main` nesse meio-tempo, a `main` antiga (que
+   você fez o `fetch`) será a melhor ancestral comum entre a `main` nova (com a
+   alteração da outra pessoa) e `pr-branch`. Dessa forma, caso a `main` nova não
+   tenha alterado o submódulo em relação à `main` antiga, o submódulo da
+   `pr-branch` será escolhido no _three-way merge_. Isso também valerá caso você
+   opte por não usar um _fast-forward_ no GitHub/GitLab.
+
 
 ## Conclusão
 
 Quando fazemos `git merge pr-branch`, o Git tenta mesclar os submódulos usando
 _three-way merge_. Se não for possível, tenta um _fast-forward_ para o _commit_
 descendente do submódulo, se houver. GitHub e GitLab não fazem esse
-_fast-forward_, então, precisamos fazer o _merge_ localmente de forma que
-permita o GitHub ou GitLab resolva usando _three-way merge_.
-
+_fast-forward_, então, precisamos fazer o _merge_ localmente, resolvendo o
+conflito do submódulo manualmente ou automaticamente, de forma que permita o
+que o GitHub ou GitLab façam o _three-way merge_ sem cair no caso de conflito.
