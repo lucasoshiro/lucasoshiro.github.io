@@ -1,5 +1,7 @@
 # main links
 main:
+  - title: "Posts"
+    url: /posts/
   - title: "Software"
     url: /software/
   - title: "Hardware"

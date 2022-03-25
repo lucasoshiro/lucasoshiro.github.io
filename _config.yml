@@ -282,7 +282,6 @@ defaults:
       layout: single
       author_profile: true
       read_time: true
-      comments: # true
       related: true
 
   - scope:
@@ -290,6 +289,7 @@ defaults:
       type: software
     values:
       layout: single
+      read_time: true
       author_profile: false
 
   - scope:
@@ -297,6 +297,7 @@ defaults:
       type: hardware
     values:
       layout: single
+      read_time: true
       author_profile: false
 
   - scope:
@@ -304,6 +305,7 @@ defaults:
       type: floss
     values:
       layout: single
+      read_time: true
       author_profile: false
 
   - scope:
@@ -311,6 +313,7 @@ defaults:
       type: listas
     values:
       layout: single
+      read_time: true
       author_profile: false
 
 collections:
