@@ -3,8 +3,8 @@ title: "Git: merge com submódulos (rascunho)"
 excerpt: "Post explicando como o git-merge lida com submódulos"
 
 header:
-  image: /assets/images/posts/2022-03-12-merge-submodule/conflito_submodulo.png
-  teaser: /assets/images/posts/2022-03-12-merge-submodule/conflito_submodulo.png
+  image: /assets/images/posts/2022-03-12-merge-submodule/conflito_submodulo.svg
+  teaser: /assets/images/posts/2022-03-12-merge-submodule/conflito_submodulo.svg
 ---
 
 Se você lida com um projeto versionado com o Git e que usa submódulos, talvez
@@ -53,7 +53,7 @@ versões dos submódulos:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/merge_duvida.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/merge_duvida.svg">
     <figcaption>Grafo de <i>commits</i></figcaption>
   </figure>
 </div>
@@ -94,7 +94,7 @@ como os objetos se relacionam entre si:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/objetos.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/objetos.svg">
     <figcaption>Objetos <i>blob</i>, <i>commit</i> e <i>tree</i>, e <i>branch</i></figcaption>
   </figure>
 </div>
@@ -151,7 +151,7 @@ _commits_ do submódulo:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/ff-antes.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/ff-antes.svg">
     <figcaption>Grafo de <i>commits</i> antes do <i>fast-forward</i></figcaption>
   </figure>
 </div>
@@ -160,7 +160,7 @@ Depois do _fast-forward_:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/ff-depois.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/ff-depois.svg">
     <figcaption>Grafo de <i>commits</i> do <i>fast-forward</i></figcaption>
   </figure>
 </div>
@@ -201,7 +201,7 @@ _commit_ amarelo:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/merge_base.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/merge_base.svg">
     <figcaption>Melhores ancestrais comuns</figcaption>
   </figure>
 </div>
@@ -225,7 +225,7 @@ diferentes do mesmo arquivo ao longo dos _commits_.
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/3-way-merge.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/3-way-merge.svg">
     <figcaption><i> Three-way merge</i></figcaption>
   </figure>
 </div>
@@ -278,7 +278,7 @@ Ilustrando isso, os submódulos ficam assim:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/objetos_submodulo.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/objetos_submodulo.svg">
     <figcaption>Submódulos dentro do grafo dos objetos</figcaption>
   </figure>
 </div>
@@ -321,7 +321,7 @@ Graficamente, a situação antes era esta:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/ff-submodulo-antes.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/ff-submodulo-antes.svg">
     <figcaption><i> Fast-forward </i> de submódulos antes do merge</figcaption>
   </figure>
 </div>
@@ -331,7 +331,7 @@ Depois do _merge_ com _fast-forward_ de submódulo, a situação é esta:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/ff-submodulo-depois.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/ff-submodulo-depois.svg">
     <figcaption><i> Fast-forward </i> de submódulos depois do merge</figcaption>
   </figure>
 </div>
@@ -341,7 +341,7 @@ usuário deverá resolver manualmente, como nesta situação:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/conflito_submodulo_antes.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/conflito_submodulo_antes.svg">
     <figcaption>Conflito de submódulos</figcaption>
   </figure>
 </div>
@@ -356,7 +356,7 @@ Vale ressaltar também que essas formas de resolução de conflitos só são
 possíveis caso estejam presentes localmente os objetos referentes aos _commits_
 do submódulo. Caso eles não estejam presentes (por exemplo, por um `git clone`
 sem `--recursive`, ou por falta de um `git submodule update`), o Git não será
-capaz de resolver e irá indicar **conflito**
+capaz de resolver e irá indicar **conflito**.
 
 ## E o GitHub e o GitLab?
 
@@ -393,7 +393,7 @@ Chegamos a uma situação parecida com esta:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/merge-github-antes.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/merge-github-antes.svg">
     <figcaption><i>Branches</i> apontando para <i>commits</i> de submódulos em que pode ser feito um <i>fast-forward</i></figcaption>
   </figure>
 </div>
@@ -420,7 +420,7 @@ O que deixará o grafo de _commits_ nesta situação:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/merge-github-ff.png">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/merge-github-ff.svg">
     <figcaption><i>Merge</i> de <code>main</code> na <code>pr-branch</code></figcaption>
   </figure>
 </div>
