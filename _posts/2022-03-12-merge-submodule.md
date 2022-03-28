@@ -1,5 +1,5 @@
 ---
-title: "Git: merge com submódulos (rascunho)"
+title: "Git: merge com submódulos"
 excerpt: "Post explicando como o git-merge lida com submódulos"
 
 header:
@@ -48,7 +48,7 @@ $ git checkout main
 $ git merge pr-branch
 ~~~
 
-O grafo de _commits_ ficaria assim, com as setas cinzas apontando para as
+O grafo de _commits_ ficaria assim, com as setas pontilhadas apontando para as
 versões dos submódulos:
 
 <div class="img-container">
@@ -184,7 +184,7 @@ escolhida. Por padrão nas versões mais novas do Git a estratégia usada é a
 Este post irá abordar a partir daqui, o comportamento da `ort`. Porém, o que for
 abordado também vale para a `recursive`, mas não para as outras.
 
-### Three-way merge
+### _Three-way merge_
 
 A decisão sobre o que deve ser escolhido para entrar no _commit_ de merge é
 feita por um algoritmo chamado _three-way merge_. Esse algoritmo se baseia em
@@ -212,12 +212,12 @@ arquivo poderá, então, ter até três versões diferentes, uma em A, uma em B 
 outra em O.
 
 Para tomar a decisão de qual será usada, o _three-way merge_ faz a seguinte regra:
-- Se o arquivo tem o mesmo conteúdo em A e em B, no _commit_ de merge ele terá esse conteúdo
+- Se o arquivo tem o mesmo conteúdo em A e em B, no _commit_ de merge ele terá esse conteúdo;
 - Caso contrário:
   - Se o arquivo tem o mesmo conteúdo em A e em O, no _commit_ de merge ele terá
-    o conteúdo de B
+    o conteúdo de B;
   - Se o arquivo tem o mesmo conteúdo em B e em O, no _commit_ de merge ele terá
-    o conteúdo de A
+    o conteúdo de A;
 - Caso contrário (o arquivo tem conteúdos distintos entre si em A, B e O): **conflito**.
 
 Podemos ver isso na imagem a seguir. As bolinhas representam conteúdos
@@ -296,13 +296,13 @@ de arquivos, porém, em vez de comparar _hashes_ de _blobs_, comparamos _hashes_
 de _commits_ do submódulo:
 
 - Se o submódulo aponta para o mesmo _commit_ em A e B, esse _commit_ será usado
-  no _commit_ de merge
+  no _commit_ de merge;
 - Caso contrário:
   - Se o submódulo aponta para o mesmo _commit_ em A e em O, o _commit_ para que
-    ele aponta em B será usado no _commit_ de merge
+    ele aponta em B será usado no _commit_ de merge;
   - Se o submódulo aponta para o mesmo _commit_ em B e em O, o _commit_ para que
-    ele aponta em A será usado no _commit_ de merge
-- Caso contrário (o submódulo aponta para _commits_ distintos em A, B e O): **conflito**
+    ele aponta em A será usado no _commit_ de merge;
+- Caso contrário (o submódulo aponta para _commits_ distintos em A, B e O): **conflito**.
 
 Tudo tranquilo até aqui, mas o que acontece quando temos um conflito...
 
