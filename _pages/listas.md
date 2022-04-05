@@ -22,10 +22,10 @@ aprender sobre o assunto.
 - Canais do YouTube:
   - [Linguagem C Descomplicada](https://www.youtube.com/playlist?list=PL8iN9FQ7_jt4DJbeQqv--jpTy-2gTA3Cp):
   Aulas de introdução a C (em português). Introduções dos vídeos com músicas de
-  jogos antigos
+  jogos antigos.
 
 ## Emacs
-- [Emacs Wiki](https://www.emacswiki.org/): **Muita** coisa sobre emacs. Em inglês.
+- [Emacs Wiki](https://www.emacswiki.org/): **Muita** coisa sobre Emacs. Em inglês.
 
 ## Java
 
@@ -44,7 +44,7 @@ aprender sobre o assunto.
 
 ## Haskell
 
-- [Lern you a Haskell for Great Good!](http://learnyouahaskell.com/): Guia para
+- [Learn you a Haskell for Great Good!](http://learnyouahaskell.com/): Guia para
   iniciantes em Haskell, muito didático (em inglês).
   [Tradução (incompleta) para português](http://haskell.tailorfontela.com.br/).
 
@@ -70,7 +70,13 @@ aprender sobre o assunto.
   o funcionamento do subsistema IIO do kernel do Linux (em inglês).
   
 ## Python
+- [Automate the Boring Stuff with Python](https://automatetheboringstuff.com/):
+  Livro introdutório de Python, bastante prático e com foco na automação de
+  tarefas repetitivas.
+
 - [Python para Desenvolvedores](https://novatec.com.br/livros/python-para-desenvolvedores/): 
   Livro sobre Python para quem já conhece outra linguagem (em português). Ter exemplos com
   referência a rock progressivo é bonus :-).
 
+- [Fluent Python](https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/):
+  Livro mais avançado sobre Python, muito bom.

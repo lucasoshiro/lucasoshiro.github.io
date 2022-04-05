@@ -66,13 +66,13 @@
      inkscape:snap-bbox-midpoints="true"
      inkscape:bbox-nodes="true"
      inkscape:snap-bbox-edge-midpoints="true"
-     inkscape:zoom="0.41403842"
-     inkscape:cx="525.31357"
-     inkscape:cy="460.10223"
-     inkscape:window-width="1680"
-     inkscape:window-height="1050"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:zoom="0.58553875"
+     inkscape:cx="787.30913"
+     inkscape:cy="163.09766"
+     inkscape:window-width="775"
+     inkscape:window-height="502"
+     inkscape:window-x="881"
+     inkscape:window-y="54"
      inkscape:window-maximized="1"
      inkscape:current-layer="g8" />
   <g
@@ -318,33 +318,6 @@
         </g>
       </g>
     </g>
-    <g
-       id="path14884">
-      <path
-         style="color:#000000;fill:#000000;-inkscape-stroke:none"
-         d="m 362.4375,182.9043 -2.47656,4.24414 119.48047,69.71289 2.47656,-4.24219 z"
-         id="path112" />
-      <g
-         id="g102">
-        <g
-           id="path104">
-          <path
-             style="color:#000000;fill:#000000;fill-rule:evenodd;stroke-width:1.84246;stroke-linejoin:round;-inkscape-stroke:none"
-             d="m 377.40617,208.24928 -21.85043,-26.46208 33.78839,6.00228 c -7.96846,3.4465 -12.76441,11.72484 -11.93796,20.4598 z"
-             id="path108" />
-          <path
-             style="color:#000000;fill:#000000;fill-rule:evenodd;stroke-linejoin:round;-inkscape-stroke:none"
-             d="m 355.7168,180.88086 a 0.92132214,0.92132214 0 0 0 -0.8711,1.49219 l 21.84961,26.46289 a 0.92132214,0.92132214 0 0 0 1.62891,-0.67383 c -0.78983,-8.34789 3.78602,-16.24075 11.38476,-19.52734 a 0.92132214,0.92132214 0 0 0 -0.20312,-1.75196 z m 2.14257,2.25 28.70313,5.10156 c -6.09842,3.66506 -9.89115,10.22913 -10.11523,17.40625 z"
-             id="path110" />
-        </g>
-      </g>
-    </g>
-    <circle
-       style="fill:#0000ff;stroke-width:20"
-       id="circle14886"
-       cx="510.09009"
-       cy="263.74252"
-       r="29.773399" />
     <circle
        style="fill:#0000ff;stroke-width:20"
        id="circle14888"
@@ -352,7 +325,8 @@
        cy="263.74252"
        r="29.773399" />
     <g
-       id="path14890">
+       id="path14890"
+       transform="matrix(1.0042604,0.29259423,-0.29541217,0.99468078,75.66217,-240.71187)">
       <path
          style="color:#000000;fill:#000000;-inkscape-stroke:none"
          d="m 547.16211,261.27148 v 4.91407 h 292.33203 v -4.91407 z"

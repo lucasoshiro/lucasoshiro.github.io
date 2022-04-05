@@ -109,8 +109,8 @@
      inkscape:bbox-nodes="true"
      inkscape:snap-bbox-edge-midpoints="true"
      inkscape:zoom="2.342155"
-     inkscape:cx="922.44109"
-     inkscape:cy="495.48386"
+     inkscape:cx="296.94875"
+     inkscape:cy="51.448346"
      inkscape:window-width="1680"
      inkscape:window-height="1050"
      inkscape:window-x="0"
@@ -125,12 +125,6 @@
        style="fill:#0000ff;stroke-width:20"
        id="path849-3"
        cx="50.090088"
-       cy="43.742523"
-       r="29.773399" />
-    <circle
-       style="fill:#0000ff;stroke-width:20"
-       id="circle1358"
-       cx="230.09009"
        cy="43.742523"
        r="29.773399" />
     <circle
@@ -219,7 +213,7 @@
        rx="29.773424"
        ry="29.773399" />
     <ellipse
-       style="fill:#ffff00;stroke-width:20"
+       style="fill:#ffff00;stroke:none;stroke-width:20"
        id="circle1113"
        cx="230.09027"
        cy="43.742523"

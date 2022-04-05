@@ -253,10 +253,11 @@ internamente.
 
 Vimos que cada _tree_ representa o conteúdo de um diretório. Com o comando
 `git ls-tree` podemos ver o conteúdo de uma _tree_ . Se fizermos
-`git ls-tree HEAD^{tree}` podemos verificar o conteúdo da `tree` do _commit_ atual.
+`git ls-tree HEAD` podemos verificar o conteúdo da `tree` do _commit_ atual.
 No nosso exemplo, seria algo parecido com isso:
 
-~~~
+~~~bash
+$ git ls-tree HEAD
 100644 blob 123abc456def123abc456def123abc456def9999 .gitmodules
 100644 blob 1a2b3c4d5e6f1a2b3c4d5e6f1a2b3c4d5e6f1234 algum_arquivo.py
 040000 tree aaaaabbbbbcccccdddddeeeeefffff1111122222 algum_diretorio
@@ -409,7 +410,7 @@ indicado um conflito no submódulo.
 Caso você esteja nessa situação, pode fazer isto:
 
 ~~~bash
-$ git fetch origin/main # supondo que seu remote se chame "origin"
+$ git fetch origin main # supondo que seu remote se chame "origin"
 $ git checkout pr-branch
 $ git submodule update --init
 $ git merge origin/main
