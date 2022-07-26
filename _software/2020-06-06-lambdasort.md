@@ -526,7 +526,7 @@ a função `concat` para as listas de Church.
 
 Uma primeira implementação para elas poderia ser:
 
-TODO: melhorar isso aqui
+TODO: melhorar isso aqui!
 
 ~~~python3
 def LAMBDA_CONCAT(l1):
@@ -538,7 +538,7 @@ def LAMBDA_CONCAT(l1):
     return _LAMBDA_CONCAT
 ~~~
 
-~~~
+~~~python3
 def quicksort(A):
     # len(A) <= 1
     if l2b(LAMBDA_ISEMPTY(A)): return A
@@ -552,3 +552,108 @@ def quicksort(A):
 
     return LAMBDA_IF(LAMBDA_ISEMPTY(L))(LAMBDA_CONS(p)(R))(LAMBDA_CONCAT(L)(LAMBDA_CONS(p)(R)))
 ~~~
+
+#### Usando pares de Church no Partition
+
+TODO: não tem isso ainda, mas seria legal inverter a ordem e deixar isso aqui
+
+## Transformando laços em funções recursivas
+
+No cálculo lambda, como não temos estados, não podemos fazer laços como em
+linguagens imperativas, ou seja, repetindo um trecho de código e alterando o
+estado de alguma variável.
+
+Programas feitos em programação funcional também não têm estados e nem
+laços. Em vez de alterar algum valor já existente, devolvemos um novo valor, da
+mesma forma como fiz ao substituir o comportamento clássico do quicksort para
+devolver uma lista ordenada em vez de ordernar a lista original.
+
+Mesmo quando estamos em linguagens que implementam tanto o paradigma
+funcional quanto o imperativo, como Python, se nos restringirmos a escrever um
+código de forma funcional também não podemos usar laços.
+
+E como fazemos para resolver os problemas que seriam solucionados com laços?
+Existem várias soluções dependendo do caso, por exemplo, podemos usar `reduce`,
+_list comprehensions_, `map`, `filter`, funções recursivas, entre outros. Neste
+`quicksort`, temos apenas um laço, na função `partition`. Iremos substituí-lo
+por uma função recursiva.
+
+### Transformando o `for` em `while`
+
+Neste momento, o laço está assim:
+
+~~~python3
+    p = LAMBDA_CAR(A)
+    L = LAMBDA_EMPTY
+    R = LAMBDA_EMPTY
+
+    R = LAMBDA_EMPTY
+
+    for x in lliterator(LAMBDA_CDR(A)):
+        if l2b(LAMBDA_LESS(x)(p)): L = LAMBDA_CONS(x)(L)
+        else: R = LAMBDA_CONS(x)(R)
+~~~
+
+Tirando o iterador `lliterator` e substituindo o `for` por um `while`, chegamos
+nisto:
+
+~~~python3
+    p = LAMBDA_CAR(A)
+    L = LAMBDA_EMPTY
+    R = LAMBDA_EMPTY
+
+    S = LAMBDA_CDR(A)
+    while True:
+        if l2b(LAMBDA_ISEMPTY(S)): break
+        x = LAMBDA_CAR(S)
+        if l2b(LAMBDA_LESS(x)(p)): L = LAMBDA_CONS(x)(L)
+        else: R = LAMBDA_CONS(x)(R)
+        S = LAMBDA_CDR(S)
+~~~
+
+Ou seja: a princípio a lista `S` é igual à entrada sem o primeiro elemento (que
+é o pivô `p`). Cada iteração do `while` retira um valor de `S` e o armazena em
+`x`. Caso `x < p`, `x` é adicionado ao começo de `L` e caso contrário é
+adicionado ao fim de `R`. A condição de parada é quando a lista `S` for vazia.
+
+A partir daqui podemos identificar os elementos que serão importantes para
+escrever este laço como uma função recursiva: 
+
+- as entradas `L` e `R`, a princípio, listas de Church vazias;
+- a entrada `S`, a princípio, igual a `LAMBDA_CDR(A)`;
+- as saídas, ou seja, os valores de `L` e `R` ao final do laço;
+- a condição de parada, ou seja, `S` estar vazia;
+
+### Transformando o `while` em recursão
+
+Legal, partindo do que temos, já conseguimos escrever uma função recursiva (que
+chamei aqui de `_partition`), partindo do próprio código do `while`:
+
+~~~python3
+    p = LAMBDA_CAR(A)
+    L = LAMBDA_EMPTY
+    R = LAMBDA_EMPTY
+
+    S = LAMBDA_CDR(A)
+
+    def _partition(S, L, R):
+        if l2b(LAMBDA_ISEMPTY(S)): return L, R
+        x = LAMBDA_CAR(S)
+        if l2b(LAMBDA_LESS(x)(p)): L = LAMBDA_CONS(x)(L)
+        else: R = LAMBDA_CONS(x)(R)
+        S = LAMBDA_CDR(S)
+        return _partition(S, L, R)
+        
+    L, R = _partition(S, L, R)
+~~~
+
+Repare que a função `_partition` apesar de alterar os valores das variáveis `S`,
+`L`, e `R` internamente, ela não altera o estado das entradas. Em vez de
+_alterar_ os dados originais, ela devolve _novos_ dados.
+
+
+## Substituindo variáveis por `let`s
+
+## Reescrevendo as funções usando `lambda`
+
+## Expandindo tudo!
