@@ -5,6 +5,8 @@ excerpt: "Post explicando como o git-merge lida com submódulos"
 header:
   image: /assets/images/posts/2022-03-12-merge-submodule/conflito_submodulo.svg
   teaser: /assets/images/posts/2022-03-12-merge-submodule/conflito_submodulo.svg
+
+lang: pt_br
 ---
 
 Se você lida com um projeto versionado com o Git e que usa submódulos, talvez

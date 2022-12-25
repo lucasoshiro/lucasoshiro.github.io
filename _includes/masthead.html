@@ -26,6 +26,20 @@
           </svg>
         </button>
         {% endif %}
+
+        <span>
+        {% if page.lang != "en" %}
+        <a href={{ page.path-en }}>
+          🇬🇧
+        </a>
+        {% else %}
+        <a href={{ page.path-pt_br }}>
+          🇧🇷
+        </a>
+        {% endif %}
+
+        </span>
+
         <button class="greedy-nav__toggle hidden" type="button">
           <span class="visually-hidden">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle menu" }}</span>
           <div class="navicon"></div>

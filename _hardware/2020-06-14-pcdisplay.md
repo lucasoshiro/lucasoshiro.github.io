@@ -41,6 +41,8 @@ gallery:
 header:
    image: /assets/images/hardware/2020-06-14-pcdisplay/cpu.jpg
    teaser: /assets/images/hardware/2020-06-14-pcdisplay/cpu.jpg
+
+lang: pt_br
 ---
 
 Github: [https://github.com/lucasoshiro/pcdisplay](https://github.com/lucasoshiro/pcdisplay)

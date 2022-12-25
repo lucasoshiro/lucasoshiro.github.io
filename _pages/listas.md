@@ -7,6 +7,7 @@ entries_layout: grid
 classes: wide
 author_profile: true
 toc: true
+lang: pt_br
 ---
 
 

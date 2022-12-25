@@ -5,6 +5,9 @@ author_profile: true
 header:
    teaser: "https://www.raspberrypi.org/app/uploads/2011/10/Raspi-PGB001-300x267.png"
 
+lang: pt_br
+
+
 ---
 
 Github: [https://github.com/lucasoshiro/raspberry-log](https://github.com/lucasoshiro/raspberry-log)
