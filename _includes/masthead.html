@@ -14,7 +14,19 @@
         <ul class="visible-links">
           {%- for link in site.data.navigation.main -%}
             <li class="masthead__menu-item">
-              <a href="{{ link.url | relative_url }}"{% if link.description %} title="{{ link.description }}"{% endif %}>{{ link.title }}</a>
+              {% if page.lang == "en" %}
+
+              <a href="{{ link.url-en | relative_url }}" {% if link.description %} title="{{ link.description }}"{% endif %}>
+                {{ link.title-en }}
+              </a>
+
+              {% else %}
+
+              <a href="{{ link.url-pt_br | relative_url }}" {% if link.description %} title="{{ link.description }}"{% endif %}>
+                {{ link.title-pt_br }}
+              </a>
+
+              {% endif %}
             </li>
           {%- endfor -%}
         </ul>
@@ -26,6 +38,20 @@
           </svg>
         </button>
         {% endif %}
+
+        <span>
+        {% if page.lang != "en" %}
+        <a href={{ page.path-en }}>
+          🇬🇧
+        </a>
+        {% else %}
+        <a href={{ page.path-pt_br }}>
+          🇧🇷
+        </a>
+        {% endif %}
+
+        </span>
+
         <button class="greedy-nav__toggle hidden" type="button">
           <span class="visually-hidden">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle menu" }}</span>
           <div class="navicon"></div>

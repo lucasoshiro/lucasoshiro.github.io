@@ -1,13 +1,13 @@
 ---
 title: Hardware
 layout: collection
-permalink: /hardware/
+permalink: /hardware-en/
 collection: hardware
 entries_layout: grid
 classes: wide
 author_profile: true
-lang: pt_br
+lang: en
 
-path-en: /hardware-en
+path-pt_br: /hardware
 
 ---

@@ -2,6 +2,9 @@
 title: "Tocando música na impressora 3D"
 excerpt: ""
 author_profile: true
+
+lang: pt_br
+
 ---
 
 GitHub: [https://github.com/lucasoshiro/music2gcode](https://github.com/lucasoshiro/music2gcode)

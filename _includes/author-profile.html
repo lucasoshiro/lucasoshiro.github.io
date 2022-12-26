@@ -29,7 +29,11 @@
   </div>
 
   <div class="author__urls-wrapper">
-    <button class="btn btn--inverse">{{ site.data.ui-text[site.locale].follow_label | remove: ":" | default: "Follow" }}</button>
+    {% if page.lang == "en" %}
+    <button class="btn btn--inverse">{{ site.data.ui-text["en-US"].follow_label | remove: ":" | default: "Follow" }}</button>
+    {% else %}
+    <button class="btn btn--inverse">{{ site.data.ui-text["pt-BR"].follow_label | remove: ":" | default: "Follow" }}</button>
+    {% endif %}
     <ul class="author__urls social-icons">
       {% if author.location %}
         <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">

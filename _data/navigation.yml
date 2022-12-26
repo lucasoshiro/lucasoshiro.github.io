@@ -1,16 +1,29 @@
 # main links
 main:
-  - title: "Posts"
-    url: /posts/
-  - title: "Software"
-    url: /software/
-  - title: "Hardware"
-    url: /hardware/
-  - title: "FLOSS"
-    url: /floss/
-  - title: "Listas"
-    url: /listas/
+  - title-pt_br: "Posts"
+    url-pt_br: /posts/
+    title-en: "Posts"
+    url-en: /posts-en/    
 
+  - title-pt_br: "Software"
+    url-pt_br: /software/
+    title-en: "Software"
+    url-en: /software-en/    
+
+  - title-pt_br: "Hardware"
+    url-pt_br: /hardware/
+    title-en: "Hardware"
+    url-en: /hardware-en/    
+
+  - title-pt_br: "FLOSS"
+    url-pt_br: /floss/
+    title-en: "Posts"
+    url-en: /posts-en/    
+
+  - title-pt_br: "Listas"
+    url-pt_br: /listas/
+    title-en: "Lists"
+    url-en: /lists/    
 
   # - title: "About"
   #   url: https://mmistakes.github.io/minimal-mistakes/about/

@@ -1,12 +1,12 @@
 ---
 title: "Posts"
 layout: collection
-permalink: /posts/
+permalink: /posts-en/
 collection: posts
 entries_layout: grid
 classes: wide
 author_profile: true
-lang: pt_br
+lang: en
 
-path-en: /posts-en
+path-pt_br: /posts
 ---

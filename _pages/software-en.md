@@ -1,12 +1,12 @@
 ---
 title: Software
 layout: collection
-permalink: /software/
+permalink: /software-en/
 collection: software
 entries_layout: grid
 classes: wide
 author_profile: true
-lang: pt_br
+lang: en
 
-path-en: /software-en
+path-pt_br: /software
 ---

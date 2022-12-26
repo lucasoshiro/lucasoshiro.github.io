@@ -5,6 +5,9 @@ author_profile: true
 header:
    teaser: /assets/images/software/towerdefense.png
 
+lang: pt_br
+
+
 ---
 
 
