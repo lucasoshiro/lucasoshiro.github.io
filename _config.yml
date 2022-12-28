@@ -286,6 +286,23 @@ defaults:
 
   - scope:
       path: ""
+      type: posts-en
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      related: true
+
+  - scope:
+      path: ""
+      type: software
+    values:
+      layout: single
+      read_time: true
+      author_profile: false
+
+  - scope:
+      path: ""
       type: software
     values:
       layout: single
@@ -302,7 +319,23 @@ defaults:
 
   - scope:
       path: ""
+      type: hardware-en
+    values:
+      layout: single
+      read_time: true
+      author_profile: false
+
+  - scope:
+      path: ""
       type: floss
+    values:
+      layout: single
+      read_time: true
+      author_profile: false
+
+  - scope:
+      path: ""
+      type: floss-en
     values:
       layout: single
       read_time: true
@@ -316,8 +349,20 @@ defaults:
       read_time: true
       author_profile: false
 
+  - scope:
+      path: ""
+      type: lists
+    values:
+      layout: single
+      read_time: true
+      author_profile: false
+
 collections:
   posts:
+    output: true
+    permalink: /:collection/:path/
+
+  posts-en:
     output: true
     permalink: /:collection/:path/
 
@@ -325,7 +370,15 @@ collections:
     output: true
     permalink: /:collection/:path/
 
+  software-en:
+    output: true
+    permalink: /:collection/:path/
+
   hardware:
+    output: true
+    permalink: /:collection/:path/
+
+  hardware-en:
     output: true
     permalink: /:collection/:path/
 
@@ -333,7 +386,14 @@ collections:
     output: true
     permalink: /:collection/:path/
 
+  floss-en:
+    output: true
+    permalink: /:collection/:path/
+
   listas:
     output: true
     permalink: /:collection/:path/
 
+  lists:
+    output: true
+    permalink: /:collection/:path/

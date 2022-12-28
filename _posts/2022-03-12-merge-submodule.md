@@ -7,6 +7,7 @@ header:
   teaser: /assets/images/posts/2022-03-12-merge-submodule/conflito_submodulo.svg
 
 lang: pt_br
+path-en: /posts-en/2022-03-12-merge-submodule
 ---
 
 Se você lida com um projeto versionado com o Git e que usa submódulos, talvez

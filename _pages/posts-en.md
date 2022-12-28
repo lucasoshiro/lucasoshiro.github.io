@@ -2,7 +2,7 @@
 title: "Posts"
 layout: collection
 permalink: /posts-en/
-collection: posts
+collection: posts-en
 entries_layout: grid
 classes: wide
 author_profile: true
