@@ -7,9 +7,27 @@
 {% endif %}
 
 {% if words < words_per_minute %}
-  {{ site.data.ui-text[site.locale].less_than | default: "less than" }} 1 {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
+
+  {% if page.lang == "en" %}
+    {{ site.data.ui-text["en-US"].less_than | default: "less than" }} 1 {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
+  {% else %}
+    {{ site.data.ui-text["pt-BR"].less_than | default: "less than" }} 1 {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
+  {% endif %}
+
 {% elsif words == words_per_minute %}
-  1 {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
+
+  {% if page.lang == "en" %}
+    1 {{ site.data.ui-text["en-US"].minute_read | default: "minute read" }}
+  {% else %}
+    1 {{ site.data.ui-text["pt-BR"].minute_read | default: "minute read" }}
+  {% endif %}
+
 {% else %}
-  {{ words | divided_by:words_per_minute }} {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
+
+  {% if page.lang == "en" %}
+    {{ words | divided_by:words_per_minute }} {{ site.data.ui-text["en-US"].minute_read | default: "minute read" }}
+  {% else %}
+    {{ words | divided_by:words_per_minute }} {{ site.data.ui-text["pt-BR"].minute_read | default: "minute read" }}
+  {% endif %}
+
 {% endif %}
