@@ -7,6 +7,7 @@ header:
   teaser: /assets/images/hardware/2020-06-14-impressora_3d/hermione.jpg
 
 lang: pt_br
+path-en: /hardware-en/2020-06-14-3d_printer/
 
 ---
 
