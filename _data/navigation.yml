@@ -17,8 +17,8 @@ main:
 
   - title-pt_br: "FLOSS"
     url-pt_br: /floss/
-    title-en: "Posts"
-    url-en: /posts-en/    
+    title-en: "FLOSS"
+    url-en: /floss-en/    
 
   - title-pt_br: "Listas"
     url-pt_br: /listas/
