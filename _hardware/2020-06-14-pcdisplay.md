@@ -38,11 +38,15 @@ gallery:
     alt: "Música"
     title: "Música"
 
+last_modified_at: 2021-10-24
+
 header:
    image: /assets/images/hardware/2020-06-14-pcdisplay/cpu.jpg
    teaser: /assets/images/hardware/2020-06-14-pcdisplay/cpu.jpg
 
 lang: pt_br
+path-en: /hardware-en/2020-06-14-pcdisplay/
+
 ---
 
 Github: [https://github.com/lucasoshiro/pcdisplay](https://github.com/lucasoshiro/pcdisplay)
@@ -67,7 +71,7 @@ para controlar o display.
 <pre style="font-size: 10px; font-family: courier">
 
 +-----+           +---------+     Requisição    +------------+
-|Botão| <-------- | Arduino | ----------------> |     PC     |
+|Botão| --------> | Arduino | ----------------> |     PC     |
 +-----+           | (guest) |                   |   (host)   |
                   |         | <---------------- |            |
                   +---------+       Dados       +------------+
