@@ -100,14 +100,22 @@ function mapo_from_coord(y, x) {
 
 function success(position) {
     let pos = mapo_from_coord(position.coords.latitude, position.coords.longitude);
-    
-    document.getElementById('coords').innerText = 'A sua posição no guia é: ' + pos.join(' ');
+    const locale = document.querySelector("meta[property='og:locale']").getAttribute('content');
+    const posText = locale === 'pt_BR'
+          ? 'A sua posição no guia é: '
+          : 'Your position on the street guide is: ';
+
+    document.getElementById('coords').innerText = posText + pos.join(' ');
 }
 
 function fail() {
-    document.getElementById('coords').innerText =
-	'Se você permitir a geolocalização, ligar o seu GPS e recarregar a página, ' +
-	'eu te mostro aqui em que posição no guia você está!'
+    const locale = document.querySelector("meta[property='og:locale']").getAttribute('content');
+    const failText = locale === 'pt'
+          ? 'Se você permitir a geolocalização, ligar o seu GPS e recarregar a página, eu te mostro aqui em que posição no guia você está!'
+          : 'If you allow the geolocation, turn on your GPS and refresh this page, I\ll show you here the position on the street guide where you are!';
+
+
+    document.getElementById('coords').innerText = failText;
 }
 
 navigator.geolocation.watchPosition(success, fail);

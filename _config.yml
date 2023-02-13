@@ -303,7 +303,7 @@ defaults:
 
   - scope:
       path: ""
-      type: software
+      type: software-en
     values:
       layout: single
       read_time: true

@@ -2,7 +2,7 @@
 title: Software
 layout: collection
 permalink: /software-en/
-collection: software
+collection: software-en
 entries_layout: grid
 classes: wide
 author_profile: true
