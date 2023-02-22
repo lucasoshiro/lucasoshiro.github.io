@@ -7,6 +7,8 @@ header:
    image: /assets/images/hardware/2020-06-14-musical_lpt/posidell.jpg
    teaser: /assets/images/hardware/2020-06-14-musical_lpt/posidell.jpg
 
+hidden: true
+
 lang: pt_br
 ---
 

@@ -6,6 +6,8 @@ header:
    teaser: "/assets/images/software/lambdasort.svg"
 lang: pt_br
 
+hidden: true
+
 path-en: "/software/2020-06-06-lambdasort-en"
 ---
 
