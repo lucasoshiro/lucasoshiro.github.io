@@ -7,6 +7,8 @@ header:
 
 lang: pt_br
 
+path-en: "/software-en/2020-06-06-raspberry_log"
+
 last_modified_at: 2023-02-21
 
 ---
