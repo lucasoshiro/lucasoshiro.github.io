@@ -27,6 +27,13 @@ aprender sobre o assunto.
   Aulas de introdução a C (em português). Introduções dos vídeos com músicas de
   jogos antigos.
 
+## Eletrônica
+- Canais do YouTube:
+  - [Uebe Vintage](https://www.youtube.com/@UebeVintage): conserto de rádios e televisores antigos.
+  - [Professor Bairros](https://www.youtube.com/@professorbairros): muitos e muitos vídeos sobre eletrônica.
+  - [Electrolab](https://www.youtube.com/@Electrolab-Eletronica): outro ótimo canal sobre eletrônica.
+  - [ElectroBOOM](https://www.youtube.com/@ElectroBOOM): o melhor canal do YouTube de todos (em inglês). 
+
 ## Emacs
 - [Emacs Wiki](https://www.emacswiki.org/): **Muita** coisa sobre Emacs. Em inglês.
 
