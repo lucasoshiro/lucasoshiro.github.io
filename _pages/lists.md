@@ -6,7 +6,6 @@ collection: listas
 entries_layout: grid
 classes: wide
 author_profile: true
-toc: true
 lang: en
 
 path-pt_br: /listas
@@ -16,22 +15,29 @@ Lists of sources of information (sites, books, videos, YouTube channels, etc) of
 several themes and that can be interesting for anyone who whant to learn about
 them.
 
+## Blender
+- YouTube channels:
+  - [Blender Forge](https://www.youtube.com/watch?v=sjcpPOioHUk&list=PLeuPK3OugzJpzIkHMAKXsyHMeVsM7KSg2):
+  Excelent videos for beginners (em inglês).
+
+
 ## Emacs
 - [Emacs Wiki](https://www.emacswiki.org/): **A lot of things** about Emacs.
 
 ## Git
 
-- Livros:
+- Books:
   - Pro Git: [versão em inglês](https://git-scm.com/book/en/v2),
   Git official book. **Excelent** reference. And "excelent" is not enough to describe how good it is.
 
 - Games:
   - [Githug](https://github.com/Gazler/githug): Yeah, with g. This is game that
     is also a Git tutorial.
+
 ## Haskell
 
-- [Learn you a Haskell for Great Good!](http://learnyouahaskell.com/): Guia para
-  iniciantes em Haskell, muito didático (em inglês).
+- [Learn you a Haskell for Great Good!](http://learnyouahaskell.com/):
+  Begginer's guide to Haskell, iniciantes em Haskell, very easy to read.
 
 ## 3D printing
 

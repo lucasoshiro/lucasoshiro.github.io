@@ -22,7 +22,7 @@ main:
 
   - title-pt_br: "Listas"
     url-pt_br: /listas/
-    title-en: ""
+    title-en: "Lists"
     url-en: /lists/    
 
   # - title: "About"

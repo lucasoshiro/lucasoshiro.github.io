@@ -1,9 +1,10 @@
 ---
 title: "Tocando música na impressora 3D"
-excerpt: ""
+excerpt: "Como se o som dos motores já não fosse música"
 author_profile: true
 
 lang: pt_br
+path-en: "/software-en/2020-07-31-music_gcode/"
 
 ---
 
@@ -66,13 +67,13 @@ ENDCH
 Como é de se imaginar, `BEGINCH` e `ENDCH` definem o início e o fim de um
 canal. Os canais são tocados simultaneamente.
 
-Cada nota é representada como `nota oitava duração`, com a nota em forma
-anglo-saxônica (CDEFGGAB), podendo ter sustenido (`#`) e bemol (`b`), e a
+Cada nota é representada como `<nota> <oitava> <duração>`, com a nota em forma
+anglo-saxônica (CDEFGAB), podendo ter sustenido (`#`) e bemol (`b`), e a
 duração em unidades de tempo. Dobrados sustenidos, dobrados bemóis, etc, não são
 suportados. Silêncios são descritos como `- <duração>`.
 
 A seguir demonstro como o trecho inicial do chorinho Brejeiro, de Ernesto Nazareth (se
-você não conhece, [ouça aqui no spotify](https://open.spotify.com/track/7IqgU1s9DQbSp5fndjVbQS?si=QzeWZO5sTjulrD2rNjrDcQ)),
+você não conhece, [ouça aqui no Spotify](https://open.spotify.com/track/7IqgU1s9DQbSp5fndjVbQS?si=QzeWZO5sTjulrD2rNjrDcQ)),
 escrito na forma de partitura, pode ser transcrito para esse formato:
 
 
@@ -175,7 +176,6 @@ isso definido hardcoded. `c0` é a frequência do **Dó 0** (confere
 naquele site que eu falei antes), e ela vai ser usado para o cálculo das frequências
 de outras notas. O valor `mult` é o multiplicador da oitava: como a frequência
 de uma nota é o dobro de sua oitava inferior, esse multiplicador é `2 ^ oitava`.
-Para uma oitava 3, `mult * c0` é a frequência do **Dó 3**, por exemplo.
 
 `fromFigure` é uma função com a seguinte assinatura:
 `fromFigure :: String -> Int`.
@@ -237,7 +237,9 @@ de eventos da etapa anterior e `[Movement]` é uma lista de movimentos
 resultantes.
 
 Como eu disse anteriormente, a variação de nota pelos motores ocorre com a
-frequência que eles são movimentados. E a duração? Bom, isso é fácil: se temos
+frequência que eles são movimentados. E a duração? Bom, isso é fácil, nós apenas
+precisamos multiplicar a frequência pela duração, com `p = Δt * f`, em que `p` é
+o número de passos, `Δt` é a duração e `f` é a frequência. Por exemplo: se temos
 uma nota de 440Hz tocada por dois segundos, então significa que devemos mover
 880 passos o motor a 440Hz.
 
@@ -245,9 +247,8 @@ E como eu disse anteriormente, não temos o controle disso diretamente por
 G-Code, porém, podemos controlar quantos **milímetros** cada eixo irá se mover,
 e a velocidade dessa movimentação, em **milímetros por minuto**. E como calular
 isso? Bom, simples, para cada eixo, a posição pode ser calculada com a fórmula
-`Δs = p * (pmm)` em que `p` é o número de passos, ou seja `p = Δt * f`, sendo `f` a
-frequência e `Δt ` a diferença entre um instante de um evento e o instante de
-seu evento seguinte.
+`Δs = p * (pmm)` em que `p` é o número de passos e `pmm` é o número de passos
+necessários para que o eixo se mova 1mm.
 
 O cálculo da velocidade precisa ser feito em conjunto com os três
 eixos. Lembrando de física, a velocidade para cada eixo deveria ser calculada

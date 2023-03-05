@@ -6,7 +6,6 @@ collection: listas
 entries_layout: grid
 classes: wide
 author_profile: true
-toc: true
 lang: pt_br
 
 path-en: /lists
@@ -16,6 +15,11 @@ path-en: /lists
 Listas de materiais (sites, livros, vídeos, canais do YouTube, etc) de vários
 temas, que eu encontrei por aí, e que possam ser interessantes para quem quer
 aprender sobre o assunto.
+
+## Blender
+- Canais do Youtube:
+  - [Blender Forge](https://www.youtube.com/watch?v=sjcpPOioHUk&list=PLeuPK3OugzJpzIkHMAKXsyHMeVsM7KSg2):
+  Ótimos vídeos para quem quer começar no Blender (em inglês).
 
 ## C
 - Sites:
