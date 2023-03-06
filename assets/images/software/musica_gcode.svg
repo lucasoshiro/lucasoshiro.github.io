@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="40mm"
+   height="40mm"
+   viewBox="0 0 40 40"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a84865, 2022-12-01)"
+   sodipodi:docname="musica_gcode.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2.3308047"
+     inkscape:cx="77.012029"
+     inkscape:cy="90.097638"
+     inkscape:window-width="1680"
+     inkscape:window-height="1026"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4874">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop4870" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop4872" />
+    </linearGradient>
+    <rect
+       x="66.929674"
+       y="28.316401"
+       width="5.1484365"
+       height="78.08462"
+       id="rect3239" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4874"
+       id="linearGradient4876"
+       x1="30.401505"
+       y1="12.523214"
+       x2="30.401505"
+       y2="15.099648"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:7.06429px;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.222497;stroke-opacity:1"
+       x="0.75682223"
+       y="21.79459"
+       id="text236"><tspan
+         sodipodi:role="line"
+         id="tspan234"
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.222497;stroke-opacity:1"
+         x="0.75682223"
+         y="21.79459">♫ → </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:7.06429px;white-space:pre;inline-size:26.9367;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.222497;stroke-opacity:1"
+       x="17.569656"
+       y="7.6207609"
+       id="text236-3"
+       transform="matrix(0.83712679,0,0,0.83712679,2.0000948,1.2761163)"><tspan
+         x="17.569656"
+         y="7.6207609"
+         id="tspan4960">G0 X0
+</tspan><tspan
+         x="17.569656"
+         y="16.451123"
+         id="tspan4962">G0 X10
+</tspan><tspan
+         x="17.569656"
+         y="25.281485"
+         id="tspan4964">G0 X20
+</tspan><tspan
+         x="17.569656"
+         y="34.111848"
+         id="tspan4966">G0 X30
+</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:7.06429px;white-space:pre;inline-size:26.9367;fill:url(#linearGradient4876);fill-opacity:1;stroke:none;stroke-width:0.222497;stroke-opacity:1"
+       x="17.569656"
+       y="7.6207609"
+       id="text236-3-5"
+       transform="matrix(0.83712679,0,0,0.83712679,2.0209268,23.001943)"><tspan
+         x="17.569656"
+         y="7.6207609"
+         id="tspan4968">
+</tspan><tspan
+         x="17.569656"
+         y="16.451123"
+         id="tspan4970">G0 X40
+</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text3237"
+       style="fill:#000000;stroke:#000000;stroke-width:0.37795276;stroke-opacity:1;fill-opacity:1;white-space:pre;shape-inside:url(#rect3239)" />
+  </g>
+</svg>
