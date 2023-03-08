@@ -20,9 +20,9 @@ main:
     title-en: "FLOSS"
     url-en: /floss-en/    
 
-  - title-pt_br: "Listas"
+  - title-pt_br: "Links"
     url-pt_br: /listas/
-    title-en: "Lists"
+    title-en: "Links"
     url-en: /lists/    
 
   # - title: "About"

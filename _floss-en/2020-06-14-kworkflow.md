@@ -1,9 +1,9 @@
 ---
 title: "kw"
-excerpt: "Um conjunto de scripts que têm uma simples missão: reduzir o overhead de ambiente e configuração para desenvolver para GNU/Linux."
+excerpt: "This set of scripts have a simple mission: reduces the environment and setup overhead for developing for GNU/Linux."
 header:
    teaser: "https://flusp.ime.usp.br/img/icons/kw.png"
-lang: pt_br
+lang: en
 ---
 
 
