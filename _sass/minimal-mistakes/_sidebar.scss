@@ -16,7 +16,9 @@
   //   transform: translate3d(0, 0, 0);
   // }
 
+  display: none;
   @include breakpoint($large) {
+    display: block;
     float: left;
     width: calc(#{$right-sidebar-width-narrow} - 1em);
     opacity: 0.75;
@@ -37,6 +39,7 @@
   }
 
   @include breakpoint($x-large) {
+    display: block;
     width: calc(#{$right-sidebar-width} - 1em);
   }
 
