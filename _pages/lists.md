@@ -1,5 +1,5 @@
 ---
-title: "Listas"
+title: "Links"
 layout: single
 permalink: /lists/
 collection: listas
@@ -15,10 +15,14 @@ Lists of sources of information (sites, books, videos, YouTube channels, etc) of
 several themes and that can be interesting for anyone who whant to learn about
 them.
 
+## Assembly
+- [Introduction to x86_64 assembly](https://gitlab.com/luamfb/intro_x86-64/-/tree/master): 
+straightforward assembly tutorial.
+
 ## Blender
 - YouTube channels:
   - [Blender Forge](https://www.youtube.com/watch?v=sjcpPOioHUk&list=PLeuPK3OugzJpzIkHMAKXsyHMeVsM7KSg2):
-  Excelent videos for beginners (em inglês).
+  Excelent videos for beginners.
 
 
 ## Emacs

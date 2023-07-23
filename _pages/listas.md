@@ -16,6 +16,10 @@ Listas de materiais (sites, livros, vídeos, canais do YouTube, etc) de vários
 temas, que eu encontrei por aí, e que possam ser interessantes para quem quer
 aprender sobre o assunto.
 
+## Assembly
+- [Introduction to x86_64 assembly](https://gitlab.com/luamfb/intro_x86-64/-/tree/master): 
+tutorial de assembly bem direto ao ponto.
+
 ## Blender
 - Canais do Youtube:
   - [Blender Forge](https://www.youtube.com/watch?v=sjcpPOioHUk&list=PLeuPK3OugzJpzIkHMAKXsyHMeVsM7KSg2):
