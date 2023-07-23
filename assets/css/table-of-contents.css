@@ -1,0 +1,23 @@
+#table-of-contents {
+  flex: 1 1 300px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+#table-of-contents a {
+  color: #3d4144;
+  text-decoration: none;
+}
+
+#table-of-contents .active {
+  font-weight: bold;
+}
+
+#table-of-contents ul {
+  list-style-type: none;
+  margin: 0;
+}
+
+#table-of-contents ul ul {
+  padding-left: 1em;
+}
