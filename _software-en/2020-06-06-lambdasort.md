@@ -9,28 +9,32 @@ header:
 
 hidden: false
 
-lang: pt_br
-path-en: "/software-en/2020-06-06-lambdasort"
+lang: en
+path-pt_br: "/software/2020-06-06-lambdasort"
 ---
 
-## O cálculo lambda
+## Lambda calculus
 
-O Python, assim como várias outras linguagens, suporta **funções de alta ordem** e
-**funções anônimas**. Isto significa, essencialmente, que podemos fazer isso:
+Python, just like many other programming languages, supports **high-order
+functions** and **anonymous functions**. This means, basically, that we can
+do this:
 
 ~~~python
 
-# função anônima (lambda). Esta é equivalente à função sqrt:
+# anonymous function (lambda). This is equivaltent to sqrt:
 lambda n: n ** 0.5
 
-# função que recebe função como parâmetro, neste caso, func
-def aplica(func, parametro):
+# function that takes another function as parameter
+def apply_func(func, parametro):
     return func(parametro)
 
-# função que devolve outra função, neste caso, fabrica multiplicadores
-def fabrica_multiplicador(n):
+# function that returns another function. in this case, this is a mutiplier factory
+def multiplier_factory(n):
     return lambda x: n * x
 ~~~
+
+Right. This way, **functions are values** that can be created by other
+functions,
 
 Certo. Com isso as **funções são valores**, que podem ser criados por outras
 funções, podem ser devolvidos por outras funções, e que ainda assim podem ser
@@ -957,7 +961,7 @@ Algumas dessas funções lambda são **recursivas**:
 
 Porém, um dos pontos do cálculo lambda é que uma função **não precisa ter
 nome**. Mas como uma função pode referenciar a si mesma sem saber o próprio nome?
-A resposta para isso é o **[Combinador Y](https://en.wikipedia.org/wiki/Fixed-point_combinator#Y_combinator)**.
+A resposta para isso é o **[Combinador Y](https://en.wikipedia.org/wiki/Fixed-point_combinator#Fixed-point_combinators_in_lambda_calculus)**.
 
 Para ilustrar o combinador Y em ação, vamos usar como exemplo uma função que
 calcula fatorial:
