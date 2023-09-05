@@ -3,7 +3,7 @@ title: "AMQP Broker"
 excerpt: "Message broker escrito em C baseado no RabbitMQ"
 author_profile: true
 
-hidden: true
+hidden: false
 
 header:
     teaser: https://www.amqp.org/sites/amqp.org/themes/genesis_amqp/images/showreel/logo.png

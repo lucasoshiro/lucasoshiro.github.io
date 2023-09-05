@@ -13,6 +13,11 @@ lang: pt_br
 path-en: "/software-en/2020-06-06-lambdasort"
 ---
 
+Quicksort implementado apenas com lambdas, em Python
+
+GitHub: [https://github.com/lucasoshiro/lambdasort](https://github.com/lucasoshiro/lambdasort)
+
+
 ## O cálculo lambda
 
 O Python, assim como várias outras linguagens, suporta **funções de alta ordem** e

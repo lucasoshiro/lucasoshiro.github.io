@@ -1,6 +1,6 @@
 ---
 title: "Lambdasort"
-excerpt: "Quicksort implementado apenas com lambdas, em Python"
+excerpt: "Quicksort written in Python only using lambdas"
 author_profile: true
 
 header:
@@ -12,6 +12,12 @@ hidden: false
 lang: en
 path-pt_br: "/software/2020-06-06-lambdasort"
 ---
+
+**UNDER TRANSLATION**
+
+Quicksort written in Python only using lambdas!
+
+GitHub: [https://github.com/lucasoshiro/lambdasort](https://github.com/lucasoshiro/lambdasort)
 
 ## Lambda calculus
 
@@ -33,15 +39,10 @@ def multiplier_factory(n):
     return lambda x: n * x
 ~~~
 
-Right. This way, **functions are values** that can be created by other
-functions,
+Right. This way, **functions are values** that can be created and returned by
+other functions.
 
-Certo. Com isso as **funções são valores**, que podem ser criados por outras
-funções, podem ser devolvidos por outras funções, e que ainda assim podem ser
-chamadas.
-
-E se escrevermos um código que nenhum valor seja de um tipo diferente de função?
-Por exemplo:
+What if we write a code that has no value that isn't a function? For example:
 
 ~~~python
 t = lambda a: lambda b: a
@@ -49,28 +50,27 @@ f = lambda a: lambda b: b
 x = (lambda a: lambda b: a(b)(f))(t)(f)
 ~~~
 
-Olhando pela primeira vez isso não parece nada útil. Porém, acredite se quiser
-(spoiler: isso será explicado mais pra frente), mas isso é operação booleana
-`and` entre `True` e `False`.
+At first look it seems to be useless. However, believe it or not (spoiler: this
+will be explained further), that is a boolean `and` of `True` and `False`!
 
-O famoso **cálculo lambda** é isso. Nele temos apenas funções que recebem funções e
-devolvem funções. Para esse post, isso basta, mas caso queira ler mais sobre, o
-[artigo na Wikipedia sobre o assunto](https://en.wikipedia.org/wiki/Lambda_calculus)
-é bem interessante.
+The famous **lambda calculus** is it. It only has functions that get
+functions as parameters and return other functions. For us, that is enough, but
+if you want to read more about it, I really suggest you
+[this article on Wikipedia](https://en.wikipedia.org/wiki/Lambda_calculus).
 
-Apesar de parecer insuficiente para fazer qualquer coisa, na verdade só com o
-cálculo lambda conseguimos resolver qualquer problema que seria resolvido com
-qualquer algoritmo, já que ele é **Turing-completo**! E quem provou isso foi o
-próprio [Alan Turing](https://www.cambridge.org/core/journals/journal-of-symbolic-logic/article/abs/computability-and-definability/FE8B4FC84276D7BACB8433BD578C6BFD#access-block)!
+Even though it seems to be insufficient to do anything, actually lambda calculus
+can solve any problem that can be solved with an algorithm, as it is
+**Turing-complete**! [Alan Turing](https://www.cambridge.org/core/journals/journal-of-symbolic-logic/article/abs/computability-and-definability/FE8B4FC84276D7BACB8433BD578C6BFD#access-block)
+itself has proven it!
 
-O excelente [Programming with Nothing](https://tomstu.art/programming-with-nothing)
-de Tom Stuart mostra como fazer um fizzbuzz apenas com cálculo lambda em Ruby.
-Quando conheci o Programming with Nothing fiquei com vontade de fazer algo
-parecido, e então fiz esta loucura: um **QUICKSORT EM CÁLCULO LAMBDA!**
+The excellent [Programming with  Nothing](https://tomstu.art/programming-with-nothing)
+by Tom Stuard shows how to write a fizzbuzz using lambda calculus in Ruby.
+When I read it the first time I wanted to do something similar to it, so I made
+this: **A QUICKSORT IN LAMBDA CALCULUS**.
 
-Aqui vou contar todas as etapas de como ele foi feito.
+I tell you all the steps of how I did that!
 
-## O início: um quicksort normal em Python
+## The beginning: a normal quicksort in Python
 
 A primeira etapa foi escrever um quicksort em Python, com uma diferença do
 quicksort tradicional: ele **não altera** a lista original, na verdade, ele
