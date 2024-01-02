@@ -9,8 +9,6 @@ header:
 
 hidden: false
 
-last_modified_at: 2024-01-02
-
 lang: en
 path-pt_br: "/software/2020-06-06-lambdasort"
 ---
@@ -42,7 +40,7 @@ def multiplier_factory(n):
 Right. This way, **functions are values** that can be created and returned by
 other functions.
 
-What if we write a code that the type of every value is a function? For example:
+What if we write a code that has no value that isn't a function? For example:
 
 ~~~python
 t = lambda a: lambda b: a
@@ -53,7 +51,7 @@ x = (lambda a: lambda b: a(b)(f))(t)(f)
 At first look it seems to be useless. However, believe it or not (spoiler: this
 will be explained further), that is a boolean `and` of `True` and `False`!
 
-This is the famous **lambda calculus**. It only has functions that get
+The famous **lambda calculus** is it. It only has functions that get
 functions as parameters and return other functions. For us, that is enough, but
 if you want to read more about it, I really suggest you
 [this article on Wikipedia](https://en.wikipedia.org/wiki/Lambda_calculus).
@@ -64,11 +62,11 @@ can solve any problem that can be solved with an algorithm, as it is
 itself has proven it!
 
 The excellent [Programming with  Nothing](https://tomstu.art/programming-with-nothing)
-by Tom Stuart shows how to write a fizzbuzz using lambda calculus in Ruby.
+by Tom Stuard shows how to write a fizzbuzz using lambda calculus in Ruby.
 When I read it the first time I wanted to do something similar to it, so I made
 this: **A QUICKSORT IN LAMBDA CALCULUS**.
 
-I will tell you all the steps of how I did that!
+I tell you all the steps of how I did that!
 
 ## The beginning: a normal quicksort in Python
 
@@ -152,7 +150,7 @@ data** using only functions. The types here are:
 - pairs (used by the functions that return more than one value)
 - booleans (used by the verifications)
 
-Luckily, the creator of lambda calculus, **Alonzo Church** has also shown us how
+Luckly, the creator of lambda calculus, **Alonzo Church** has also shown us how
 to do that. There's an [article about it](https://en.wikipedia.org/wiki/Church_encoding)
 on Wikipedia.
 
@@ -185,7 +183,7 @@ will be written as `lambda a1: lambda a2: lambda a3: ... lambda an:`. When
 calling the function, we use `(a1)(a2)(a3)...(an)` instead of `(a1, a2,
 a3, ..., an)`. The name of that conversion is
 **[currying](https://en.wikipedia.org/wiki/Currying)**, named after Haskell
-Curry. An example of language that natively uses currying to handle function is
+Curry. An exemple of language that natively uses currying to handle function is
 Haskell (you don't say!).
 
 After that, I implemented the tree basic **boolean operations**:
@@ -244,7 +242,7 @@ You can see it [here](https://github.com/lucasoshiro/lambdasort/blob/booleans/la
 
 ### Integers
 
-**Church numerals** are defined as:
+**Chuch numerals** are defined as:
 
 ~~~python
 LAMBDA_ZERO = lambda p: lambda x: x
@@ -318,7 +316,7 @@ LAMBDA_EQZ = lambda n: n(lambda x: LAMBDA_FALSE)(LAMBDA_TRUE)
 ~~~
 
 Using only the operation of **equals zero**, combined with **boolean** and
-**arithmetic** operations we can define the others:
+**aritmetic** operations we can define the others:
 
 - `m <= n`: `(m - n) == 0` (remember: `m - n = 0` if `n > m`)
 - `m == n`: `(m <= n) and (n <= m)`
@@ -368,7 +366,7 @@ def pylist2llist(L):
 #### Using Church numbers
 
 As we can convert Python integer lists into Church number lists and vice-versa
-and we can compare Church numbers, we can apply the first change to Quicksort:
+and we can compare Chuch numbers, we can apply the first change to Quicksort:
 
 ~~~python
 def quicksort(A):
@@ -399,7 +397,7 @@ def partition(A):
     return L, R
 ~~~
 
-The `partition` function now operates over **Church number lists**. In order to
+The `partition` funcion now operates over **Church number lists**. In order to
 do that, we replaced `x < p` by `LAMBDA_LESS(x)(p)`, that returns a Church
 boolean instead of `True` and `False`. I needed to use `l2b` to convert the
 Church boolean to a Python boolean so we can keep the compatibility with `if`.
@@ -544,7 +542,7 @@ As `partition` returns two values (a Python tuple), we can use here a Church pai
 #### Using Church lists in `partition`
 
 Let's use Church lists in quicksort! First of all, we're going to convert
-`partition` to operate over Church lists. Currently, our situation is this:
+`partition` to operate over Chuch lists. Currently, our situation is this:
 
 ~~~python
 def partition(A):
@@ -696,7 +694,7 @@ and stores it in `x`. If `x < p`, we append `x` to the beginning of `L`, otherwi
 we append to the end of `R`. The **stop condition** is when the list `S` is empty.
 
 For now on we can identify the elements that will be useful for writing this
-loop as a recursive function:
+loop as a recusive function:
 
 <!-- TA ESTRANHO -->
 
@@ -1009,7 +1007,7 @@ recursive calls to make another recursive calls. Who will guarantee the **base**
 of that recursion is `(lambda f: f(f))`, that will provide the first passing of
 that function to itself.
 
-Mental exercise: try to simulate `fac(2)` and see the magic happening.
+Mental exercise: try to simlate `fac(2)` and see the magic happening.
 
 #### Using Y combinator
 

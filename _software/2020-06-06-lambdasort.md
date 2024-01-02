@@ -9,6 +9,8 @@ header:
 
 hidden: false
 
+last_modified_at: 2024-01-02
+
 lang: pt_br
 path-en: "/software-en/2020-06-06-lambdasort"
 ---
@@ -41,8 +43,8 @@ Certo. Com isso as **funções são valores**, que podem ser criados por outras
 funções, podem ser devolvidos por outras funções, e que ainda assim podem ser
 chamadas.
 
-E se escrevermos um código que nenhum valor seja de um tipo diferente de função?
-Por exemplo:
+E se escrevermos um código que o tipo de todos os valores sejam funções? Por
+exemplo:
 
 ~~~python
 t = lambda a: lambda b: a
