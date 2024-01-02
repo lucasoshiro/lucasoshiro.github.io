@@ -141,6 +141,8 @@ Quanto às estranhas construções `L, R = ...`,
 por enquanto é redundante fazer essa atribuição em paralelo, mas isso nos
 ajudará no futuro.
 
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/simple-quicksort/lambdasort.py).
+
 ## Redefinindo tipos
 
 Como a ideia é reescrever o quicksort apenas com lambdas, precisamos **representar
@@ -236,6 +238,7 @@ def b2l(b):
 
 Exercício mental: simule elas!
 
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/booleans/lambdasort.py).
 
 ### Inteiros
 
@@ -257,7 +260,7 @@ e assim por diante. Com isso, porém, não conseguimos representar números nega
 
 #### Incremento e decremento
 
-O **incremento** é bem fácil de definir, é uma função que poe mais uma camada de
+O **incremento** é bem fácil de definir, é uma função que põe mais uma camada de
 `p(...)`:
 
 ~~~python
@@ -279,8 +282,8 @@ limitação, e iremos precisar lembrar dela daqui a pouco.
 
 #### Soma e subtração
 
-Ok, temos então incremento e decremento. Se fizermos `m` incrementos em um
-número `n`, teremos `m + n`, e se fizermos `n` decrementos teremos `m - n`.
+Ok, temos então incremento e decremento. Se fizermos `n` incrementos em um
+número `m`, teremos `m + n`, e se fizermos `n` decrementos teremos `m - n`.
 
 Podemos definir **soma e subtração** assim:
 
@@ -328,14 +331,14 @@ LAMBDA_LESS = lambda m: lambda n: LAMBDA_AND(LAMBDA_LEQ(m)(n))(LAMBDA_NOT(LAMBDA
 #### Conversões
 
 **Converter** o numeral de Church para um inteiro do Python é só passar uma função de
-incremento como primeiro argumento (o `p`) e 0 (do Python) como o segundo:
+incremento como primeiro argumento (o `p`) e 0 como o segundo:
 
 ~~~python
 def l2i(l):
     return l(lambda x: x + 1)(0)
 ~~~
 
-Da mesma forma, podemos fazer o inverso: podemos **incrementar** o varias vezes o
+Da mesma forma, podemos fazer o inverso: podemos **incrementar** varias vezes o
 zero de Church até chegar no número:
 
 ~~~python
@@ -403,10 +406,12 @@ A função `partition_wrapper` age como um **adaptador** do novo `partition`, de
 que recebe inteiros de Python, mas com a partição sendo de fato realizada pelo
 novo `partition`.
 
-<!-- Farei nas próximas seções várias substituições de tipos, funções e operadores do -->
-<!-- Python por funções em cálculo lambda, assim como fiz agora. Tentarei só alterar -->
-<!-- aquilo que for relevante para cada etapa, usando as funções de conversão se for -->
-<!-- necessário. -->
+Farei nas próximas seções várias substituições de tipos, funções e operadores do
+Python por funções em cálculo lambda, assim como fiz agora. Tentarei só alterar
+aquilo que for relevante para cada etapa, usando as funções de conversão se for
+necessário.
+
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/integers/lambdasort.py).
 
 ### Pares e listas
 
@@ -444,7 +449,7 @@ Exercício mental: tente entender porque `LAMBDA_CAR` e `LAMBDA_CDR` funcionam!
 
 Se você prestou atenção, reparou que `car`, `cdr` e `cons` é o mesmo nome que
 das funções que definimos que operam em **listas**. E de fato, elas são as
-mesmas. Isso acontece por causa da forma como as listas são implementadas na
+mesmas! Isso acontece por causa da forma como as listas são implementadas na
 codificação de Church.
 
 As **listas de Church** são simplesmente pares em que:
@@ -489,10 +494,14 @@ LAMBDA_ISEMPTY = lambda l: l(lambda h: lambda t: lambda d: LAMBDA_FALSE)(LAMBDA_
 ~~~
 
 Ou seja:
-- se `l` for **vazio** (é igual a `LAMBDA_EMPTY`) , devolve o segundo argumento: `LAMBDA_TRUE`
-- se `l` não **for vazio**, então `l` é um par (ex:
-`lambda l: l(1)(resto_da_lista)`, e passaremos como argumento uma função
-`(lambda h: lambda t: lambda d: LAMBDA_FALSE)`
+- se `l` for **vazio** (é igual a `LAMBDA_EMPTY`), devolve o segundo argumento: `LAMBDA_TRUE`
+- if `l` is **not empty**, then `l` is a pair. `l` is called with the function `(lambda h:
+  lambda t: lambda d: LAMBDA_FALSE)` as argument. That function discards
+  everything and return `FALSE`. Try to simulate it again ;-).
+
+- se `l` não **for vazio**, então `l` é um par. `l` é chamada tendo como
+argumento a `(lambda h: lambda t: lambda d: LAMBDA_FALSE)`. Essa função descarta
+tudo e devolve `LAMBDA_FALSE`. Tente simular isso ;-).
 
 #### Conversão
 
@@ -588,7 +597,7 @@ Agora vamos adicionar as **listas de Church** à função `quicksort`! Ainda
 precisamos definir a função `concat` para as listas de Church. Podemos
 implementá-la de forma recursiva:
 
-- Se a lista à esquerda **for vazia**, então usamos a **segunda**
+- Se a lista à esquerda **for vazia**, então usamos a **da direita**
 - Se a lista à esquerda **não for vazia**, devolvemos uma lista em que:
   - o primeiro elemento é o **primeiro elemento** (`car`) da lista da **esquerda**
   - o resto da lista é a concatenação do **resto** (`cdr`) da lista da **esquerda** com a lista da **direita**
@@ -608,6 +617,9 @@ def LAMBDA_CONCAT(l1):
 Isso fica um tanto distante das outras operações que foram escritas em só uma
 expressão. Spoiler: vamos tratar isso depois.
 
+Uma vez tendo definida `concat`, podemos substituir todas as operações sobre
+listas do Python por operações sobre listas de Church no `quicksort`:
+
 ~~~python
 def quicksort(A):
     # len(A) <= 1
@@ -622,6 +634,8 @@ def quicksort(A):
 
     return LAMBDA_IF(LAMBDA_ISEMPTY(L))(LAMBDA_CONS(p)(R))(LAMBDA_CONCAT(L)(LAMBDA_CONS(p)(R)))
 ~~~
+
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/pairs-lists/lambdasort.py).
 
 ## Transformando laços em funções recursivas
 
@@ -640,7 +654,7 @@ código de forma funcional também não podemos usar laços.
 E como fazemos para resolver os problemas que seriam solucionados com laços?
 Existem várias soluções dependendo do caso, por exemplo, podemos usar `reduce`,
 _list comprehensions_, `map`, `filter`, funções recursivas, entre outros. Neste
-`quicksort`, temos apenas **um laço**, na função `partition`. Iremos substituí-lo
+quicksort, temos apenas **um laço**, na função `partition`. Iremos substituí-lo
 por uma **função recursiva**.
 
 ### Transformando o `for` em `while`
@@ -685,7 +699,7 @@ for vazia.
 A partir daqui podemos identificar os elementos que serão importantes para
 escrever este laço como uma função recursiva: 
 
-- as entradas `L` e `R`, a princípio, listas de Church vazias;
+- as entradas `L` e `R` são, a princípio, listas de Church vazias;
 - a entrada `S`, a princípio, igual a `LAMBDA_CDR(A)`;
 - as saídas, ou seja, os valores de `L` e `R` ao final do laço;
 - a condição de parada, ou seja, `S` estar vazia;
@@ -740,6 +754,8 @@ def _partition(S, L, R):
 LR = _partition(S, L, R)
 nL, nR = LAMBDA_CAR(LR), LAMBDA_CDR(LR)
 ~~~
+
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/recursion/lambdasort.py).
 
 ## Substituindo variáveis por `let`s
 
@@ -873,6 +889,8 @@ def _partition(S, L, R):
 
     return _partition(LAMBDA_CDR(S), nL, nR)
 ~~~
+
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/let/lambdasort.py).
 
 ## Reescrevendo as funções usando `lambda`
 
@@ -1016,6 +1034,8 @@ Exercício mental: a chamada de `quicksort` **não está** no próprio `quicksor
 sim em `_quicksort2` (que é chamado por `quicksort`). Como consegui usar o
 combinador Y nessa situação?
 
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/y-combinator/lambdasort.py).
+
 ## Expandindo tudo!
 
 Neste ponto, todos os **valores**, **estruturas de dados** e `if`s são
@@ -1029,3 +1049,45 @@ pode ser feito usando a própria substituição de um editor de texto, por exemp
 Eis que chegamos nesta coisa horrível:
 
 `quicksort = (lambda r: r(r))(lambda r: lambda A: (lambda r: lambda A: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(A))(lambda A: A)(lambda A: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda p: p(lambda a: lambda b: b))(A)))(A)((lambda r: lambda A: lambda LR: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(r(r)((lambda p: p(lambda a: lambda b: a))(LR))))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))((lambda p: p(lambda a: lambda b: b))(LR)))(r(r)((lambda p: p(lambda a: lambda b: b))((lambda p: p(lambda a: lambda b: b))(LR)))))(((lambda r: r(r)) (lambda r: lambda l1: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda p: p(lambda a: lambda b: b))(l1)))(lambda l2: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(l1))(l2))((lambda r: lambda l2: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(l1))(r(r)((lambda p: p(lambda a: lambda b: b))(l1))(l2)))(r))))(r(r)((lambda p: p(lambda a: lambda b: a))(LR)))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))((lambda p: p(lambda a: lambda b: b))(LR)))(r(r)((lambda p: p(lambda a: lambda b: b))((lambda p: p(lambda a: lambda b: b))(LR)))))))(r)(A)((lambda A:((lambda A: lambda LR: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(LR))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(A))((lambda p: p(lambda a: lambda b: b))(LR)))))(A)(((lambda r: r(r))(lambda r: lambda S: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(S))(lambda L: lambda R: lambda p: (lambda a: lambda b: lambda l: l(a)(b))(L)(R))(lambda L: lambda R: lambda p: (lambda r: lambda S: lambda LR: lambda p: r(r)((lambda p: p(lambda a: lambda b: b))(S))((lambda p: p(lambda a: lambda b: a))(LR))((lambda p: p(lambda a: lambda b: b))(LR))(p))(r)(S)((lambda x: lambda L: lambda R: lambda p: (lambda c: lambda t: lambda e: c(t)(e))((lambda m: lambda n: (lambda a: lambda b: a(b)((lambda a: lambda b: b)))((lambda m: lambda n: (lambda n: n(lambda x: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: n((lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda y: x)(lambda y: y)))(m))(m)(n)))(m)(n))((lambda a: a((lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: (lambda a: lambda b: a(b)((lambda a: lambda b: b)))((lambda m: lambda n: (lambda n: n(lambda x: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: n((lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda y: x)(lambda y: y)))(m))(m)(n)))(m)(n))((lambda m: lambda n: (lambda n: n(lambda x: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: n((lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda y: x)(lambda y: y)))(m))(m)(n)))(n)(m)))(m)(n))))(x)(p))((lambda a: lambda b: lambda l: l(a)(b))((lambda a: lambda b: lambda l: l(a)(b))(x)(L))(R))((lambda a: lambda b: lambda l: l(a)(b))(L)((lambda a: lambda b: lambda l: l(a)(b))(x)(R))))((lambda p: p(lambda a: lambda b: a))(S))(L)(R)(p))(p))))((lambda p: p(lambda a: lambda b: b))(A))((lambda a: lambda b: b))((lambda a: lambda b: b))((lambda p: p(lambda a: lambda b: a))(A))))(A)))))(r)(A)(A))`
+
+### Usando o lambdasort
+
+Claro que não podemos usar este `quicksort` sozinho em uma lista do Python já
+que ele opera na codificação de Church. Precisaremos então de uma função para
+traduzir os tipos do Python para a codificação de church, ordernar a lista de
+Church usando `quicksort` e então traduzí-la de novo para uma lista doo
+Python. Vamos fazer isso usando as funções anteriores.
+
+~~~python
+def quicksort_wrapper(A):
+    church = pl2ll([i2l(x) for x in A])
+    sorted_church = quicksort(church)
+    return [l2i(x) for x in ll2pl(sorted_church)]
+~~~
+
+Agora você pode usar `quicksort_wrapper` para ordenar uma lista e ele usará por
+trás o nosso lambdasort:
+
+~~~python
+>>> from lambdasort import quicksort_wrapper
+>>> x = [22, 33, 11, 55, 99, 11, 33, 77, 44]
+>>> quicksort_wrapper(x)
+[11, 11, 22, 33, 33, 44, 55, 77, 99]
+~~~
+
+## Considerações finais
+
+Eu escrevi o lambdasort em 2017 (meu terceiro ano na faculdade) em apenas dois
+dias bem intensos, depois de ver uma aula do [Professor Gubi](https://memorial.ime.usp.br/homenageados/5)
+sobre cálculo lambda e
+combinador Y. Ele falou sobre o Programming with Nothing, mencionado
+anteriormente. Eu achei isso tão impressionante que eu quis fazer algo similar,
+e me desafiei a escrever alguma coisa _ainda mais difícil_ que um fizzbuzz, e
+aqui estamos!
+
+Escrever ele foi realmente divertido, e eu não reparei no primeiro momento o
+quanto eu aprendi em apenas dois dias, e ainda levou anos para que eu finalmente
+escreve este texto explicando o que eu fiz. Então, obrigado por ler até aqui!
+
+Se alguma coisa estiver errada, tanto no texto quanto no código, sinta-se à
+vontade para [abrir uma issue](https://github.com/lucasoshiro/lucasoshiro.github.io/issues).
