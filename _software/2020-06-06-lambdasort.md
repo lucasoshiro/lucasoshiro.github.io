@@ -444,7 +444,7 @@ Exercício mental: tente entender porque `LAMBDA_CAR` e `LAMBDA_CDR` funcionam!
 
 Se você prestou atenção, reparou que `car`, `cdr` e `cons` é o mesmo nome que
 das funções que definimos que operam em **listas**. E de fato, elas são as
-mesmas. Isso acontece por causa da forma como as listas são implementadas na
+mesmas! Isso acontece por causa da forma como as listas são implementadas na
 codificação de Church.
 
 As **listas de Church** são simplesmente pares em que:
@@ -489,10 +489,14 @@ LAMBDA_ISEMPTY = lambda l: l(lambda h: lambda t: lambda d: LAMBDA_FALSE)(LAMBDA_
 ~~~
 
 Ou seja:
-- se `l` for **vazio** (é igual a `LAMBDA_EMPTY`) , devolve o segundo argumento: `LAMBDA_TRUE`
-- se `l` não **for vazio**, então `l` é um par (ex:
-`lambda l: l(1)(resto_da_lista)`, e passaremos como argumento uma função
-`(lambda h: lambda t: lambda d: LAMBDA_FALSE)`
+- se `l` for **vazio** (é igual a `LAMBDA_EMPTY`), devolve o segundo argumento: `LAMBDA_TRUE`
+- if `l` is **not empty**, then `l` is a pair. `l` is called with the function `(lambda h:
+  lambda t: lambda d: LAMBDA_FALSE)` as argument. That function discards
+  everything and return `FALSE`. Try to simulate it again ;-).
+
+- se `l` não **for vazio**, então `l` é um par. `l` é chamada tendo como
+argumento a `(lambda h: lambda t: lambda d: LAMBDA_FALSE)`. Essa função descarta
+tudo e devolve `LAMBDA_FALSE`. Tente simular isso ;-).
 
 #### Conversão
 
@@ -588,7 +592,7 @@ Agora vamos adicionar as **listas de Church** à função `quicksort`! Ainda
 precisamos definir a função `concat` para as listas de Church. Podemos
 implementá-la de forma recursiva:
 
-- Se a lista à esquerda **for vazia**, então usamos a **segunda**
+- Se a lista à esquerda **for vazia**, então usamos a **da direita**
 - Se a lista à esquerda **não for vazia**, devolvemos uma lista em que:
   - o primeiro elemento é o **primeiro elemento** (`car`) da lista da **esquerda**
   - o resto da lista é a concatenação do **resto** (`cdr`) da lista da **esquerda** com a lista da **direita**
@@ -607,6 +611,9 @@ def LAMBDA_CONCAT(l1):
 
 Isso fica um tanto distante das outras operações que foram escritas em só uma
 expressão. Spoiler: vamos tratar isso depois.
+
+Uma vez tendo definida `concat`, podemos substituir todas as operações sobre
+listas do Python por operações sobre listas de Church no `quicksort`:
 
 ~~~python
 def quicksort(A):
@@ -640,7 +647,7 @@ código de forma funcional também não podemos usar laços.
 E como fazemos para resolver os problemas que seriam solucionados com laços?
 Existem várias soluções dependendo do caso, por exemplo, podemos usar `reduce`,
 _list comprehensions_, `map`, `filter`, funções recursivas, entre outros. Neste
-`quicksort`, temos apenas **um laço**, na função `partition`. Iremos substituí-lo
+quicksort, temos apenas **um laço**, na função `partition`. Iremos substituí-lo
 por uma **função recursiva**.
 
 ### Transformando o `for` em `while`
@@ -685,7 +692,7 @@ for vazia.
 A partir daqui podemos identificar os elementos que serão importantes para
 escrever este laço como uma função recursiva: 
 
-- as entradas `L` e `R`, a princípio, listas de Church vazias;
+- as entradas `L` e `R` são, a princípio, listas de Church vazias;
 - a entrada `S`, a princípio, igual a `LAMBDA_CDR(A)`;
 - as saídas, ou seja, os valores de `L` e `R` ao final do laço;
 - a condição de parada, ou seja, `S` estar vazia;

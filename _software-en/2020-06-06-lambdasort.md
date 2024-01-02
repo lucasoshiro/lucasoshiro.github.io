@@ -434,70 +434,79 @@ l = LAMBDA_CONS(15)(20)
 a, b = (x.cell_contents for x in l.__closure__) # a = 15, b = 20
 ~~~
 
-Quanto às funções `LAMBDA_CAR` e `LAMBDA_CDR`, elas devolvem o **primeiro** e o
-**segundo** elemento do par, respectivamente.
+About `LAMBDA_CAR` and `LAMBDA_CDR`, they return the **first** and the
+**second** element of the pair, respectively.
 
-Exercício mental: tente entender porque `LAMBDA_CAR` e `LAMBDA_CDR` funcionam!
+Mental exercise: try to understand why `LAMBDA_CAR` and `LAMBDA_CDR` work!
 
-#### Listas
+#### Lists
 
-Se você prestou atenção, reparou que `car`, `cdr` e `cons` é o mesmo nome que
-das funções que definimos que operam em **listas**. E de fato, elas são as
-mesmas. Isso acontece por causa da forma como as listas são implementadas na
-codificação de Church.
+If you paid enough attention, you noted that `car`, `cdr` and `cons` are the
+same names that we used to define the functions that operate over **lists**. And
+yes, they are the same! This happens because the way lists are implemented in
+Church encoding.
 
-As **listas de Church** são simplesmente pares em que:
+**Church lists** just are pairs where:
 
-- o primeiro elemento do par é o **primeiro elemento** da lista
-- o segundo elemento é uma **lista com o restante** dos elementos
+- the first element is the **first element** of the list
+- the second element is a **list with the rest** of the elements
 
-Essa é uma definição recursiva em que a base da recursão, ou seja, a
-**lista vazia**, pode ser implementada de várias formas. Aqui, usamos para
-representar a lista vazia o booleano `LAMBDA_FALSE`:
+That is a recursive definition where the base of the recursion (an **empty
+list**) can be implemented by many ways. Here we are using to represent an empty
+list the boolean `LAMBDA_FALSE`:
 
 ~~~python
 LAMBDA_EMPTY = LAMBDA_FALSE
 ~~~
 
-Dessa forma, uma lista com os valores `[1, 2, 3]` é declarada assim:
+This way, a list with the values `[1, 2, 3]` can be declared this way:
 
 ~~~python
 LAMBDA_CONS(1)(LAMBDA_CONS(2)(LAMBDA_CONS(3)(LAMBDA_FALSE)))
 ~~~
 
-O que, na prática, são pares recursivos, na seguinte forma:
+In practice, they are recursive pairs:
 
 ~~~python
 (1, (2, (3, LAMBDA_EMPTY)))
 ~~~
 
+So much parentheses! But note that, at this point, `LAMBDA_CAR`, `LAMBDA_CDR`
+and `LAMBDA_CONS`, when applied to **lists** have the same behaviour than `car`,
+`cdr` and `cons` that we defined to operate over Python lists:
+
 Quantos parênteses! Mas repare que nesse ponto, `LAMBDA_CAR`, `LAMBDA_CDR` e 
 `LAMBDA_CONS`, quando aplicadas a **listas**, têm o mesmo comportamento das funções
 `car`, `cdr` e `cons` que definimos para operar em listas do Python:
 
-- `LAMBDA_CAR` devolve o primeiro elemento do primeiro par, ou seja, **o primeiro elemento** da lista (`1`)
-- `LAMBDA_CDR` devolve o primeiro elemento do segundo par, ou seja, **o restante** da lista (`(2, (3, LAMBDA_EMPTY))`)
-- `LAMBDA_CONS` adiciona mais um par, acomodando **um novo elemento**
 
-Como a definição dessas listas é recursiva, a iteração sobre seus ela também
-será feita de forma recusiva. A função que iremos usar para saber se a recursão
-chegou ao fim é esta:
+- `LAMBDA_CAR` returns the first element of the first pair, this is, **the first
+  element** of the list (`1`)
+- `LAMBDA_CDR` returns the first element of the second pair, this is, **the
+  rest** of the list (`(2, (3, LAMBDA_EMPTY))`)
+- `LAMBDA_CONS` adds another pair, appending **another element**
+
+As the definition of those lists is recursive, the iteration over them will also
+be done in a recursive way. The function that we'll use to know whether the
+recursion has reached the end is this:
 
 ~~~python
 LAMBDA_ISEMPTY = lambda l: l(lambda h: lambda t: lambda d: LAMBDA_FALSE)(LAMBDA_TRUE)
 ~~~
 
-Ou seja:
-- se `l` for **vazio** (é igual a `LAMBDA_EMPTY`) , devolve o segundo argumento: `LAMBDA_TRUE`
-- se `l` não **for vazio**, então `l` é um par (ex:
-`lambda l: l(1)(resto_da_lista)`, e passaremos como argumento uma função
-`(lambda h: lambda t: lambda d: LAMBDA_FALSE)`
+That is:
 
-#### Conversão
+- if `l` is **empty** (it is equal to `LAMBDA_EMPTY`), then it returns the second
+  argument: `LAMBDA_TRUE`
+- if `l` is **not empty**, then `l` is a pair. `l` is called with the function `(lambda h:
+  lambda t: lambda d: LAMBDA_FALSE)` as argument. That function discards
+  everything and return `LAMBDA_FALSE`. Try to simulate it ;-).
 
-**Pares** poderão ser convertidos de e para listas de Python com apenas dois
-elementos. O jeito pythônico de fazer isto seria com tuplas de apenas dois
-elementos, mas, para manter a homogeinidade do código, usarei listas:
+#### Conversion
+
+**Pairs** can be converted from and to Python lists that have only two
+elements. The pythonic way to do that would be using tuples of size 2, but, in
+order to keep the code homogeneity, I'm using lists:
 
 ~~~python
 def l2p(l):
@@ -507,7 +516,7 @@ def p2l(p):
     return LAMBDA_CONS(p[0])(p[1])
 ~~~
 
-Da mesma forma, podemos converter listas de Python e listas de Church:
+We can also convert Python lists and Church lists:
 
 ~~~python
 def ll2pl(l):
@@ -519,10 +528,9 @@ def pl2ll(l):
     return LAMBDA_CONS(l[0])(pl2ll(l[1:]))
 ~~~
 
-#### Usando pares de Church no `partition`
+#### Using Church pairs in `partition`
 
-Como a função `partition` devolve dois valores (uma tupla do Python), podemos
-usar aqui um par de Church:
+As `partition` returns two values (a Python tuple), we can use here a Church pair:
 
 ~~~python
     # antes:
@@ -532,10 +540,10 @@ usar aqui um par de Church:
     return LAMBDA_CONS(L)(R)
 ~~~
 
-#### Usando listas de Church no `partition`
+#### Using Church lists in `partition`
 
-Vamos adicionar listas de Church ao quicksort! Primeiro, vamos converter o
-`partition` para operar em listas de Church. A situação atual é esta:
+Let's use Church lists in quicksort! First of all, we're going to convert
+`partition` to operate over Chuch lists. Currently, our situation is this:
 
 ~~~python
 def partition(A):
@@ -553,8 +561,8 @@ def partition(A):
     return L, R
 ~~~
 
-Então vamos substitur `car`, `cdr`, `cons` e `[]` por seus equivalentes em
-cálculo lambda.
+So, we need to replace `car`, `cdr`, `cons` and `[]` by their corresponding in
+lambda calculus:
 
 ~~~python
 def partition(A):
@@ -571,7 +579,7 @@ def partition(A):
     return LAMBDA_CONS(L)(R)
 ~~~
 
-Repare que para iterar sobre a lista de Church criei o generator `lliterator`:
+Note that I created the generator `lliterator` to iterate over Church lists:
 
 ~~~python
 def lliterator(l):
@@ -581,18 +589,19 @@ def lliterator(l):
 ~~~
 
 
-#### Usando listas de Church no `quicksort`
+#### Using Church lists in `quicksort`
 
-Agora vamos adicionar as **listas de Church** à função `quicksort`! Ainda
-precisamos definir a função `concat` para as listas de Church. Podemos
-implementá-la de forma recursiva:
+Now we're going to add **Church lists** to the function `quicksort`! We still
+need to define the function `concat` for Church lists. We can implement it
+recursively:
 
-- Se a lista à esquerda **for vazia**, então usamos a **segunda**
-- Se a lista à esquerda **não for vazia**, devolvemos uma lista em que:
-  - o primeiro elemento é o **primeiro elemento** (`car`) da lista da **esquerda**
-  - o resto da lista é a concatenação do **resto** (`cdr`) da lista da **esquerda** com a lista da **direita**
+- If the list on the left **is empty**, we need to use the **list on the right**
+- If the list on the left **is not empty**, it returns a new list where:
+  - the first element is the **first element** (`car`) of the **list on the left**
+  - the rest of the list is the concatenation of the **rest** (`cdr`) of the
+    **list on the left** with the **list on the right**
 
-Isso ficaria assim (note o currying):
+That is (note the currying):
 
 ~~~python
 def LAMBDA_CONCAT(l1):
@@ -604,8 +613,11 @@ def LAMBDA_CONCAT(l1):
     return _LAMBDA_CONCAT
 ~~~
 
-Isso fica um tanto distante das outras operações que foram escritas em só uma
-expressão. Spoiler: vamos tratar isso depois.
+This is a little different to the other operations that were written in a single
+expression. Spoiler: we're going to handle this further!
+
+Once having `concat` defined, we can replace all the Python list operations by
+Church list operations in `quicksort`:
 
 ~~~python
 def quicksort(A):
@@ -622,29 +634,29 @@ def quicksort(A):
     return LAMBDA_IF(LAMBDA_ISEMPTY(L))(LAMBDA_CONS(p)(R))(LAMBDA_CONCAT(L)(LAMBDA_CONS(p)(R)))
 ~~~
 
-## Transformando laços em funções recursivas
+## Replacing loops by recursive functions
 
-No cálculo lambda, como **não temos estados**, não podemos fazer laços como em
-linguagens imperativas, ou seja, repetindo um trecho de código e alterando o
-estado de alguma variável.
+As in lambda calculus **there aren't any states**, we can't use loops as we do
+in imperative languages, that is, repeating a code snippet and changing the
+state of a variable.
 
-E por não ter estados, em vez de alterar algum valor já existente, devolvemos um
-**novo** valor, da mesma forma como fiz ao substituir o comportamento clássico do
-quicksort para devolver uma lista ordenada em vez de ordernar a lista original.
-    
-Mesmo quando estamos em linguagens que implementam tanto o paradigma
-funcional quanto o imperativo, como Python, se nos restringirmos a escrever um
-código de forma funcional também não podemos usar laços.
+And due to the lack of states, instead of changing an existing value we return a
+**new** value, just like we did when replacing the standard behaviour of
+quicksort to return a sorted list instead of sort the original list.
 
-E como fazemos para resolver os problemas que seriam solucionados com laços?
-Existem várias soluções dependendo do caso, por exemplo, podemos usar `reduce`,
-_list comprehensions_, `map`, `filter`, funções recursivas, entre outros. Neste
-`quicksort`, temos apenas **um laço**, na função `partition`. Iremos substituí-lo
-por uma **função recursiva**.
+Even when we are write code in languages that support both the functional and
+imperative paradigms, like Python, if we restrict ourselves to write a code in a
+functional manner we can't use loops.
 
-### Transformando o `for` em `while`
+And how can we solve the problems that would be solved using loops? There are
+many solutions depending on the case, for example, we could use `reduce`, list
+comprehensions, `map`, `filter`, recursive functions, etc. In this quicksort
+we only have **one loop**, in `partition`. We're going to replace it by a
+**recursive function**.
 
-Neste momento, o laço está assim:
+### Replacing `for` by `while`
+
+Currently, the loop is this:
 
 ~~~python
 p = LAMBDA_CAR(A)
@@ -657,8 +669,8 @@ for x in lliterator(LAMBDA_CDR(A)):
         L, R = L, LAMBDA_CONS(x)(R)
 ~~~
 
-Tirando o iterador `lliterator` e substituindo o `for` por um `while`, chegamos
-nisto:
+After removing the iterator `lliterator` and replacing the `for` by a `while`,
+we get this:
 
 ~~~python
 p = LAMBDA_CAR(A)
@@ -675,16 +687,20 @@ while True:
     S = LAMBDA_CDR(S)
 ~~~
 
-Ou seja: a princípio a lista `S` é igual à entrada sem o primeiro elemento (que
-é o pivô `p`). Cada iteração do `while` **retira** um valor de `S` e o
-**armazena** em `x`. Caso `x < p`, `x` é adicionado ao começo de `L` e caso
-contrário é adicionado ao fim de `R`. A **condição de parada** é quando a lista `S`
-for vazia.
+In other words: at first `S` is equal to the input list without the first
+element (the pivot `p`). Each iteration of `while` **removes** a value from `S`
+e stores it in `x`. If `x < p`, we append `x` to the beginning of `L`, otherwise
+we append to the end of `R`. The **stop condition** is when the list `S` is empty.
 
-A partir daqui podemos identificar os elementos que serão importantes para
-escrever este laço como uma função recursiva: 
+For now on we can identify the elements that will be useful for writing this
+loop as a recusive function:
 
-- as entradas `L` e `R`, a princípio, listas de Church vazias;
+<!-- TA ESTRANHO -->
+
+- the inputs `L` and `R` are, at first, empty Church lists;
+- the input `S` is, at first, equal to `LAMBDA_CDR(A)`;
+- the outputs
+
 - a entrada `S`, a princípio, igual a `LAMBDA_CDR(A)`;
 - as saídas, ou seja, os valores de `L` e `R` ao final do laço;
 - a condição de parada, ou seja, `S` estar vazia;
