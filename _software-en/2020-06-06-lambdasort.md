@@ -13,8 +13,6 @@ lang: en
 path-pt_br: "/software/2020-06-06-lambdasort"
 ---
 
-**UNDER TRANSLATION**
-
 Quicksort written in Python only using lambdas!
 
 GitHub: [https://github.com/lucasoshiro/lambdasort](https://github.com/lucasoshiro/lambdasort)
@@ -471,14 +469,9 @@ In practice, they are recursive pairs:
 (1, (2, (3, LAMBDA_EMPTY)))
 ~~~
 
-So much parentheses! But note that, at this point, `LAMBDA_CAR`, `LAMBDA_CDR`
+So many parentheses! But note that, at this point, `LAMBDA_CAR`, `LAMBDA_CDR`
 and `LAMBDA_CONS`, when applied to **lists** have the same behaviour than `car`,
 `cdr` and `cons` that we defined to operate over Python lists:
-
-Quantos parênteses! Mas repare que nesse ponto, `LAMBDA_CAR`, `LAMBDA_CDR` e 
-`LAMBDA_CONS`, quando aplicadas a **listas**, têm o mesmo comportamento das funções
-`car`, `cdr` e `cons` que definimos para operar em listas do Python:
-
 
 - `LAMBDA_CAR` returns the first element of the first pair, this is, **the first
   element** of the list (`1`)
@@ -533,10 +526,10 @@ def pl2ll(l):
 As `partition` returns two values (a Python tuple), we can use here a Church pair:
 
 ~~~python
-    # antes:
+    # before:
     return L, R
 
-    # depois:
+    # after:
     return LAMBDA_CONS(L)(R)
 ~~~
 
@@ -689,7 +682,7 @@ while True:
 
 In other words: at first `S` is equal to the input list without the first
 element (the pivot `p`). Each iteration of `while` **removes** a value from `S`
-e stores it in `x`. If `x < p`, we append `x` to the beginning of `L`, otherwise
+and stores it in `x`. If `x < p`, we append `x` to the beginning of `L`, otherwise
 we append to the end of `R`. The **stop condition** is when the list `S` is empty.
 
 For now on we can identify the elements that will be useful for writing this
@@ -697,18 +690,15 @@ loop as a recusive function:
 
 <!-- TA ESTRANHO -->
 
-- the inputs `L` and `R` are, at first, empty Church lists;
-- the input `S` is, at first, equal to `LAMBDA_CDR(A)`;
-- the outputs
+- the inputs **`L` and `R`** that are, at first, empty Church lists;
+- the input **`S`** that is, at first, equal to `LAMBDA_CDR(A)`;
+- the **outputs**, that are the values of `L` and `R` at the end of the loop;
+- the **stop condition**, that are when `S` is empty.
 
-- a entrada `S`, a princípio, igual a `LAMBDA_CDR(A)`;
-- as saídas, ou seja, os valores de `L` e `R` ao final do laço;
-- a condição de parada, ou seja, `S` estar vazia;
+###  Converting `while` to recursion
 
-### Transformando o `while` em recursão
-
-Legal, partindo do que temos, já conseguimos escrever uma **função recursiva**
-(que chamei aqui de `_partition`), partindo do próprio código do `while`:
+Cool, what we have so far is enough to write a **recursive function** (that I'm
+calling here `_partition`), given the `while` loop code:
 
 ~~~python
 p = LAMBDA_CAR(A)
@@ -729,12 +719,13 @@ def _partition(S, L, R):
 nL, nR = _partition(S, L, R)
 ~~~
 
-Repare que a função `_partition` não altera o estado das entradas `L` e `R`.
-Em vez de _alterar_ os dados originais, ela devolve _novos_ dados que ficam nas
-variáveis `nL` e `nR`, que são os argumentos `L` e `R` da próxima chamada
-recursiva.
+Note that `_partition` doesn't change the state of the inputs `L` and
+`R`. Instead of _changing_ the original input data, it returns _new_ data that
+are stored in the variables `nL` and `nR`, that are the `L` and `R` arguments of
+the next recursive call.
 
-Podemos fazer essa função também devolver pares de Church em vez de tuplas:
+We can also make that function return Church pairs instead of tuples:
+
 
 ~~~python
 p = LAMBDA_CAR(A)
@@ -756,16 +747,15 @@ LR = _partition(S, L, R)
 nL, nR = LAMBDA_CAR(LR), LAMBDA_CDR(LR)
 ~~~
 
-## Substituindo variáveis por `let`s
+## Replacing variables by `let`s
 
-Uma [expressão let](https://en.wikipedia.org/wiki/Let_expression) permite
-definir um valor a uma variável dentro de um **escopo**, de forma que o valor
-dela **nunca seja alterado**. Em Python, esse conceito não faz tanto sentido,
-mas ele é implementado de diferentes formas em diferentes linguagens. Vou
-mostrar em algumas.
+A [let expression](https://en.wikipedia.org/wiki/Let_expression) allows us to
+define a value to a variable inside a **scope** so that its value will **never
+be changed**. In Python, this concept makes little sense, but it is implemented
+in many ways by different languages. I'll show you some of them.
 
-Começando por **Kotlin**, o let é um método que pode ser usado em qualquer objeto, 
-de forma que a gente pode dar um nome temporário a ele:
+Starting by **Kotlin**, `let` is a method that can be called by any object so
+we can assign a temporary name to it:
 
 ~~~kotlin
 val x = 2.let { a -> 
@@ -775,8 +765,8 @@ val x = 2.let { a ->
 }
 ~~~
 
-Em **Haskell**, o let é uma expressão, em que a primeira parte é atribuição dos
-valores e a segunda é a expressão que queremos obter:
+In **Haskell**, `let` is an expression where the first half is the value
+attribution and the second half is the expression that we want to evaluate:
 
 ~~~haskell
 x = let a = 2
@@ -784,9 +774,9 @@ x = let a = 2
     in a + b * a
 ~~~
 
-Em **[Hy](http://hylang.org)** (Python com sintaxe de Lisp), é bastante parecido
-com Haskell, primeiro atribuimos os valores às variáveis depois declaramos
-a expressão que irá usá-los:
+In **[Hy](http://hylang.org)** (Python with Lisp syntax), it is very close to
+Haskell: first we attribute the values to the variables, then we declare the
+expression that will use them:
 
 ~~~hy
 (setv x
@@ -799,33 +789,32 @@ a expressão que irá usá-los:
 )
 ~~~
 
-(Nos três exemplos, `x` terá valor 8)
+(`x` will be 8 in the three examples above)
 
-Essa é uma construção bastante usada em linguagens funcionais, já que nelas as
-variáveis têm um **valor fixo** dentro de um escopo. Além disso, elas são fáceis
-de serem escritas usando **cálculo lambda**. Podemos escrever o exemplo usado
-nessas três linguagens assim:
+That construction is a very common in functional languages, as their variables
+have a **fixed value** inside a scope. In addition, they are easy to be written
+using **lambda calculus**. We can write the example above like that:
 
 ~~~python
 def _f(a, b):
    return a + b * a
 x = _f(2, 3)
 
-# ou, usando lambda e currying:
+# or using lambda and currying:
 
 x = (lambda a: lambda b: a + b * a)(2)(3)
 ~~~
 
-Repare que, da mesma forma, estamos atribuindo 2 a `a` e 3 a `b`, e calculando
-`a + b * a`.
+Note that, like before, we are attributing `a = 2` and `b = 3` and then
+calculating `a + b * a`.
 
-A missão dessa etapa é colocar **todas as variáveis** que não sejam argumentos
-ou constantes em lets, já que assim elas poderão ser usadas no cálculo lambda.
+Our mission in this step is to put **all the variables** that are not argument
+or constants in lets, so they could be used in lambda calculus.
 
-A partir deste momento, o código começa ficar bastante ilegível, mas vamos focar
-em um exemplo de como essa substituição é feita, já que as outras substituições
-são parecidas. Na função `_partition` que definimos anteriormente, vamos
-substituir a variável `x` por um let. No momento essa função está assim:
+For now on, the code will be very unreadable, but let's focus in an example of
+how that substitution is made. In the function `_partition` that we defined
+before, we're going to replace `x` by a let. By now, this function looks like
+this:
 
 ~~~python
 def _partition(S, L, R):
@@ -839,8 +828,8 @@ def _partition(S, L, R):
     return _partition(S, L, R)
 ~~~
 
-Como o `if` serve apenas para mudar o valor de `L` e `R`, podemos reescrevê-lo
-como uma **if-expression**:
+The `if` here only changes the values of `L` and `R`, we can write it as an
+**if-expression**:
 
 ~~~python
 def _partition(S, L, R):
@@ -852,14 +841,14 @@ def _partition(S, L, R):
     return _partition(S, nL, nR)
 ~~~
 
-Como o `x` só é calculado para ser usado nessa if-expression, podemos usar um
-`let`:
-- **atribuição**: `x = LAMBDA_CAR(S)`
-- **expressão**: a if-expression que acabamos de introduzir
+We're only evaluating `x` in order to be used by that if-expression, so we can
+use a `let` here:
 
-Vamos declarar, para isso, uma nova função `_partition2`, recebendo como
-argumento `x`, e chamá-la logo em seguida, recebendo como argumento `x =
-LAMBDA_CAR(S)`:
+- **attribution**: `x = LAMBDA_CAR(S)`
+- **expression**: the if-expression that we just defined
+
+To do that, let's declare a new function called `_partition2` that takes `x` as
+its argument and call it soon after, passing as the argument `x = LAMBDA_CAR(S)`:
 
 ~~~python
 def _partition(S, L, R):
@@ -874,7 +863,7 @@ def _partition(S, L, R):
     return _partition(S, nL, nR)
 ~~~
 
-Temos um let! Vamos aproveitar e substituir a tupla por um **par de Church**:
+We have a `let`! We can also replace the tuple by a **Church pair**:
 
 ~~~python
 def _partition(S, L, R):
@@ -889,14 +878,14 @@ def _partition(S, L, R):
     return _partition(LAMBDA_CDR(S), nL, nR)
 ~~~
 
-## Reescrevendo as funções usando `lambda`
+## Rewriting functions using `lambda`
 
-Neste ponto, feitas todas as substituições de **variáveis por let**, as funções
-`partition` e `quicksort` já não têm mais variáveis. Elas só têm alguns `if`s, a
-expressão do `return` e a definição das **funções internas** usadas para fazer os
-lets (que têm as mesmas características).
+At this point, having all the **variables replaced by let**, the `partition` and
+`quicksort` functions don't have variables anymore. They only have some `if`s,
+the return expression, and the definition of **internal functions** used by the
+lets (and they have the same characteristics).
 
-Dê só uma olhada (só uma olhada mesmo, o código já está ilegível):
+Take a look at this (yeah, only a look because this code is unreadable):
 
 ~~~python
 def quicksort(A):
@@ -926,11 +915,10 @@ def partition(A):
     return _partition4(_partition(LAMBDA_CDR(A), LAMBDA_EMPTY, LAMBDA_EMPTY, LAMBDA_CAR(A)))
 ~~~
 
-Podemos **substituir** esses `if`s por **if-expressions**, e essas
-if-expressions pelo `LAMBDA_IF` que criamos com booleanos de Church. Além disso,
-as **funções internas** podem ser definidas usando `lambda` em vez de `def`, por
-só terem a **expressão de retorno**. Chegamos neste código horroroso:
-
+We can **replace** all the `if`s by **if-expressions** and those if-expressions
+by `LAMBDA_IF` that we defined using Church booleans. Besides that, the
+**internal functions** can be defined using `lambda` instead of `def` as they
+only have the **return expression**. Now we have this awful code:
 
 ~~~python
 def quicksort(A):
@@ -952,11 +940,10 @@ def partition(A):
     return _partition4(_partition(LAMBDA_CDR(A))(LAMBDA_EMPTY)(LAMBDA_EMPTY)(LAMBDA_CAR(A)))
 ~~~
 
-Neste caso, as funções internas, apesar de terem se tornado variáveis, elas são
-na verdade **constantes**. Sendo assim, elas não precisam mais ficar dentro das
-funções `quicksort` e `partition`. Dessa forma, `quicksort` e `partition` só
-teriam a **expressão de retorno**, logo, também poderiam ser escritas usando
-`lambda` em vez de `def`:
+In this case, the internal functions (even though they are now variables) can be
+**constants**. This way, they don't need to be inside `quicksort` and
+`partition` that could only have the **return expression**. Then, they could be
+written using `lambda` instead of `def`:
 
 ~~~python
 _quicksort = lambda A: lambda LR: LAMBDA_CONCAT(quicksort(LAMBDA_CAR(LR)))(LAMBDA_CONS(LAMBDA_CAR(LAMBDA_CDR(LR)))(quicksort(LAMBDA_CDR(LAMBDA_CDR(LR)))))
@@ -969,78 +956,120 @@ _partition4 = (lambda A: lambda LR: LAMBDA_CONS(LAMBDA_CAR(LR))(LAMBDA_CONS(LAMB
 partition = lambda A:_partition4(A)(_partition(LAMBDA_CDR(A))(LAMBDA_EMPTY)(LAMBDA_EMPTY)(LAMBDA_CAR(A)))
 ~~~
 
-### Recursão e combinador Y
+### Recursion and Y combinator
 
-Algumas dessas funções lambda são **recursivas**:
-- `quicksort` chama `_quickssort2` que chama `quicksort`
-- `_partition` chama `_partition3` que chama `_partition`
+Some of those lambda functions are **recursive**:
 
-Porém, um dos pontos do cálculo lambda é que uma função **não precisa ter
-nome**. Mas como uma função pode referenciar a si mesma sem saber o próprio nome?
-A resposta para isso é o **[Combinador Y](https://en.wikipedia.org/wiki/Fixed-point_combinator#Fixed-point_combinators_in_lambda_calculus)**.
+- `quicksort` calls `_quicksort2` that calls `quicksort`
+- `_partition` calls `_partition3` that calls `_partition`
 
-Para ilustrar o combinador Y em ação, vamos usar como exemplo uma função que
-calcula fatorial:
+However, a property of lambda calculus is that a function **doesn't need to have
+a name**. But how can a function reference itself without knowing its name? The
+answer is **[Y Combinator](https://en.wikipedia.org/wiki/Fixed-point_combinator#Fixed-point_combinators_in_lambda_calculus)**.
+
+To illustrate Y combinator, take a look at this factorial function:
 
 ~~~python
 def fac(n):
    return 1 if n == 0 else n * fac(n-1)
 
-# usando lambda:
+# using lambda:
 fac = lambda n: 1 if n == 0 else n * fac(n-1)
 ~~~
 
-Usamos então, o combinador Y para substituir a chamada de `fac`:
+Then we can use Y combinator to replace the `fac` call:
 
 ~~~python
 fac = (lambda f: f(f))(lambda f: lambda n: 1 if n == 0 else n * f(f)(n-1))
 
-# nem precisamos dar o nome fac. Esta expressão calcula 5! = 120 recursivamente:
+# we even don't need to name fac. This expression calculates 5! = 120 recursively:
 (lambda f: f(f))(lambda f: lambda n: 1 if n == 0 else n * f(f)(n-1))(5)
 ~~~
 
-O que acontece aí dentro? Repare que temos uma função `(lambda f: lambda n: 1 if
-n == 0 else n * f(f)(n-1))` bastante parecida com a `fac` original, **exceto**
-por receber um argumento `f` e chamar `f(f)` em vez de `fac`. A ideia do
-combinador Y é que `f` seja sempre **mesma função**, e ela passe a **si mesma
-como argumento**, recursivamente, para as chamadas recursivas tenham como fazer
-outras chamadas recursivas. Quem irá garantir a **base** dessa recursão é
-`(lambda f: f(f))`, que vai prover a primeira passagem daquela função para ela
-mesma.
+What happens inside that thing? Note that we have a function `(lambda f: lambda n: 1 if
+n == 0 else n * f(f)(n-1))`, very similar to the original `fac`, **except** that
+it takes an argument `f` and calls `f(f)` instead of `fac`. The idea of Y
+combinator here is that `f` will always be the **same function** and that it
+passes **itself as an argument**, recursively, in order to the allow the
+recursive calls to make another recursive calls. Who will guarantee the **base**
+of that recursion is `(lambda f: f(f))`, that will provide the first passing of
+that function to itself.
 
-Exercício mental: simule `fac(2)`, e veja a mágica acontecendo.
+Mental exercise: try to simlate `fac(2)` and see the magic happening.
 
-#### Usando o combinador Y
+#### Using Y combinator
 
-Ok, vamos focar em substituir a chamada recursiva de `quicksort` pelo combinador
-Y. A situação no momento é essa:
+Ok, now we can replace the recursive call in `quicksort` by a Y combinator. By
+now it looks like this:
 
 ~~~python
 _quicksort2 = lambda A: LAMBDA_IF(LAMBDA_ISEMPTY(A))(lambda A: A)(lambda A: LAMBDA_IF(LAMBDA_ISEMPTY(LAMBDA_CDR(A)))(A)(_quicksort(A)(partition(A))))
 quicksort = lambda A: _quicksort2(A)(A)
 ~~~
 
-Substituindo pelo combinador Y:
+And if we replace it by Y combinator:
 
 ~~~python
 _quicksort2 = lambda r: lambda A: LAMBDA_IF(LAMBDA_ISEMPTY(A))(lambda A: A)(lambda A: LAMBDA_IF(LAMBDA_ISEMPTY(LAMBDA_CDR(A)))(A)(_quicksort(r)(A)(partition(A))))
-quicksort = (lambda r: r(r))lambda A: _quicksort2(r)(A)(A)
+quicksort = (lambda r: r(r)) lambda A: _quicksort2(r)(A)(A)
 ~~~
 
-Exercício mental: a chamada de `quicksort` **não está** no próprio `quicksort`, e
-sim em `_quicksort2` (que é chamado por `quicksort`). Como consegui usar o
-combinador Y nessa situação?
+Mental exercise: the `quicksort` call **is not** in `quicksort` itself but in
+`_quicksort2` (that is called by `quicksort`). Can you figure out how Y
+combinator is used in that situation?
 
-## Expandindo tudo!
+## Expanding everything!
 
-Neste ponto, todos os **valores**, **estruturas de dados** e `if`s são
-**funções**. Além disso, essas e todas as outras funções são **valores** que podem ser
-escritos em uma única expressão.
+At this point, all the **values**, **data structures** and `if`s are
+functions. Also, those functions and all the others are **values** that can be
+written in a single expression.
 
-O trabalho aqui é, basicamente, substituir **todas as constantes** pelos seus
-**valores**, de forma que a função `quicksort` vire uma única expressão. Isso
-pode ser feito usando a própria substituição de um editor de texto, por exemplo.
+Our work here is, basically, replace **all the constants** by their **values**
+so that `quicksort` can be a single expression. This can be done using the text
+replacement tool of a text editor.
 
-Eis que chegamos nesta coisa horrível:
+Finally we have this awful thing:
 
 `quicksort = (lambda r: r(r))(lambda r: lambda A: (lambda r: lambda A: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(A))(lambda A: A)(lambda A: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda p: p(lambda a: lambda b: b))(A)))(A)((lambda r: lambda A: lambda LR: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(r(r)((lambda p: p(lambda a: lambda b: a))(LR))))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))((lambda p: p(lambda a: lambda b: b))(LR)))(r(r)((lambda p: p(lambda a: lambda b: b))((lambda p: p(lambda a: lambda b: b))(LR)))))(((lambda r: r(r)) (lambda r: lambda l1: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda p: p(lambda a: lambda b: b))(l1)))(lambda l2: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(l1))(l2))((lambda r: lambda l2: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(l1))(r(r)((lambda p: p(lambda a: lambda b: b))(l1))(l2)))(r))))(r(r)((lambda p: p(lambda a: lambda b: a))(LR)))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))((lambda p: p(lambda a: lambda b: b))(LR)))(r(r)((lambda p: p(lambda a: lambda b: b))((lambda p: p(lambda a: lambda b: b))(LR)))))))(r)(A)((lambda A:((lambda A: lambda LR: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(LR))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(A))((lambda p: p(lambda a: lambda b: b))(LR)))))(A)(((lambda r: r(r))(lambda r: lambda S: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(S))(lambda L: lambda R: lambda p: (lambda a: lambda b: lambda l: l(a)(b))(L)(R))(lambda L: lambda R: lambda p: (lambda r: lambda S: lambda LR: lambda p: r(r)((lambda p: p(lambda a: lambda b: b))(S))((lambda p: p(lambda a: lambda b: a))(LR))((lambda p: p(lambda a: lambda b: b))(LR))(p))(r)(S)((lambda x: lambda L: lambda R: lambda p: (lambda c: lambda t: lambda e: c(t)(e))((lambda m: lambda n: (lambda a: lambda b: a(b)((lambda a: lambda b: b)))((lambda m: lambda n: (lambda n: n(lambda x: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: n((lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda y: x)(lambda y: y)))(m))(m)(n)))(m)(n))((lambda a: a((lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: (lambda a: lambda b: a(b)((lambda a: lambda b: b)))((lambda m: lambda n: (lambda n: n(lambda x: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: n((lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda y: x)(lambda y: y)))(m))(m)(n)))(m)(n))((lambda m: lambda n: (lambda n: n(lambda x: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: n((lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda y: x)(lambda y: y)))(m))(m)(n)))(n)(m)))(m)(n))))(x)(p))((lambda a: lambda b: lambda l: l(a)(b))((lambda a: lambda b: lambda l: l(a)(b))(x)(L))(R))((lambda a: lambda b: lambda l: l(a)(b))(L)((lambda a: lambda b: lambda l: l(a)(b))(x)(R))))((lambda p: p(lambda a: lambda b: a))(S))(L)(R)(p))(p))))((lambda p: p(lambda a: lambda b: b))(A))((lambda a: lambda b: b))((lambda a: lambda b: b))((lambda p: p(lambda a: lambda b: a))(A))))(A)))))(r)(A)(A))`
+
+### Using lambdasort
+
+Of course we can't use this `quicksort` by itself in a list as it operates in
+Church encoding. We'll need a wrapper to translate the Python types to Church
+encoding, sort the Church list using `quicksort` and then translate it back to a
+Python list. We're going to use the previous functions.
+
+~~~python
+def quicksort_wrapper(A):
+    church = pl2ll([i2l(x) for x in A])
+    sorted_church = quicksort(church)
+    return [l2i(x) for x in ll2pl(sorted_church)]
+~~~
+
+Now you can use `quicksort_wrapper` to sort your list and it will use our
+lambdasort as backend:
+
+~~~python
+>>> from lambdasort import quicksort_wrapper
+>>> x = [22, 33, 11, 55, 99, 11, 33, 77, 44]
+>>> quicksort_wrapper(x)
+[11, 11, 22, 33, 33, 44, 55, 77, 99]
+~~~
+
+## Final thoughts
+
+I wrote lambdasort in 2017 (my third year of university) in just two intense
+days, after a class by [Professor Gubi](https://memorial.ime.usp.br/homenageados/5)
+about lambda calculus and Y
+combinator. He told us about Programming with Nothing, mentioned earlier. I
+found it so impressive that I wanted to do something similar, and challenged
+myself to write something _harder_ then a fizzbuzz, so here we are!
+
+Write it was really fun, and I didn't notice at first how much I learned in only
+two days, and it took me years to finally write this text explaining what I
+did. So, thank you for reading it!
+
+Last but not least, English is not my first language and I'm trying to make my
+best efforts to keep my personal page in both Portuguese and English. So, if you
+find something wrong about it or about anything here feel free to
+[open a issue](https://github.com/lucasoshiro/lucasoshiro.github.io/issues).

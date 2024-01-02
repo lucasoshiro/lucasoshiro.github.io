@@ -1036,3 +1036,45 @@ pode ser feito usando a própria substituição de um editor de texto, por exemp
 Eis que chegamos nesta coisa horrível:
 
 `quicksort = (lambda r: r(r))(lambda r: lambda A: (lambda r: lambda A: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(A))(lambda A: A)(lambda A: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda p: p(lambda a: lambda b: b))(A)))(A)((lambda r: lambda A: lambda LR: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(r(r)((lambda p: p(lambda a: lambda b: a))(LR))))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))((lambda p: p(lambda a: lambda b: b))(LR)))(r(r)((lambda p: p(lambda a: lambda b: b))((lambda p: p(lambda a: lambda b: b))(LR)))))(((lambda r: r(r)) (lambda r: lambda l1: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda p: p(lambda a: lambda b: b))(l1)))(lambda l2: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(l1))(l2))((lambda r: lambda l2: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(l1))(r(r)((lambda p: p(lambda a: lambda b: b))(l1))(l2)))(r))))(r(r)((lambda p: p(lambda a: lambda b: a))(LR)))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))((lambda p: p(lambda a: lambda b: b))(LR)))(r(r)((lambda p: p(lambda a: lambda b: b))((lambda p: p(lambda a: lambda b: b))(LR)))))))(r)(A)((lambda A:((lambda A: lambda LR: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(LR))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(A))((lambda p: p(lambda a: lambda b: b))(LR)))))(A)(((lambda r: r(r))(lambda r: lambda S: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(S))(lambda L: lambda R: lambda p: (lambda a: lambda b: lambda l: l(a)(b))(L)(R))(lambda L: lambda R: lambda p: (lambda r: lambda S: lambda LR: lambda p: r(r)((lambda p: p(lambda a: lambda b: b))(S))((lambda p: p(lambda a: lambda b: a))(LR))((lambda p: p(lambda a: lambda b: b))(LR))(p))(r)(S)((lambda x: lambda L: lambda R: lambda p: (lambda c: lambda t: lambda e: c(t)(e))((lambda m: lambda n: (lambda a: lambda b: a(b)((lambda a: lambda b: b)))((lambda m: lambda n: (lambda n: n(lambda x: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: n((lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda y: x)(lambda y: y)))(m))(m)(n)))(m)(n))((lambda a: a((lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: (lambda a: lambda b: a(b)((lambda a: lambda b: b)))((lambda m: lambda n: (lambda n: n(lambda x: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: n((lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda y: x)(lambda y: y)))(m))(m)(n)))(m)(n))((lambda m: lambda n: (lambda n: n(lambda x: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: n((lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda y: x)(lambda y: y)))(m))(m)(n)))(n)(m)))(m)(n))))(x)(p))((lambda a: lambda b: lambda l: l(a)(b))((lambda a: lambda b: lambda l: l(a)(b))(x)(L))(R))((lambda a: lambda b: lambda l: l(a)(b))(L)((lambda a: lambda b: lambda l: l(a)(b))(x)(R))))((lambda p: p(lambda a: lambda b: a))(S))(L)(R)(p))(p))))((lambda p: p(lambda a: lambda b: b))(A))((lambda a: lambda b: b))((lambda a: lambda b: b))((lambda p: p(lambda a: lambda b: a))(A))))(A)))))(r)(A)(A))`
+
+### Usando o lambdasort
+
+Claro que não podemos usar este `quicksort` sozinho em uma lista do Python já
+que ele opera na codificação de Church. Precisaremos então de uma função para
+traduzir os tipos do Python para a codificação de church, ordernar a lista de
+Church usando `quicksort` e então traduzí-la de novo para uma lista doo
+Python. Vamos fazer isso usando as funções anteriores.
+
+~~~python
+def quicksort_wrapper(A):
+    church = pl2ll([i2l(x) for x in A])
+    sorted_church = quicksort(church)
+    return [l2i(x) for x in ll2pl(sorted_church)]
+~~~
+
+Agora você pode usar `quicksort_wrapper` para ordenar uma lista e ele usará por
+trás o nosso lambdasort:
+
+~~~python
+>>> from lambdasort import quicksort_wrapper
+>>> x = [22, 33, 11, 55, 99, 11, 33, 77, 44]
+>>> quicksort_wrapper(x)
+[11, 11, 22, 33, 33, 44, 55, 77, 99]
+~~~
+
+## Considerações finais
+
+Eu escrevi o lambdasort em 2017 (meu terceiro ano na faculdade) em apenas dois
+dias bem intensos, depois de ver uma aula do [Professor Gubi](https://memorial.ime.usp.br/homenageados/5)
+sobre cálculo lambda e
+combinador Y. Ele falou sobre o Programming with Nothing, mencionado
+anteriormente. Eu achei isso tão impressionante que eu quis fazer algo similar,
+e me desafiei a escrever alguma coisa _ainda mais difícil_ que um fizzbuzz, e
+aqui estamos!
+
+Escrever ele foi realmente divertido, e eu não reparei no primeiro momento o
+quanto eu aprendi em apenas dois dias, e ainda levou anos para que eu finalmente
+escreve este texto explicando o que eu fiz. Então, obrigado por ler até aqui!
+
+Se alguma coisa estiver errada, tanto no texto quanto no código, sinta-se à
+vontade para [abrir uma issue](https://github.com/lucasoshiro/lucasoshiro.github.io/issues).
