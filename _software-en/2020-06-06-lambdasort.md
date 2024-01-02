@@ -31,8 +31,8 @@ do this:
 lambda n: n ** 0.5
 
 # function that takes another function as parameter
-def apply_func(func, parametro):
-    return func(parametro)
+def apply_func(func, parameter):
+    return func(parameter)
 
 # function that returns another function. in this case, this is a mutiplier factory
 def multiplier_factory(n):
@@ -72,9 +72,9 @@ I tell you all the steps of how I did that!
 
 ## The beginning: a normal quicksort in Python
 
-A primeira etapa foi escrever um quicksort em Python, com uma diferença do
-quicksort tradicional: ele **não altera** a lista original, na verdade, ele
-**devolve** uma nova lista, assim como a função `sorted` do Python:
+The first step was to write a quicksort in Python, but with a difference
+compared to the traditional quicksort: it **doesn't change** the original list,
+instead, it **returns** a new list, just like the `sorted` in Python:
 
 ~~~python
 def car(A):
@@ -113,49 +113,50 @@ def partition(A):
     return L, R
 ~~~
 
-Repare no uso das funções `car`, `cdr` e `cons`. Segui a mesma nomenclatura de
-Lisp para essas funções. A forma como as listas serão implementadas mais a
-frente será a mesma de como é implementada em alguns dialetos de Lisp, então
-tentei me aproximar mais de como as listas funcionam em Lisp do que o usual em
-em Python:
+Take a look in the use of the functions `car`, `cdr` and `cons`. I followed the
+Lisp nomenclature for those functions. They will be further
+implemented the same way as some Lisp dialects, so I tried to be closer to them
+in how lists work instead of the usual in Python:
 
-- A função `car` devolve o **primeiro** elemento
-- A função `cdr` devolve uma lista com o **resto** dos elementos, ou seja, todos
-  os elementos exceto o primeiro.
-- Por ora, também implementei `cons` como uma forma de devolver uma nova lista
-idêntica mas **adicionando** um novo elemento ao seu começo, apesar de `cons` ser
-mais do que isso (falarei dele mais adiante)
-- A função `concat` **concatena** duas listas.
+- The `car` function returns the **first** element
+- The `cdr` function returns a list with the **rest** of the elements. In other
+  words, all the elements except the first
+- By now, I also implemented `cons` as a function that returns a new list that
+  looks the same as the provided but **appending**  a new element to its
+  beginning, but `cons` is more than that (I'll discuss it later)
+- The `concat` function **concatenates** two lists.
 
-De resto, é apenas um quicksort comum:
-- A função `partition` recebe uma lista e **separa** em duas, sendo a da esquerda
-com todos os elementos menores que o primeiro elemento da lista da direita (o
-pivô), e a da direita com todos os elementos maiores ou iguais ao pivô.
+The rest is only a standard quicksort:
 
-- A função `quicksort` chama `partition` para separar a lista que será ordenada
-em duas, e **ordena** cada uma das duas com o próprio `quicksort` recursivamente,
-sendo a base da recursão listas de tamanho menor ou igual a 1.
+- The `partition` function **splits** a list in two, the left one being a list
+  that all of its elements are lesser than the first element of the right one
+  (the pivot), and the right one being a list that all elements are greater or
+  equal to the pivot.
 
-Quanto às estranhas construções `L, R = ...`,
-por enquanto é redundante fazer essa atribuição em paralelo, mas isso nos
-ajudará no futuro.
+- The `quicksort` function calls `partition` to split the list that we want to
+  sort into two and **sorts** each one using `quicksort` itself, recursively,
+  being the base of the recursions lists with length lesser or equal to 1.
 
-## Redefinindo tipos
+As for the weird constructions `L, R = ...`, by now it is useless to do those
+parallel attributions, but this will be helpful in the future.
 
-Como a ideia é reescrever o quicksort apenas com lambdas, precisamos **representar
-os dados** de alguma forma usando apenas funções. Os tipos de dados envolvidos aqui são:
+## Redefining types
 
-- inteiros (os valores dentro da lista que queremos ordenar)
-- listas
-- pares (para as funções que retornam mais de um valor)
-- booleanos (para as verificações)
+As the idea is to rewrite quicksort using only lambdas, we need to somehow **represent
+data** using only functions. The types here are:
 
-Felizmente, o próprio criador do cálculo lambda, **Alonzo Church**, também nos
-mostrou como fazer isso. A Wikipedia também tem um ótimo
-[artigo sobre isso](https://en.wikipedia.org/wiki/Church_encoding).
+- integers (the values in the list that we want to sort)
+- lists
+- pairs (used by the functions that return more than one value)
+- booleans (used by the verifications)
 
-### Booleanos
-Vamos começar com os mais fáceis, os **booleanos**:
+Luckly, the creator of lambda calculus, **Alonzo Church** has also shown us how
+to do that. There's an [article about it](https://en.wikipedia.org/wiki/Church_encoding)
+on Wikipedia.
+
+### Booleans
+
+Let's start by the easier ones, **booleans**:
 
 ~~~python
 #boolean constants
@@ -168,36 +169,37 @@ LAMBDA_AND = lambda a: lambda b: a(b)(LAMBDA_FALSE)
 LAMBDA_NOT = lambda a: a(LAMBDA_FALSE)(LAMBDA_TRUE)
 ~~~
 
-Sim, o `true` é só uma função que recebe **dois argumentos** e devolve o **primeiro**,
-e `false` uma função que recebe dois argumentos e devolve o **segundo**.
+Yeah, `true` is only a function that takes **two arguments** and returns **the
+ first one**, and `false` is a function that takes two arguments and returns
+ **the second one**.
 
-Sei que você está pensando "deveria ser então `lambda a, b: a` e `lambda a, b: b`,
-por que dois `lambdas`?". Isso é porque na definição do cálculo lambda, as
-funções só podem receber **um argumento**. Ao contrário dessa definição, o `lambda` 
-em Python pode aceitar zero ou mais argumentos, mas aqui optei por me restringir
-a só usar funções que recebem um argumento para me manter fiel à definição. 
-Dessa forma, o que seria ser escrito como `lambda a1, a2, a3, ..., an:` passa a
-ser escrito como `lambda a1: lambda a2: lambda a3: ... lambda an:`. Na hora de 
-chamar a função, chamamos com `(a1)(a2)(a3)...(an)` em vez de 
-`(a1, a2, a3, ..., an)`. O nome dessa conversão é
-**[currying](https://en.wikipedia.org/wiki/Currying)**, em homenagem a Haskell
-Curry. Um exemplo de uma linguagem que nativamente usa currying para tratar
-funções com vários argumentos é Haskell (não me diga...).
+I know that you're thinking: "it should be `lambda a, b: a` and `lambda a, b:
+b`, why there are two `lambdas`?". This is because in the definition of lambda
+calculus, functions can only take **one argument**. Contrary to that definition,
+in Python `lambda` can take zero or more arguments, but here I'm restricting
+myself to only use functions that take only one argument in order to stick to
+the definition. This way, what would be written as `lambda a1, a2, a3, ..., an:`
+will be written as `lambda a1: lambda a2: lambda a3: ... lambda an:`. When
+calling the function, we use `(a1)(a2)(a3)...(an)` instead of `(a1, a2,
+a3, ..., an)`. The name of that conversion is
+**[currying](https://en.wikipedia.org/wiki/Currying)**, named after Haskell
+Curry. An exemple of language that natively uses currying to handle function is
+Haskell (you don't say!).
 
-Logo em seguida implementei as três **operações booleanas** básicas:
+After that, I implemented the tree basic **boolean operations**:
 
-- `not`: recebe um booleano de Church, e o chama usando como argumentos `false`
-e `true`.  Se o booleano for `true`, irá devolver o **primeiro argumento**
-(`false`); se for `false`, devolve o **segundo** (`true`).
+- `not`: takes a Church boolean, and calls it using as parameters `false` and
+  `true`. If the boolean is `true`, it returns the **first argument** (`false`);
+  if it is `false`, then it returns the **second argument** (`true`).
 
-- `or`: recebe dois booleanos de church, chama o primeiro passando como
-  argumentos `true` e segundo booleano. Caso o primeiro argumento do `or` seja
-  `true`, devolve seu **primeiro argumento** (`true`); caso ele seja `false`,
-  devolve seu **segundo argumento** (que é o segundo argumento do `or`).
+- `or`: takes two Church booleans, calls the first one passing as arguments
+  `true` and the second boolean. If the first argument of `or ` is `true`, then
+  it returns its **first argument** (`true`); if it is `false`, then it returns
+  its **second argument** (the second argument of `or`).
+
+- `and`: much like `or`. Try to simulate it mentally ;-)
   
-- `and`: bem parecido com o `or`. Simule ele mentalmente ;-).
-
-Podemos também definir um `if`:
+We can also define an `if`:
 
 #### if
 
@@ -205,11 +207,12 @@ Podemos também definir um `if`:
 LAMBDA_IF = lambda c: lambda t: lambda e: c(t)(e)
 ~~~
 
-No `if`, `c` é a **condição**; `t` é o "then", aquilo que acontece **quando a condição
-é verdadeira**, e `e` é o "else", o que acontece quando a condição é **falsa**.
+In `if`, `c`is the **condition**; `t` is the "then" block, what happens when the
+**condition is true**, and `e` is the "else" block, what happens when the
+condition is **false**.
 
-O `if` então é mais próximo de uma **if-expression** do Python (ou operador
-ternário) do que de um `if` de controle de fluxo:
+This way, `if` is closer to an **if-expression** in Python (or ternary operator)
+than a control flow `if`:
 
 ~~~python
 use_5 = LAMBDA_TRUE
@@ -219,10 +222,10 @@ a = LAMBDA_IF(use_5)(5)(0) # a = 5
 b = LAMBDA_IF(dont_use_5)(5)(0) # a = 0
 ~~~
 
-#### Conversão
+#### Conversion
 
-Defini duas funções, para converter os booleanos de Church para os de Python
-(`l2b`) e vice-versa (`b2l`):
+I also defined two functions to convert Church booleans to Python booleans
+(`l2b`)  and vice-versa (`b2l`):
 
 ~~~python
 #boolean conversion
@@ -233,12 +236,11 @@ def b2l(b):
     return LAMBDA_TRUE if b else LAMBDA_FALSE
 ~~~
 
-Exercício mental: simule elas!
+Mental exercise: simulate them!
 
+### Integers
 
-### Inteiros
-
-Os **numerais de Church** são definidos assim:
+**Chuch numerals** are defined as:
 
 ~~~python
 LAMBDA_ZERO = lambda p: lambda x: x
@@ -247,76 +249,78 @@ LAMBDA_TWO = lambda p: lambda x: p(p(x))
 # etc
 ~~~
 
-Ou seja, todos os inteiros são funções que recebem **dois argumentos** `p`e `x` da seguinte forma:
-- 0 é a função que devolve apenas `x` (igual ao `false`)
-- 1 é a função que devolve `p(x)`
-- 2 é a função que devolve `p(p(x))`
+This is, all the integers are functions that take **two arguments** `p` and `x`
+this way:
 
-e assim por diante. Com isso, porém, não conseguimos representar números negativos.
+- 0 is a function that returns `x` (just like `false`)
+- 1 is a function that returns `p(x)`
+- 2 is a function that returns `p(p(x))`
 
-#### Incremento e decremento
+and so on. However, we can represent negative numbers using this encoding.
 
-O **incremento** é bem fácil de definir, é uma função que poe mais uma camada de
-`p(...)`:
+#### Increment and decrement
+
+**Increment** is easy to define, it is a function that adds another layer of `p(...)`:
 
 ~~~python
 LAMBDA_INCREMENT = lambda l: lambda p: lambda x: p(l(p)(x))
 ~~~
 
-Já o **decremento** é mais complicado. Explicar ele leva algum tempo, e não
-acrescenta tanto para nós neste momento saber como ele funciona. Se quiserem
-ver como funciona, tentem em casa. Se não, só confiem em ~~em mim~~ em Church
-que isto funciona:
+But **decrement** is far harder. Explaining it takes some time, and
+understanding it is not useful for us right now. If you really want to know how
+it works, try it by yourself. If you don't care, just trust ~~me~~ Church that
+it works:
 
 ~~~python
 LAMBDA_DECREMENT = lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda y: x)(lambda y: y)
 ~~~
 
-Se você tentou simular isso em casa, tentou ver o que aconteceria se decrementar
-zero. E viu que o **decremento de zero é zero** aqui. Infelizmente, essa é uma
-limitação, e iremos precisar lembrar dela daqui a pouco.
+If you tried to simulate it by yourself, you probably tried to figure out what
+happens if you decrement zero. And you found that the **decrement of zero is
+zero** here. Sadly this is a limitation, and we'll need to remember it soon in
+the future.
 
-#### Soma e subtração
+#### Add and subtraction
 
-Ok, temos então incremento e decremento. Se fizermos `m` incrementos em um
-número `n`, teremos `m + n`, e se fizermos `n` decrementos teremos `m - n`.
+Ok, we have increment and decrement. If we increment `n` times a number `m`,
+then we'll have `m + n`, and if we decrement `n` times we'll have `m - n`.
 
-Podemos definir **soma e subtração** assim:
+We can define add and subtraction this way:
 
 ~~~python
 LAMBDA_ADD = lambda m: lambda n: n(LAMBDA_INCREMENT)(m)
 LAMBDA_SUB = lambda m: lambda n: n(LAMBDA_DECREMENT)(m)
 ~~~
 
-Repare que o incremento ou decremento será passado como o argumento `p` do
-número `n` e o `m` será o `x`. Isto é, `m` será incrementado ou decrementado com
-**mesma quantidade** que chamadas de `p` que tem em `n`, e que é justamente `n`
-vezes.  Muito, muito bonito.
+Note that increment and decrement will passed as the `p` argument of the number
+`n` and `m` will be the `x` argument. In other words, `m` will be incremented or
+decremented **the same amount** of times than the number of calls that `p` has
+in `n`, this is, `n` times. Very, very beautiful.
 
-Ainda assim, uma consequência do decremento de zero ser zero aqui é que
-`n - m = 0` sempre que `m > n`.
+Even so, a consequence of the decrement of zero being zero here is that `n - m`
+will always be zero if `m > n`.
 
-Multiplicação e divisão também são possíveis, mas não vão ser úteis para este
+Multiplication and division are also possible, but they won't be useful for this
 quicksort.
 
-#### Comparações
+#### Comparisons
 
-As operações com inteiros que de fato são importantes para o quicksort são as
-**comparações**. Vamos começar definindo a função que diz se um numeral de
-Church é ou não zero (exercício mental: por que isso funciona?):
+The integer operations that will actually be useful for implementing quicksort
+are the **comparisons**. Let's start by defining the function that tells if a
+Church number is or not zero (mental exercise: why does this work?):
 
 ~~~python
 LAMBDA_EQZ = lambda n: n(lambda x: LAMBDA_FALSE)(LAMBDA_TRUE)
 ~~~
 
-Com apenas a operação de **igual a zero**, combinada com
-operações **booleanas** e **aritméticas**, conseguimos as outras:
+Using only the operation of **equals zero**, combined with **boolean** and
+**aritmetic** operations we can define the others:
 
-- `m <= n`: `(m - n) == 0` (lembrando que `m - n = 0` se `n > m`)
+- `m <= n`: `(m - n) == 0` (remember: `m - n = 0` if `n > m`)
 - `m == n`: `(m <= n) and (n <= m)`
 - `n < m`: `(m <= n) and not (m == n)`
 
-Ou, em Python/cálculo lambda:
+Or, in Python / lambda calculus:
 
 ~~~python
 LAMBDA_LEQ = lambda m: lambda n: LAMBDA_EQZ(LAMBDA_SUB(m)(n))
@@ -324,18 +328,18 @@ LAMBDA_EQ = lambda m: lambda n: LAMBDA_AND(LAMBDA_LEQ(m)(n))(LAMBDA_LEQ(n)(m))
 LAMBDA_LESS = lambda m: lambda n: LAMBDA_AND(LAMBDA_LEQ(m)(n))(LAMBDA_NOT(LAMBDA_EQ(m)(n)))
 ~~~
 
-#### Conversões
+#### Conversion
 
-**Converter** o numeral de Church para um inteiro do Python é só passar uma função de
-incremento como primeiro argumento (o `p`) e 0 (do Python) como o segundo:
+If we want to **convert** a Church number to a Python integer we'll only need to
+pass the increment function as the first argument (`p`) and 0 as the second:
 
 ~~~python
 def l2i(l):
     return l(lambda x: x + 1)(0)
 ~~~
 
-Da mesma forma, podemos fazer o inverso: podemos **incrementar** o varias vezes o
-zero de Church até chegar no número:
+We can do the inverse: we can **increment** several times the Church zero until
+we reach the number:
 
 ~~~python
 def i2l(i):
@@ -346,8 +350,8 @@ def i2l(i):
     return l
 ~~~
 
-Também poderemos definir funções para a conversão de listas de inteiros do
-Python para listas de numerais de Church e vice-versa:
+We can also define functions to convert Python integer lists into Church number
+lists and vice-versa:
 
 ~~~python
 def llist2pylist(L):
@@ -357,11 +361,10 @@ def pylist2llist(L):
     return list(map(i2l, L))
 ~~~
 
-#### Usando numerais de Church
+#### Using Church numbers
 
-Como já conseguimos transformar listas de inteiros do Python em listas de
-numerais de Church e vice-versa, além de que sabemos realizar comparações de
-numerais de Church, já é possível fazer a primeira alteração no Quicksort:
+As we can convert Python integer lists into Church number lists and vice-versa
+and we can compare Chuch numbers, we can apply the first change to Quicksort:
 
 ~~~python
 def quicksort(A):
@@ -392,26 +395,24 @@ def partition(A):
     return L, R
 ~~~
 
-A função `partition` passa a operar sobre **listas de numerais de Church**. Para
-isso, substituimos `x < p` por `LAMBDA_LESS(x)(p)`, que devolve um booleano de
-Church em vez de `True` ou `False`. Precisei usar `l2b` para converter o
-booleano de Church para booleano de Python, para manter a compatibilidade com o
-`if`.
+The `partition` funcion now operates over **Church number lists**. In order to
+do that, we replaced `x < p` by `LAMBDA_LESS(x)(p)`, that returns a Church
+boolean instead of `True` and `False`. I needed to use `l2b` to convert the
+Church boolean to a Python boolean so we can keep the compatibility with `if`.
 
-A função `partition_wrapper` age como um **adaptador** do novo `partition`, de forma
-que recebe inteiros de Python, mas com a partição sendo de fato realizada pelo
-novo `partition`.
+The function `partition_wrapper` **adapts** the new `partition` in a way that it
+takes Python integers, but partitioning using the new `partition` function.
 
-<!-- Farei nas próximas seções várias substituições de tipos, funções e operadores do -->
-<!-- Python por funções em cálculo lambda, assim como fiz agora. Tentarei só alterar -->
-<!-- aquilo que for relevante para cada etapa, usando as funções de conversão se for -->
-<!-- necessário. -->
+In the following sections I will make several substitutions of types, functions
+and operators by functions in lambda calculus, just like I did so far. I'll try
+to change only what is relevant for each step, using the conversion functions if
+necessary.
 
-### Pares e listas
+### Pairs and lists
 
-Nossa estrutura de dados mais básica é o **par**. O par é, de fato, um par de
-valores, equivalente a uma tupla do Python de tamanho 2. Na codificaçao de
-Church, um par e suas operações básicas são definidos assim:
+Our basic data structure is the **pair**. The pair is really a pair of values,
+just like a Python tuple of size 2. In Church encoding, a pair and its basic
+operations are defined like this:
 
 ~~~python
 LAMBDA_CONS = lambda a: lambda b: lambda l: l(a)(b)
@@ -419,15 +420,14 @@ LAMBDA_CAR = lambda p: p(lambda a: lambda b: a)
 LAMBDA_CDR = lambda p: p(lambda a: lambda b: b)
 ~~~
 
-A primeira função, `LAMBDA_CONS`, define o par. Repare, que ao passar dois
-valores como seus argumentos, por exemplo, `LAMBDA_CONS(15)(20)`, ela irá
-devolver uma função que recebe um argumento `l` e **devolve** a chamada de `l`
-usando os elementos do par como **argumentos**, no nosso exemplo,
-`l(15)(20)`. Ou seja: `LAMBDA_CONS(15)(20) = lambda l: l(15)(20)`. Em Python e
-em outras linguagens que suportam funções de primeira classe esses dois valores
-ficam armazenados em uma
-**[closure](https://en.wikipedia.org/wiki/Closure_(computer_programming))**, e
-inclusive, podemos obtê-los assim:
+The first function, `LAMBDA_CONS`, defines the pair. Note that, when passing two
+values as its arguments (e. g. `LAMBDA_CONS(15)(20)`), it will return a function
+that takes an argument `l` and **returns** the `l` call using the pair elements
+as **arguments** (in our example, `l(15)(20)`). That is: `LAMBDA_CONS(15)(20) =
+lambda l: l(15)(20)`. In Python and other languages that supports first-class
+functions, those two values are stored in a
+**[closure](https://en.wikipedia.org/wiki/Closure_(computer_programming))**, and
+we can even get them this way:
 
 ~~~python
 l = LAMBDA_CONS(15)(20)

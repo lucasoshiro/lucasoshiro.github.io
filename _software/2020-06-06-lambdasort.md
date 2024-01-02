@@ -257,7 +257,7 @@ e assim por diante. Com isso, porém, não conseguimos representar números nega
 
 #### Incremento e decremento
 
-O **incremento** é bem fácil de definir, é uma função que poe mais uma camada de
+O **incremento** é bem fácil de definir, é uma função que põe mais uma camada de
 `p(...)`:
 
 ~~~python
@@ -279,8 +279,8 @@ limitação, e iremos precisar lembrar dela daqui a pouco.
 
 #### Soma e subtração
 
-Ok, temos então incremento e decremento. Se fizermos `m` incrementos em um
-número `n`, teremos `m + n`, e se fizermos `n` decrementos teremos `m - n`.
+Ok, temos então incremento e decremento. Se fizermos `n` incrementos em um
+número `m`, teremos `m + n`, e se fizermos `n` decrementos teremos `m - n`.
 
 Podemos definir **soma e subtração** assim:
 
@@ -328,14 +328,14 @@ LAMBDA_LESS = lambda m: lambda n: LAMBDA_AND(LAMBDA_LEQ(m)(n))(LAMBDA_NOT(LAMBDA
 #### Conversões
 
 **Converter** o numeral de Church para um inteiro do Python é só passar uma função de
-incremento como primeiro argumento (o `p`) e 0 (do Python) como o segundo:
+incremento como primeiro argumento (o `p`) e 0 como o segundo:
 
 ~~~python
 def l2i(l):
     return l(lambda x: x + 1)(0)
 ~~~
 
-Da mesma forma, podemos fazer o inverso: podemos **incrementar** o varias vezes o
+Da mesma forma, podemos fazer o inverso: podemos **incrementar** varias vezes o
 zero de Church até chegar no número:
 
 ~~~python
@@ -403,10 +403,10 @@ A função `partition_wrapper` age como um **adaptador** do novo `partition`, de
 que recebe inteiros de Python, mas com a partição sendo de fato realizada pelo
 novo `partition`.
 
-<!-- Farei nas próximas seções várias substituições de tipos, funções e operadores do -->
-<!-- Python por funções em cálculo lambda, assim como fiz agora. Tentarei só alterar -->
-<!-- aquilo que for relevante para cada etapa, usando as funções de conversão se for -->
-<!-- necessário. -->
+Farei nas próximas seções várias substituições de tipos, funções e operadores do
+Python por funções em cálculo lambda, assim como fiz agora. Tentarei só alterar
+aquilo que for relevante para cada etapa, usando as funções de conversão se for
+necessário.
 
 ### Pares e listas
 
