@@ -138,6 +138,8 @@ The rest is only a standard quicksort:
 As for the weird constructions `L, R = ...`, by now it is useless to do those
 parallel attributions, but this will be helpful in the future.
 
+You can see it [here](https://github.com/lucasoshiro/lambdasort/blob/simple-quicksort/lambdasort.py).
+
 ## Redefining types
 
 As the idea is to rewrite quicksort using only lambdas, we need to somehow **represent
@@ -235,6 +237,8 @@ def b2l(b):
 ~~~
 
 Mental exercise: simulate them!
+
+You can see it [here](https://github.com/lucasoshiro/lambdasort/blob/booleans/lambdasort.py)
 
 ### Integers
 
@@ -405,6 +409,8 @@ In the following sections I will make several substitutions of types, functions
 and operators by functions in lambda calculus, just like I did so far. I'll try
 to change only what is relevant for each step, using the conversion functions if
 necessary.
+
+You can see it [here](https://github.com/lucasoshiro/lambdasort/blob/integers/lambdasort.py).
 
 ### Pairs and lists
 
@@ -627,6 +633,8 @@ def quicksort(A):
     return LAMBDA_IF(LAMBDA_ISEMPTY(L))(LAMBDA_CONS(p)(R))(LAMBDA_CONCAT(L)(LAMBDA_CONS(p)(R)))
 ~~~
 
+You can see it [here](https://github.com/lucasoshiro/lambdasort/blob/pairs-lists/lambdasort.py).
+
 ## Replacing loops by recursive functions
 
 As in lambda calculus **there aren't any states**, we can't use loops as we do
@@ -746,6 +754,8 @@ def _partition(S, L, R):
 LR = _partition(S, L, R)
 nL, nR = LAMBDA_CAR(LR), LAMBDA_CDR(LR)
 ~~~
+
+You can see it [here]((https://github.com/lucasoshiro/lambdasort/blob/recursion/lambdasort.py).).
 
 ## Replacing variables by `let`s
 
@@ -877,6 +887,8 @@ def _partition(S, L, R):
 
     return _partition(LAMBDA_CDR(S), nL, nR)
 ~~~
+
+You can see it [here](https://github.com/lucasoshiro/lambdasort/blob/let/lambdasort.py).
 
 ## Rewriting functions using `lambda`
 
@@ -1017,6 +1029,8 @@ quicksort = (lambda r: r(r)) lambda A: _quicksort2(r)(A)(A)
 Mental exercise: the `quicksort` call **is not** in `quicksort` itself but in
 `_quicksort2` (that is called by `quicksort`). Can you figure out how Y
 combinator is used in that situation?
+
+You can see it [here](https://github.com/lucasoshiro/lambdasort/blob/y-combinator/lambdasort.py).
 
 ## Expanding everything!
 

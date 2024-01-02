@@ -141,6 +141,8 @@ Quanto às estranhas construções `L, R = ...`,
 por enquanto é redundante fazer essa atribuição em paralelo, mas isso nos
 ajudará no futuro.
 
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/simple-quicksort/lambdasort.py).
+
 ## Redefinindo tipos
 
 Como a ideia é reescrever o quicksort apenas com lambdas, precisamos **representar
@@ -236,6 +238,7 @@ def b2l(b):
 
 Exercício mental: simule elas!
 
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/booleans/lambdasort.py).
 
 ### Inteiros
 
@@ -407,6 +410,8 @@ Farei nas próximas seções várias substituições de tipos, funções e opera
 Python por funções em cálculo lambda, assim como fiz agora. Tentarei só alterar
 aquilo que for relevante para cada etapa, usando as funções de conversão se for
 necessário.
+
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/integers/lambdasort.py).
 
 ### Pares e listas
 
@@ -630,6 +635,8 @@ def quicksort(A):
     return LAMBDA_IF(LAMBDA_ISEMPTY(L))(LAMBDA_CONS(p)(R))(LAMBDA_CONCAT(L)(LAMBDA_CONS(p)(R)))
 ~~~
 
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/pairs-lists/lambdasort.py).
+
 ## Transformando laços em funções recursivas
 
 No cálculo lambda, como **não temos estados**, não podemos fazer laços como em
@@ -747,6 +754,8 @@ def _partition(S, L, R):
 LR = _partition(S, L, R)
 nL, nR = LAMBDA_CAR(LR), LAMBDA_CDR(LR)
 ~~~
+
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/recursion/lambdasort.py).
 
 ## Substituindo variáveis por `let`s
 
@@ -880,6 +889,8 @@ def _partition(S, L, R):
 
     return _partition(LAMBDA_CDR(S), nL, nR)
 ~~~
+
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/let/lambdasort.py).
 
 ## Reescrevendo as funções usando `lambda`
 
@@ -1022,6 +1033,8 @@ quicksort = (lambda r: r(r))lambda A: _quicksort2(r)(A)(A)
 Exercício mental: a chamada de `quicksort` **não está** no próprio `quicksort`, e
 sim em `_quicksort2` (que é chamado por `quicksort`). Como consegui usar o
 combinador Y nessa situação?
+
+Você pode ver isso [aqui](https://github.com/lucasoshiro/lambdasort/blob/y-combinator/lambdasort.py).
 
 ## Expandindo tudo!
 
