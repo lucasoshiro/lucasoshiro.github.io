@@ -2,6 +2,9 @@
 title: "Tutorial: Setting up a development environment with Lima"
 excerpt: "For those who need a x86-64 Linux on a Apple Silicon Mac"
 
+header:
+  teaser: /assets/images/posts/2024-02-29-lima-development-setup/lima-logo.svg
+
 lang: en
 path-pt_br: "/posts-en/2024-02-29-lima-development-setup"
 ---
@@ -75,6 +78,13 @@ You can check if the installation was successful by running
 mac$ limactl --version
 ~~~
 
+<div class="img-container">
+  <figure>
+    <img class="small" src="{{ site.baseurl }}/assets/images/posts/2024-02-29-lima-development-setup/lima-version.png">
+  </figure>
+</div>
+
+
 ## Lima overview
 
 As I said before, Lima is a QEMU wrapper, and it manages virtual machines (also
@@ -96,6 +106,10 @@ After creating one, you can start it with `limactl start`. If you don't need to
 run it anymore, you can stop it with `limactl stop` (Lima instances can waste
 you battery...). After starting, if you run `limactl shell` you'll run a shell
 (probably Bash) on your VM.
+
+Note that only closing the shell doesn't stop the instance. Also note that these
+are VMs with persistent storage, you won't lost you files and configurations
+after stopping them.
 
 ## Creating a x86 instance
 
@@ -184,6 +198,13 @@ believe that it's a x86-64 Linux, you can run this to see it:
 linux$ uname -a
 ~~~
 
+<div class="img-container">
+  <figure>
+    <img class="small" src="{{ site.baseurl }}/assets/images/posts/2024-02-29-lima-development-setup/uname.png">
+  </figure>
+</div>
+
+
 ### Finishing SSH configuration
 
 SSH will allow us to access files from both Linux guest and the Mac host. For
@@ -216,6 +237,12 @@ Explorer". Click on it, and you'll see `lima-debian` as a remote. Hover you
 mouse over it, and you'll see an arrow. Click on it, and it will connect to your
 VM.
 
+<div class="img-container">
+  <figure>
+    <img class="small" src="{{ site.baseurl }}/assets/images/posts/2024-02-29-lima-development-setup/vscode-lima.png">
+  </figure>
+</div>
+
 Now, just use VSCode as you would do if you were working on you host.
 
 ### Emacs
@@ -235,6 +262,13 @@ If you added `lima-debian` to your SSH config, you use as path:
 ~~~
 /ssh:lima-debian:<path>
 ~~~
+
+<div class="img-container">
+  <figure>
+    <img class="small" src="{{ site.baseurl }}/assets/images/posts/2024-02-29-lima-development-setup/emacs-lima.png">
+  </figure>
+</div>
+
 
 ### Vim
 
