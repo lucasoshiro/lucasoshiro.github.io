@@ -6,18 +6,18 @@ header:
   teaser: /assets/images/posts/2024-02-29-lima-development-setup/lima-logo.svg
 
 lang: en
-path-pt_br: "/posts-en/2024-02-29-lima-development-setup"
+path-pt_br: "/posts/2024-02-29-lima-development-setup"
 ---
 
 The new Apple Silicon Macs (M1, M1 Pro, M1 Ultra, M2 and so on) are great
 machines, and you may like macOS a lot (well, I'm a Manjaro fanboy who also have
 a MacBook Air, and I love it). However, that new ecosystem Mac/ARM may be
-frustrating if you need to develop the good and old Linux/x86-64:
+frustrating if you need to develop for the good old Linux/x86-64:
 
 - Intel Macs could dual-boot macOS and Linux (and even Windows!). Apple Silicon
-  Mac can't;
+  Macs can't;
 - Ok, the former is not entirely true because the
-  [Asahi Linux](https://asahilinux.org/) is working hard to run Linux natively
+  [Asahi Linux team](https://asahilinux.org/) is working hard to run Linux natively
   on Apple Silicon. However, despite of their amazing progress, it's not 100%
   **yet**, and it is a ARM Linux;
 - VirtualBox for Apple Silicon basically doesn't exist so far (well, there's a
@@ -35,9 +35,9 @@ But hey, don't throw away your beautiful Mac, there's an option for you:
 allows you to easily create ARM and x86-64 Linux virtual machines.
 
 But it has some drawbacks:
-- it is CLI tool, it doesn't have a GUI
-- you can run some GUI apps, but it it's not a good experience
-- the interoperability with macOS is meh
+- it is CLI tool, it doesn't have a GUI;
+- you can run some GUI apps, but it it's not a good experience;
+- the interoperability with macOS is meh.
 
 In this tutorial I'll show you how to setup a x86-64 Linux instance on Lima, and
 how to use it in your development environment. Note that you'll need to run
@@ -48,8 +48,8 @@ prompts as `mac$` and `linux$` to make clear where you are running each command.
 
 If you have [Homebrew](https://brew.sh/) already installed, you can skip this
 section. But if you don't have, I strongly recommend you to install it, as it is
-a package manager for Mac, just like `apt-get` is for Debian/Ubuntu/Mint and
-`pacman` is for Arch/Manjaro.
+a package manager and installer for Mac, just like `apt-get`/`dpkg` is for
+Debian/Ubuntu/Mint and `pacman` is for Arch/Manjaro.
 
 You can install Homebrew by running on your terminal:
 
@@ -62,7 +62,7 @@ mac$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/insta
 > Don't copy and paste anything on your terminal unless you trust the person who
 > told you to do that!
 >
-> If you don't trust me, copy that directly from https://brew.sh/ !
+> If you don't trust me, copy that directly from [https://brew.sh/](https://brew.sh/) !
 
 ## Installing Lima
 
@@ -94,7 +94,7 @@ useful `limactl`subcommands (you can see more of them by running
 `limactl --help`):
 
 - `limactl list`: list VMs;
-- `limactl create`: create a vm;
+- `limactl create`: create a VM;
 - `limactl shell`: run a new shell in a VM;
 - `limactl start`: start a VM;
 - `limactl stop`: stop a VM.
@@ -111,7 +111,7 @@ Note that only closing the shell doesn't stop the instance. Also note that these
 are VMs with persistent storage, you won't lost you files and configurations
 after stopping them.
 
-## Creating a x86 instance
+## Creating a x86-64 instance
 
 By default, if you run `limactl create` on a Apple Silicon, Lima will create an
 ARM instance. So, you'll need to specify that you want to create a x86-64
@@ -122,7 +122,7 @@ mac$ limactl create --arch=x86_64 template://debian
 ~~~
 
 As you may suspect, we're creating a Debian virtual machine, but you can choose
-whatever distro you like (if they support x86) if they are in
+whatever distro you like (if they support x86-64) if they are in
 [this list](https://lima-vm.io/docs/templates/). Just make sure that it has a
 x86-64 image! And you can have both x86-64 and ARM instances!
 
@@ -136,9 +136,10 @@ If everything is ok you may see your new `debian` instance there!
 
 ## Configuring the SSH for you instance
 
-As I said before, by the interoperability between the Mac host and the Lima
+As I said before, the interoperability between the Mac host and the Lima
 instances is... weird. Lima can read the files from the Mac host but can't write
-them. The Mac hosts can't read and write the Lima instance files.
+them. The Mac hosts can't read and write the Lima instance files (ok, there's an
+exception for this but it's not recommended).
 
 But we can set up SSH in order to have a interoperability here. Run:
 
@@ -157,10 +158,10 @@ ssh:
   localPort: 2022
 ~~~
 
-This will configure the default SSH port and X11 forwarding. You can change the
-default SSH port as you wish.
+This will configure the default SSH port. You can change the default SSH port as
+you wish.
 
-## Add the VM as a SSH host on .ssh/config
+## Add the VM as a SSH host on `.ssh/config`
 
 This is only needed if you are using Visual Studio Code, but I recommend to do
 it anyway.
@@ -173,7 +174,7 @@ Host lima-debian
   Port 2022
 ~~~
 
-This will identify for SSH as `lima-debian` your VM. Change the port to the one
+This will identify your VM for SSH as `lima-debian`. Change the port to the one
 that you chose in the previous step.
 
 ## Running you instance
@@ -216,7 +217,7 @@ to generate one.
 >
 > Consider using [Secretive](https://github.com/maxgoedjen/secretive). It
 > is an open-source app for Mac that stores the SSH private key in the Secure
-> Enclave, so anyone (even you) has access to it (even you). It is protected by
+> Enclave, so no one (even you) has access to it (even you). It is protected by
 > your user's password or Touch ID.
 >
 > But of course, you can see the public key!
@@ -243,7 +244,8 @@ VM.
   </figure>
 </div>
 
-Now, just use VSCode as you would do if you were working on you host.
+Now, you can use VSCode with the files inside the the VM as you would do if you
+were working on you host.
 
 ### Emacs
 
@@ -254,10 +256,10 @@ local file, but use this as the path:
 /ssh:localhost#2022:<path>
 ~~~
 
-If you are using other port than 2022, then replace it. Replace `path` by the
+If you are using other port than 2022, then replace it. Replace `<path>` by the
 path of the file on the VM that you want to open.
 
-If you added `lima-debian` to your SSH config, you use as path:
+If you added `lima-debian` to your SSH config, then you can use as path:
 
 ~~~
 /ssh:lima-debian:<path>
@@ -278,7 +280,31 @@ Just use Vim on your VM :-)
 ### Other editors/IDEs
 
 If you are using other editors or IDEs, you'll need to search how to remote
-development works on it, and configuring SSH using as host `localhost` and port
-the port 2022 (or the one you have chosen)
+development works on it, and configure it for using SSH wit `localhost` as the
+host and 2022 as the pot (or the one you have chosen).
 
+## Copying files
 
+Now that you already have SSH, you can use `scp` to move files from the host to
+the guest and vice-versa. It works like `cp` but it can copy files across
+computers (in this case, a physical one and a virtual machine).
+
+From the host to the guest:
+
+~~~bash
+# replace 2022 by the port you have chosen
+mac$ -P 2022 scp my_file localhost:destination
+
+# or, if you added the instance to .ssh/ssh_config:
+mac$ scp my_file lima-debian:destination
+~~~
+
+And from the guest to the host:
+
+~~~bash
+# replace 2022 by the port you have chosen
+mac$ scp -P 2022 localhost:my_file destination
+
+# or, if you added the instance to .ssh/ssh_config:
+mac$ scp lima-debian:my_file destination
+~~~
