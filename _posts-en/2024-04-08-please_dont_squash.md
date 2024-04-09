@@ -34,7 +34,7 @@ Second, why do you squash your commits, given the first answer?
 Ok, thanks! We'll come here later. Now, before I tell you why you shouldn't
 squash your commits (and before you squash your commits again), we need to have
 it clear what a squash actually is. And I must say most people who squash do it
-because they **don't know** what I squash is. And, again, I must say this is
+because they **don't know** what a squash is. And, again, I must say this is
 because they have two major misconceptions about Git.
 
 There's where we start.
@@ -94,6 +94,9 @@ branch", as a branch is not a set of commits as we may think. But it is very
 common to say that, even though it is not 100% correct. It is just a shorter
 way to say "the commit is an ancestor of the commit pointed by the branch".
 
+For now on, sometimes I'll refer to a commit pointed by a branch as just "a
+branch".
+
 You can see that in this horrible picture:
 
 <div class="img-container">
@@ -109,7 +112,7 @@ I disccussed a little more about objects
 but again, I strongly suggest you to read about that on Pro Git for more
 datailed info.
 
-## How merge works
+### How merge works
 
 Now that we know what a commit and a branch are, we can proceed to see how merge
 works.
@@ -157,15 +160,18 @@ This picture shows how the three-way merge works:
   </figure>
 </div>
 
+This mechanism is also used in other commands, such as cherry-pick,
+revert, rebase and squash, but this is a topic for another post.
+
 This is really brief explanation about merge and there's a lot to talk about
 (e.g. how Git handles renames, file permissions, submodules and so on).
-[Here](http://localhost:4000/posts-en/2022-03-12-merge-submodule/#brief-explanation-about-merge)
+[Here]({{ site.baseurl }}/posts-en/2022-03-12-merge-submodule/#brief-explanation-about-merge)
 I discussed a little more about merge, but by now this is enough.
 
 If you are still questioning if Git really stores snapshots, try to imagine how
 merge would be hard if Git stored changes.
 
-## What __actually__ squash is
+### What __actually__ squash is
 
 By now, we know what is a merge. But how about squash? Well, time to revisit
 your answer. Click [here](#what_is_squash) to see it.
@@ -187,7 +193,162 @@ never did it locally on your machine through CLI.
 
 Do you know what is the coommand for squashing a branch? Well, **there's no
 command for squashing** in Git! In fact, in order to do the same thing as the
-button 
+"squash and merge" button on GitHub you'll need **two commands**:
+
+~~~bash
+git merge --squash another_branch
+git commit
+~~~
+
+<!-- BUSCAR MAIS INFOS -->
+
+Several useful Git commands that are a single command originally were a set of
+commands, such as `git stash`, `git worktree`, `git bisect` and so on, but this
+never managed (at least so far) to be a single command, this should raise an
+alert on you that something is out of place here. Do you have any idea why do we
+need two commands and what they do? So:
+
+- The first one is the squash itself. It merges the current branch with the other
+  one, but it **doesn't create a merge commit**. Instead, it only merges the
+  files (using the mechanism that we discussed before) in the filesystem (in Git
+  jargon, working directory) and stages them just like `git add` (in Git jargon,
+  adds to the index);
+
+- The second is just a standard `git commit`. When we perform a `git commit` we
+  create a new commit after the state of the staging area (also called
+  index). In this case, the staging area has the merged content of the two
+  previous branch.
+  
+A commit whose contents are a merge of the two merged branches. Hmmmm, sounds
+familiar? Isn't it a merge commit?
+
+Oh wait, **isn't it a merge commit????**
+
+**Are squash and standard merge the same??**
+
+**WHAT???**
+
+Please, calm down. They are different. How? Remember that a merge commit has two
+or more parents? Well, that's it. This commit has only **one** parent, and its
+parent is the commit pointed by the current branch before merging. This way,
+there's no reference to the merged branch, and that's **the only difference
+between the so-called "squash and merge" and the merge commit.
+
+Don't you believe? What more could change?
+
+- The author, commiter, timestamps and message? These are only metadata
+- The snapshot? No, it is the same
+
+The only thing left is the parents. "Squash and merge" the same as the standard
+merge but with a missing information: a reference to the merged branch.
+
+Why is it good?
+
+Is it good?
+
+This leads to the second misconception.
 
 ## The second misconception: the fallacy of the clean history
 
+I don't know if you still think that squash is a good idea after knowing what it
+really is, but I'll give you a chance to read again what you said before,
+[click here](why_squash).
+
+A common answer is: "it makes the history cleaner by keeping the change in just
+one commit instead of several commits". The part of keeping the changes in just
+one commit we discussed before: **Git commits don't store changes, they store snapshots**
+and the only difference between the commit created when squashing is that is
+doesn't reference the merged branch.
+
+What has left is just: "it makes the history cleaner by having one commit
+instead of several commits". And I ask you: why a commit history with fewer
+commits are the better?
+
+If it is true, the best commit history is not commiting at all. So the best way
+to use Git is not using Git? Something is wrong here.
+
+That is our second misconception. Cleaner commit histories are better, indeed,
+but a history with fewer commits is not better. So, what is a good commit
+history?
+
+<!-- To com preguiça
+Mas precisa por aqui as coisas que o matheus falou aqui: https://matheustavares.gitlab.io/slides/git_101.pdf
+e por esse link tambem aqui.
+
+falar do kernel, standard commits e git flow
+-->
+
+<!-- tambem falar das ferramentas de debug do git -->
+
+## When squash can be evil
+
+I think I have enough evidence for you to see that squash is not exactly
+something good and the arguments to use it are based on wrong principles of Git
+is and what are good practices about it. But something not being the best or
+even not being 100% are not enough to convince people to stop doing it. That's
+not the case of squash. **It can be harmful and break systems silently** when
+you are using them in submodules (I witnessed it once!).
+
+Submodules themselves are a pain, but sometimes they are the only available
+solution. But they work if use them carefully.
+
+Imagine this situation: you have a project A that has a project B as a
+submodule. Imagine that you have a feature that need to be developed in both A
+and B to work. Let's assume that on both repositories you have a `main` branch.
+
+<!-- Por imagens -->
+
+A safe workflow is:
+1. develop the new feature in a branch X in B
+2. wait for review and approval of X
+3. merge X in B's main
+4. create a new branch Y in A, and makes it point to the commit pointed by B's main
+5. develop the new feature in Y
+6. wait for review and approval of Y
+7. merge Y in A's main
+8. deploy
+
+Please note that submodules don't point to branches, they point to **commits**.
+If are not familiar with these, I discussed about how submodules work
+[here]({{ site.baseurl }}/posts-en/2022-03-12-merge-submodule/#brief-explanation-about-submodules).
+
+That is an ideal workflow, but sometimes in order to develop the new feature
+quicker people do this:
+
+1. develop the new feature in a branch X in B
+2. create a new branch Y in A, and makes it point to the commit pointed by X
+3. develop the new feature in Y
+4. wait for review and approval of X and Y
+5. merge X in B's main
+6. merge Y in A's main
+7. deploy
+
+This also works. When you merge X in B's main (5), all the commits from X's history
+will be in the main's history, so they are reachable.
+
+But things can break if you replace 5 by a squash and merge. Things will even
+break __harder__ if you choose to automatically delete the branch after
+merging. This is the case that I'll detail.
+
+Let's go back to 4. Supposing that the developer and the reviewers tested the
+code and see that it works. After squashing in 5 and merging (or squashing,
+doesn't matter) in 6, the code breaks when we try to deploy it. And
+it's worse: it only works on the machines where the people who developed and
+reviewed the code before 5, but not on other machines!
+
+What's happening?
+
+Remember that when you squash you don't reference the commit pointed by the
+original branch? If you delete the original branch (that is also a reference) on
+GitHub or similar you'll lose the last remaining reference to that commit on the
+remote repository, but you won't on the machines that have fetched them.
+
+In this situation, the commit pointed by that branch is lost. And that is the
+commit that A is pointing to after 2. From 6 on, A points to a commit that can't
+be reached anymore, and the system can't be deployed.
+
+It can be a nightmare: a code that only works on the developer and the reviewer
+machines but not on anywhere else.
+
+So, if someone uses your code as a submodule, stopping using squash is not
+enough. I ask you: **DISABLE** the option to squash if you can.
