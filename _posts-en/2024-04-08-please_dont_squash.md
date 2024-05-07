@@ -1,5 +1,5 @@
 ---
-title: Please don't squash your commits!
+title: Please stop squash and merging!
 excerpt: At least not before reading this!
 
 header:
@@ -20,14 +20,36 @@ But if you are brave to reconsider what you know and what you do, you'll
 probably won't want to squash your anymore after reading this, except in some
 **very specific cases** (and those cases are not what you're expecting).
 
-And why I'm telling you to not squash? Well, before we go deeper, I need you to
-ask yourelf two things: 
+If you consider that squash and merge is a good practice, have you ever thought
+why, or are you only repeating something that you heard? Be honest. In the past,
+I also thought it was cool, but as I studied Git a little deeper soon I figured
+out that it doesn't make sense. Not only that, but it is **never mentioned** as
+good practice in Git documentation, not even as a _practice_:
 
-First, what do you think that a **squash** is in Git?
+- [Pro Git](https://git-scm.com/book/en/v2) has two chapters and a appendix about
+merge and it barely mentions squash in the merge context (it only mentions
+[here](https://git-scm.com/book/en/v2/Git-Tools-Advanced-Merging#_subtree_merge)
+and
+[here](https://git-scm.com/book/en/v2/Git-and-Other-Systems-Git-as-a-Client#_git_branching_issues),
+using squash only as intermediate tool);
+
+- Apart from `git merge` manpage and Pro Git, the official Git documentation only mentions
+squash in
+[gitfaq](https://git-scm.com/docs/gitfaq#Documentation/gitfaq.txt-Whatkindsofproblemscanoccurwhenmerginglong-livedbrancheswithsquashmerges),
+focusing on the _problems_ of doing that;
+
+- Last but not least, Git itself doesn't have a single "squash and merge"
+command, you have to run two commands to perform it (we'll discuss about that later).
+
+Well, before we go deeper, I need you to ask you two things:
+
+First, what do you think that a **squash** is in Git? 
 
 <textarea id="what_is_squash" style="border: 1px solid black;" placeholder="What do you think that squash is?"></textarea>
 
-Second, why do you squash your commits, given the first answer?
+(go ahead, write it, it's only a textarea without any hidden JavaScript)
+
+Second, why do you think you should do it, given the first answer?
 
 <textarea id="why_squash" style="border: 1px solid black;" placeholder="Why do you squash?"></textarea>
 
@@ -39,26 +61,32 @@ because they have two major misconceptions about Git.
 
 There's where we start.
 
-## The first misconception: Git does not store changes
+## The first misconception: what a commit stores
 
 I strongly recommend you that you read [Pro Git](https://git-scm.com/book/en/v2), 
 the official Git book. For our purposes here, [section 1.3](https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F)
 and [chapter 10](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain)
-will be enough.
-
-But by now what we need to know from it is that **Git commits don't store changes**.
+will be enough. But by now what we need to know from it is that **Git commits don't store changes**.
 They store **snapshots**.
 
 Repeat after me: **"Git commits don't store changes, they store snapshots"**.
 
 And that's the first misconception. When we're using commands such as `git show`,
-`git diff` and external tools such as the Pull Request UI on GitHub we think
+`git diff` or external tools such as the Pull Request UI on GitHub we think
 that commits are sets of changes of states. But no, each commit **is** a state
 plus some metadata.
 
 Under the hood, Git stores the repository data in the so-called objects. Each
 object stores data and is identified by its SHA-1 hash. Roughly saying, we have
 three main types of objects:
+
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/objetos-en.svg">
+    <figcaption>Blob, commit, tree and branch. Sorry for the awful diagram...</figcaption>
+  </figure>
+</div>
+
 
 - **Blob**: contains file contents;
 - **Tree**: represents a directory. It is a list of files or directories, the
@@ -78,7 +106,7 @@ directory of the commit when it was created.
 Perhaps you are thinking: "that is not possible, that would be a waste of disk
 space". But that it is not true: a file that hasn't changed between two commits
 has the same content in both states, so their contents are stored in the same
-blob. This is also true for directories. 
+blob. This is also true for directories.
 
 And if you're thinking "this is not true, I saw something about deltas, those
 are the commit changes", yeah, those deltas are changes but they are not changes
@@ -97,14 +125,7 @@ way to say "the commit is an ancestor of the commit pointed by the branch".
 For now on, sometimes I'll refer to a commit pointed by a branch as just "a
 branch".
 
-You can see that in this horrible picture:
 
-<div class="img-container">
-  <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/objetos-en.svg">
-    <figcaption>Blob, commit, tree and branch</figcaption>
-  </figure>
-</div>
 
 
 I disccussed a little more about objects
@@ -124,8 +145,8 @@ In Git, by "merge" we can think as three things, at least:
 3. The mechanism used by `git merge` to join the contents of both branches
 
 When you run `git merge <another branch>`, you tell Git to join the contents of
-both branches and create a merge commit. The merge commit will have the commit
-pointed by the current HEAD as the first commit and the commit pointed by the
+both branches and create a merge commit. The merge commit will have as the first
+parent the one pointed by the current HEAD and the commit pointed by the
 merged branch as its second parent.
 
 <!-- COLOCAR IMAGEM -->
@@ -134,7 +155,7 @@ When the commit of the current branch is a direct ancestor of the commit of the
 merged branch, Git will perform a **fast-forward**. Fast forwards don't create
 merge commits, they only make the current branch point to the same commit as the
 merged branch, so they are not true merges. You can change this behaviour by
-using --no-ff. GitHub also provides a feature for merging PRs without
+using ``--no-ff``. GitHub also provides a feature for merging PRs without
 fast-forwarding them in those cases.
 
 So, by now we know what is 1 (`git merge`) and 2 (merge commit), but what about
@@ -169,9 +190,9 @@ This is really brief explanation about merge and there's a lot to talk about
 I discussed a little more about merge, but by now this is enough.
 
 If you are still questioning if Git really stores snapshots, try to imagine how
-merge would be hard if Git stored changes.
+hard and expensive merge would be if Git stored changes.
 
-### What __actually__ squash is
+### What _actually_ squash is
 
 By now, we know what is a merge. But how about squash? Well, time to revisit
 your answer. Click [here](#what_is_squash) to see it.
@@ -252,7 +273,7 @@ This leads to the second misconception.
 
 I don't know if you still think that squash is a good idea after knowing what it
 really is, but I'll give you a chance to read again what you said before,
-[click here](why_squash).
+[click here](#why_squash).
 
 A common answer is: "it makes the history cleaner by keeping the change in just
 one commit instead of several commits". The part of keeping the changes in just
@@ -286,11 +307,14 @@ I think I have enough evidence for you to see that squash is not exactly
 something good and the arguments to use it are based on wrong principles of Git
 is and what are good practices about it. But something not being the best or
 even not being 100% are not enough to convince people to stop doing it. That's
-not the case of squash. **It can be harmful and break systems silently** when
-you are using them in submodules (I witnessed it once!).
+not the case of squash.
 
-Submodules themselves are a pain, but sometimes they are the only available
-solution. But they work if use them carefully.
+### Squashing submodules
+
+First of all, if you use squash merges on repositories that are used as
+submodules, **it can be harmful and break systems silently**.  Submodules
+themselves are a pain, but sometimes they are the only available solution. But
+they work if use them carefully.
 
 Imagine this situation: you have a project A that has a project B as a
 submodule. Imagine that you have a feature that need to be developed in both A
@@ -352,3 +376,4 @@ machines but not on anywhere else.
 
 So, if someone uses your code as a submodule, stopping using squash is not
 enough. I ask you: **DISABLE** the option to squash if you can.
+
