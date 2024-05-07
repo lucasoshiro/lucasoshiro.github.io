@@ -14,7 +14,7 @@ It says "x minute read".
 
 If you're thinking "it's easy, I'll keep squashing so I can save those x minutes
 from my life", well, I must say that it is not an excuse. You don't need to read
-this to have a squash-less life, so, don't read and **don't squash**.
+this to have a squash-less life, so, don't read and **don't use squash and merge**.
 
 But if you are brave to reconsider what you know and what you do, you'll
 probably won't want to squash your anymore after reading this, except in some
@@ -194,25 +194,53 @@ hard and expensive merge would be if Git stored changes.
 
 ### What _actually_ squash is
 
-By now, we know what is a merge. But how about squash? Well, time to revisit
-your answer. Click [here](#what_is_squash) to see it.
+By now, we know what is a merge. But how about a squash merge? I just googled
+"why squash merge?" and I found these definitions about what it is:
 
-Have you answer something like "a squash is a commit that bundles all the changes
-of the commits branch"? Well, if you did you are **wrong** just because 
-**Git commits don't store changes, they store snapshots**. Try to rewrite this
-answer with this new knowledge.
+- "Instead of each commit on the topic branch being added to the history of the
+  default branch, a squash merge adds all the file changes to a single new
+  commit on the default branch"
+  
+- "It turns all your changes into one single commit and then adds that to the
+  main branch"
 
-Try.
+- "By squashing commits, developers can condense a series of small, incremental
+  changes into a single meaningful change"
+  
+- "Squashing retains the changes but discards all the individual commits"
 
-Is it hard? Well, this is because that idea of a squash is based on a wrong idea
-of Git is, and it doesn't make any sense.
+Well, time to revisit your answer. Click [here](#what_is_squash) to see it. Is
+your answer similar to those? Well, I ask you that because somthing that those
+answers have in common: **they are all wrong!**
+
+And they are wrong because, remember: **Git commits don't store changes, they store snapshots**.
+
+Again: **Git commits don't store changes, they store snapshots**.
+
+Now, an exercise: try to rewrite these answers (or your answer, if it has the
+same idea) replacing the _wrong_ idea of commits storing changes by the
+_correct_ idea of commits storing snapshots. Here's another textarea only for
+your convenience:
+
+<textarea style="border: 1px solid black;"></textarea>
+
+Was it hard? Well, this is because that idea of a squash merge is based on a
+wrong idea of Git is, and it doesn't make any sense.
 
 I bet that if you squash you do it by using the UI of GitHub or similar, and you
 never did it locally on your machine through CLI. 
 
 <!-- COLOCAR IMAGEM -->
 
-Do you know what is the coommand for squashing a branch? Well, **there's no
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/merge_button.png">
+    <figcaption><i> Merge options on GitHub. One of them is squash and merge </i></figcaption>
+  </figure>
+</div>
+
+
+Do you know what is the command for squashing a branch? Well, **there's no
 command for squashing** in Git! In fact, in order to do the same thing as the
 "squash and merge" button on GitHub you'll need **two commands**:
 
@@ -225,7 +253,7 @@ git commit
 
 Several useful Git commands that are a single command originally were a set of
 commands, such as `git stash`, `git worktree`, `git bisect` and so on, but this
-never managed (at least so far) to be a single command, this should raise an
+never managed (at least so far) to be a single command. That should raise an
 alert on you that something is out of place here. Do you have any idea why do we
 need two commands and what they do? So:
 
@@ -233,26 +261,25 @@ need two commands and what they do? So:
   one, but it **doesn't create a merge commit**. Instead, it only merges the
   files (using the mechanism that we discussed before) in the filesystem (in Git
   jargon, working directory) and stages them just like `git add` (in Git jargon,
-  adds to the index);
+  it adds them to the index);
 
 - The second is just a standard `git commit`. When we perform a `git commit` we
-  create a new commit after the state of the staging area (also called
-  index). In this case, the staging area has the merged content of the two
-  previous branch.
+  create a new commit after the state of the index (the staging area), that
+  contains the merged files and the untouched ones.
   
 A commit whose contents are a merge of the two merged branches. Hmmmm, sounds
 familiar? Isn't it a merge commit?
 
 Oh wait, **isn't it a merge commit????**
 
-**Are squash and standard merge the same??**
+**Are squash merge and standard merge the same??**
 
 **WHAT???**
 
 Please, calm down. They are different. How? Remember that a merge commit has two
-or more parents? Well, that's it. This commit has only **one** parent, and its
-parent is the commit pointed by the current branch before merging. This way,
-there's no reference to the merged branch, and that's **the only difference
+or more parents? That's the difference. This commit has only **one** parent:
+the commit pointed by the current branch before merging. This way,
+there's no reference to the other branch, and that's **the only difference**
 between the so-called "squash and merge" and the merge commit.
 
 Don't you believe? What more could change?
@@ -272,20 +299,23 @@ This leads to the second misconception.
 ## The second misconception: the fallacy of the clean history
 
 I don't know if you still think that squash is a good idea after knowing what it
-really is, but I'll give you a chance to read again what you said before,
-[click here](#why_squash).
+really is, but I'll give you a chance to read again what you said before about
+why squash merging is a good thing, [click here](#why_squash).
 
-A common answer is: "it makes the history cleaner by keeping the change in just
-one commit instead of several commits". The part of keeping the changes in just
-one commit we discussed before: **Git commits don't store changes, they store snapshots**
-and the only difference between the commit created when squashing is that is
-doesn't reference the merged branch.
+Just like I did before, here are some answers from some of the first results
+after a quick Google search for "why squash merge":
 
-What has left is just: "it makes the history cleaner by having one commit
-instead of several commits". And I ask you: why a commit history with fewer
-commits are the better?
+- "Squash merging keeps your default branch histories clean"
+- "Your base branch remains clean"
+- "This helps developers to maintain a clean Git commit history"
+- "The use of squash merge is certainly not the only possible way to keep your
+  version control history clean and readable"
 
-If it is true, the best commit history is not commiting at all. So the best way
+See? It is very common to say that squash merges keeps the history clean by
+having a single commit instead of several. And I ask you: why a commit history
+with fewer commits are the better?
+
+If it is true, the best commit history is not commiting at all. So, the best way
 to use Git is not using Git? Something is wrong here.
 
 That is our second misconception. Cleaner commit histories are better, indeed,
@@ -296,10 +326,14 @@ history?
 Mas precisa por aqui as coisas que o matheus falou aqui: https://matheustavares.gitlab.io/slides/git_101.pdf
 e por esse link tambem aqui.
 
-falar do kernel, standard commits e git flow
+falar de standard commits e git flow
 -->
 
 <!-- tambem falar das ferramentas de debug do git -->
+
+### Case study: the repository that Git was made for
+
+<!-- falar do kernel -->
 
 ## When squash can be evil
 
@@ -377,3 +411,63 @@ machines but not on anywhere else.
 So, if someone uses your code as a submodule, stopping using squash is not
 enough. I ask you: **DISABLE** the option to squash if you can.
 
+## Is there any use case for squash?
+
+## So, what should I do?
+
+If you are used to perform squash merges probably your are thinking "what should
+I do?", because it still feels comfortable to keep squashing even though you
+they are not the best choice. Let's do the right things from now on.
+
+### But squashing makes my life so easy...
+
+Let's imagine you are driving a car with manual transmission. You have 5 gears
+plus one reverse. Do you think it is a good idea to drive your car backwards
+because you don't want to shift gears? I hope you don't, and I hope that you
+suspect that the car have 5 gears because things _are not so easy_ and
+_pretending they are easy_ will not help you. And here it is the same.
+
+Some people say: "if you squash you have a linear history, only seing the
+merge commits". Ok, but you can do it without squashing by running:
+
+~~~bash
+git log --first-parent
+~~~
+
+"Squash merges are easy to revert":
+
+~~~bash
+git revert -m 1 <commit>
+~~~
+
+"Squash mergs are easy to cherry-pick"
+
+~~~bash
+git cherry-pick -m 1 <commit>
+~~~
+
+"Squash merges are easy to `<insert something>`": read the documentation about
+how to do `something`!
+
+### Ok, I give up...
+
+Here are some things that you can do:
+
+- Try to apply **good commit practices** that we discussed before. It is hard at
+  first, but it will pay your effort;
+
+- On you code reviews, also **review the commit history**. Look if is clean and if
+  it is not, ask to the author of the code to rewrite the history and apply
+  those good commit practices;
+  
+- If you are a junior developer, listen to the seniors developers but don't take
+  everything that they say as true. **Question everything**, and that willl make
+  you grow;
+  
+- If you are a senior, **don't tell juniors to do something that you don't
+  _exactly_ know**\, but you are only telling that because _some senior_ told you
+  to do that when you were a junior.
+
+## Conclusion
+
+Thanks for your time!
