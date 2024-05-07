@@ -82,7 +82,7 @@ three main types of objects:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/objetos-en.svg">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/objects-en.svg">
     <figcaption>Blob, commit, tree and branch. Sorry for the awful diagram...</figcaption>
   </figure>
 </div>
@@ -149,7 +149,12 @@ both branches and create a merge commit. The merge commit will have as the first
 parent the one pointed by the current HEAD and the commit pointed by the
 merged branch as its second parent.
 
-<!-- COLOCAR IMAGEM -->
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/merge.svg">
+    <figcaption><i>Merging B on A</i></figcaption>
+  </figure>
+</div>
 
 When the commit of the current branch is a direct ancestor of the commit of the
 merged branch, Git will perform a **fast-forward**. Fast forwards don't create
@@ -176,7 +181,7 @@ This picture shows how the three-way merge works:
 
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2022-03-12-merge-submodule/3-way-merge-en.svg">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/3-way-merge-en.svg">
     <figcaption><i> Three-way merge</i></figcaption>
   </figure>
 </div>
@@ -217,15 +222,15 @@ And they are wrong because, remember: **Git commits don't store changes, they st
 
 Again: **Git commits don't store changes, they store snapshots**.
 
-Now, an exercise: try to rewrite these answers (or your answer, if it has the
+Now, an exercise: try to rewrite those answers (or your answer, if it has the
 same idea) replacing the _wrong_ idea of commits storing changes by the
 _correct_ idea of commits storing snapshots. Here's another textarea only for
 your convenience:
 
-<textarea style="border: 1px solid black;"></textarea>
+<textarea style="border: 1px solid black;" placeholder="Come on, write!"></textarea>
 
 Was it hard? Well, this is because that idea of a squash merge is based on a
-wrong idea of Git is, and it doesn't make any sense.
+wrong idea of Git is, and it doesn't make any sense in real life.
 
 I bet that if you squash you do it by using the UI of GitHub or similar, and you
 never did it locally on your machine through CLI. 
@@ -240,19 +245,19 @@ never did it locally on your machine through CLI.
 </div>
 
 
-Do you know what is the command for squashing a branch? Well, **there's no
-command for squashing** in Git! In fact, in order to do the same thing as the
-"squash and merge" button on GitHub you'll need **two commands**:
+Do you know what is the command for squashing a branch? If you answered "no",
+you are right. **There's no command for squash merging** in Git! In fact, in order to
+do the same thing as the "squash and merge" button on GitHub you'll need **two
+commands**:
 
 ~~~bash
 git merge --squash another_branch
 git commit
 ~~~
 
-<!-- BUSCAR MAIS INFOS -->
-
 Several useful Git commands that are a single command originally were a set of
-commands, such as `git stash`, `git worktree`, `git bisect` and so on, but this
+commands, such as [`git stash`](https://marc.info/?l=git&m=118318197312297&w=2),
+[`git subtree`](https://marc.info/?l=git&m=132569307707479&w=2) and so on, but this
 never managed (at least so far) to be a single command. That should raise an
 alert on you that something is out of place here. Do you have any idea why do we
 need two commands and what they do? So:
@@ -281,6 +286,13 @@ or more parents? That's the difference. This commit has only **one** parent:
 the commit pointed by the current branch before merging. This way,
 there's no reference to the other branch, and that's **the only difference**
 between the so-called "squash and merge" and the merge commit.
+
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/squash_merge-en.svg">
+    <figcaption><i>Squash merging B on A</i></figcaption>
+  </figure>
+</div>
 
 Don't you believe? What more could change?
 
@@ -313,7 +325,7 @@ after a quick Google search for "why squash merge":
 
 See? It is very common to say that squash merges keeps the history clean by
 having a single commit instead of several. And I ask you: why a commit history
-with fewer commits are the better?
+with fewer commits are the better? Here's another textar... (no, enough textareas!)
 
 If it is true, the best commit history is not commiting at all. So, the best way
 to use Git is not using Git? Something is wrong here.
@@ -358,35 +370,60 @@ and B to work. Let's assume that on both repositories you have a `main` branch.
 
 A safe workflow is:
 1. develop the new feature in a branch X in B
-2. wait for review and approval of X
-3. merge X in B's main
-4. create a new branch Y in A, and makes it point to the commit pointed by B's main
-5. develop the new feature in Y
-6. wait for review and approval of Y
-7. merge Y in A's main
-8. deploy
+2. wait for review and approval of X, then merge X on B's main
+3. create a new branch Y in A,  makes it point to the commit pointed by B's main, develop the new feature in Y
+4. wait for review and approval of Y, then merge Y on A's main
+5. deploy
 
 Please note that submodules don't point to branches, they point to **commits**.
 If are not familiar with these, I discussed about how submodules work
 [here]({{ site.baseurl }}/posts-en/2022-03-12-merge-submodule/#brief-explanation-about-submodules).
 
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/submodule_merge-en.svg">
+    <figcaption><i> The safe workflow. A is in blue, B is in red, and the dotted arrows are the submodule references </i></figcaption>
+  </figure>
+</div>
+
 That is an ideal workflow, but sometimes in order to develop the new feature
-quicker people do this:
+faster people do this:
 
 1. develop the new feature in a branch X in B
-2. create a new branch Y in A, and makes it point to the commit pointed by X
-3. develop the new feature in Y
-4. wait for review and approval of X and Y
-5. merge X in B's main
-6. merge Y in A's main
-7. deploy
+2. create a new branch Y in A, makes it point to the commit pointed by X, and develop the new feature in it
+3. wait for review and approval of X, then merge X on B's main
+5. wait for review and approval of Y, then merge X on A's main
+6. deploy
 
-This also works. When you merge X in B's main (5), all the commits from X's history
-will be in the main's history, so they are reachable.
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/submodule_merge_faster-en.svg">
+    <figcaption><i> A faster workflow. It's not wrong, but you need to be careful when doing this </i></figcaption>
+  </figure>
+</div>
 
-But things can break if you replace 5 by a squash and merge. Things will even
-break __harder__ if you choose to automatically delete the branch after
-merging. This is the case that I'll detail.
+No problem in doing that. You only need to be careful: step 4 is easy to forget,
+specially for those who aren't familiar with submodules. The three-way merge
+still works here, so it will always pick the new reference to the
+submodule. That way, step 5 without step 4 would look like this:
+
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/submodule_merge_step_5_wihout_4-en.svg">
+    <figcaption><i> Step 5 of the faster workflow without step 4. </i></figcaption>
+  </figure>
+</div>
+
+Note that doing that code won't break the code. A's main will point to X, and it
+has the **same** code that it had previously plus the changes that were
+introduced in X. The only drawback here would be that A's main would be not be
+referencing the latest commit pointed by B's main, but it is not a problem, as
+people in the future eventually will merge their branches on it and A will point
+to that merge.
+
+But things can break if you replace the merge in 3 by a squash and merge. Things
+will even break __harder__ if you choose to automatically delete the branch
+after merging. This is the case that I'll detail.
 
 Let's go back to 4. Supposing that the developer and the reviewers tested the
 code and see that it works. After squashing in 5 and merging (or squashing,
