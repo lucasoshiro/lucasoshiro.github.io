@@ -1,5 +1,5 @@
 ---
-title: Please stop squash and merging!
+title: Please stop squash merging!
 excerpt: At least not before reading this!
 
 header:
@@ -10,15 +10,33 @@ lang: en
 path-pt_br: /_posts-en/2024-04-08-please_dont_squash
 ---
 
+## Intro
+
 It says "x minute read". 
 
 If you're thinking "it's easy, I'll keep squashing so I can save those x minutes
-from my life", well, I must say that it is not an excuse. You don't need to read
-this to have a squash-less life, so, don't read and **don't use squash and merge**.
+from my life", well, I must say that it is not an excuse. If you don't want to
+read this, you don't need to, you can have a squash-less life without it, but
+**stop doing squash merges**.
 
 But if you are brave to reconsider what you know and what you do, you'll
 probably won't want to squash your anymore after reading this, except in some
-**very specific cases** (and those cases are not what you're expecting).
+**very specific cases** (and those cases probably are not what you're expecting).
+
+### Goals
+
+- Explain what squash merges **actually** are, detailing how Git works under the
+hood;
+<!-- - Show good practices written by specists to make the commit history, in fact, **cleaner**; -->
+- Show how the "pros" about squash merging are conceptually wrong;
+- Discuss about situations that squash merges can be **harmful**;
+
+### Non-goals
+
+- Tell how something "works for me";
+- Create another "good practice" guide for people follow without questioning if is true;
+
+### Why do you squash merge?
 
 If you consider that squash and merge is a good practice, have you ever thought
 why, or are you only repeating something that you heard? Be honest. In the past,
@@ -152,7 +170,7 @@ merged branch as its second parent.
 <div class="img-container">
   <figure>
     <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/merge.svg">
-    <figcaption><i>Merging B on A</i></figcaption>
+    <figcaption>Merging B on A</figcaption>
   </figure>
 </div>
 
@@ -182,7 +200,7 @@ This picture shows how the three-way merge works:
 <div class="img-container">
   <figure>
     <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/3-way-merge-en.svg">
-    <figcaption><i> Three-way merge</i></figcaption>
+    <figcaption>Three-way merge</figcaption>
   </figure>
 </div>
 
@@ -240,7 +258,7 @@ never did it locally on your machine through CLI.
 <div class="img-container">
   <figure>
     <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/merge_button.png">
-    <figcaption><i> Merge options on GitHub. One of them is squash and merge </i></figcaption>
+    <figcaption>Merge options on GitHub. One of them is squash and merge</figcaption>
   </figure>
 </div>
 
@@ -290,7 +308,7 @@ between the so-called "squash and merge" and the merge commit.
 <div class="img-container">
   <figure>
     <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/squash_merge-en.svg">
-    <figcaption><i>Squash merging B on A</i></figcaption>
+    <figcaption>Squash merging B on A</figcaption>
   </figure>
 </div>
 
@@ -382,7 +400,7 @@ If are not familiar with these, I discussed about how submodules work
 <div class="img-container">
   <figure>
     <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/submodule_merge-en.svg">
-    <figcaption><i> The safe workflow. A is in blue, B is in red, and the dotted arrows are the submodule references </i></figcaption>
+    <figcaption>The safe workflow. A is in blue, B is in red, and the dotted arrows are the submodule references</figcaption>
   </figure>
 </div>
 
@@ -398,11 +416,11 @@ faster people do this:
 <div class="img-container">
   <figure>
     <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/submodule_merge_faster-en.svg">
-    <figcaption><i> A faster workflow. It's not wrong, but you need to be careful when doing this </i></figcaption>
+    <figcaption>A faster workflow. It's not wrong, but you need to be careful when doing this </figcaption>
   </figure>
 </div>
 
-No problem in doing that. You only need to be careful: step 4 is easy to forget,
+No problem in doing that. You only need to be careful: **step 4** is easy to forget,
 specially for those who aren't familiar with submodules. The three-way merge
 still works here, so it will always pick the new reference to the
 submodule. That way, step 5 without step 4 would look like this:
@@ -410,7 +428,7 @@ submodule. That way, step 5 without step 4 would look like this:
 <div class="img-container">
   <figure>
     <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/submodule_merge_step_5_wihout_4-en.svg">
-    <figcaption><i> Step 5 of the faster workflow without step 4. </i></figcaption>
+    <figcaption> Step 5 of the faster workflow without step 4. </figcaption>
   </figure>
 </div>
 
@@ -418,37 +436,57 @@ Note that doing that code won't break the code. A's main will point to X, and it
 has the **same** code that it had previously plus the changes that were
 introduced in X. The only drawback here would be that A's main would be not be
 referencing the latest commit pointed by B's main, but it is not a problem, as
-people in the future eventually will merge their branches on it and A will point
-to that merge.
+people in the future eventually will merge their branches on it and A' main will
+point to that merge.
 
-But things can break if you replace the merge in 3 by a squash and merge. Things
-will even break __harder__ if you choose to automatically delete the branch
-after merging. This is the case that I'll detail.
+In this scenario, things can break if you replace the merge in 3 by a squash
+merge. After merging a PR (true merge, squash merge or fast forward) on GitHub,
+this shows up:
 
-Let's go back to 4. Supposing that the developer and the reviewers tested the
-code and see that it works. After squashing in 5 and merging (or squashing,
-doesn't matter) in 6, the code breaks when we try to deploy it. And
-it's worse: it only works on the machines where the people who developed and
-reviewed the code before 5, but not on other machines!
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/delete_branch.png">
+    <figcaption> A delete branch button </figcaption>
+  </figure>
+</div>
 
-What's happening?
+It's reasonable to click on it, as the code is already merged and you won't need
+that reference anymore.
+
+Supposing that the code worked for both the reviewers and the author, after
+squash merging X on B's main and merging Y on A's main in 5, the code breaks
+when we try to deploy it. And it's worse: **it only works** in the machines
+where the people who developed and reviewed the code before 5, but it **doesn't
+work** in other machines!
+
+**What's happening???**
 
 Remember that when you squash you don't reference the commit pointed by the
 original branch? If you delete the original branch (that is also a reference) on
 GitHub or similar you'll lose the last remaining reference to that commit on the
-remote repository, but you won't on the machines that have fetched them.
+remote repository, but you won't in the machines that have fetched X before.
 
-In this situation, the commit pointed by that branch is lost. And that is the
-commit that A is pointing to after 2. From 6 on, A points to a commit that can't
-be reached anymore, and the system can't be deployed.
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/submodule_squash-en.svg">
+    <figcaption><i> The previous situation, but using squash merge </i></figcaption>
+  </figure>
+</div>
 
-It can be a nightmare: a code that only works on the developer and the reviewer
-machines but not on anywhere else.
+When a commit is not reachable by any reference (normally, branches and tags) of
+its repository, it can't be fetched as `git fetch` (and of course, `git pull` or
+`git clone`) only fetches given a reference. Not only that, but eventually that
+commit will be deleted as it is unreachable. It means that the **commit pointed
+as submodule by A's main is lost**. This way, the code will **depend on
+something that doesn't exist** anymore!
+
+A code that only works on the developer and the reviewer machines but not on
+other machines would be a nightmare to debug. And who would suspect that the
+guilty is the beloved squash merge...
 
 So, if someone uses your code as a submodule, stopping using squash is not
-enough. I ask you: **DISABLE** the option to squash if you can.
-
-## Is there any use case for squash?
+enough. I ask you: **DISABLE** the option to squash if you can on GitHub or
+similar. This is **harmful**.
 
 ## So, what should I do?
 
@@ -458,13 +496,21 @@ they are not the best choice. Let's do the right things from now on.
 
 ### But squashing makes my life so easy...
 
-Let's imagine you are driving a car with manual transmission. You have 5 gears
-plus one reverse. Do you think it is a good idea to drive your car backwards
-because you don't want to shift gears? I hope you don't, and I hope that you
-suspect that the car have 5 gears because things _are not so easy_ and
+Let's imagine you are driving a car with manual transmission. You have 5 forward
+gears and one reverse. Do you think it is a good idea to drive your car
+backwards because you don't want to shift gears? I hope you don't, and I hope
+that you suspect that the car have 5 gears because things _are not so easy_ and
 _pretending they are easy_ will not help you. And here it is the same.
 
-Some people say: "if you squash you have a linear history, only seing the
+<div class="img-container">
+  <figure>
+    <img class="small" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/transmission.png">
+    <figcaption></figcaption>
+  </figure>
+</div>
+
+
+Some people say: "if you squash you have a linear history, only seeing the
 merge commits". Ok, but you can do it without squashing by running:
 
 ~~~bash
@@ -477,14 +523,14 @@ git log --first-parent
 git revert -m 1 <commit>
 ~~~
 
-"Squash mergs are easy to cherry-pick"
+"Squash merges are easy to cherry-pick"
 
 ~~~bash
 git cherry-pick -m 1 <commit>
 ~~~
 
 "Squash merges are easy to `<insert something>`": read the documentation about
-how to do `something`!
+how to do `something` properly! No excuses!
 
 ### Ok, I give up...
 
@@ -502,9 +548,65 @@ Here are some things that you can do:
   you grow;
   
 - If you are a senior, **don't tell juniors to do something that you don't
-  _exactly_ know**\, but you are only telling that because _some senior_ told you
+  _exactly_ know**, but you are only telling that because _some senior_ told you
   to do that when you were a junior.
+
+- The same applies here. Question **everything** that I said. Don't do
+  anything only because I told here.
+
+## Is there any use case for squash merge?
+
+Oh yeah, of course. It is __a tool__ just like many others that Git has, so of
+course it can be useful! But not as a mainstream tool, there are a lot of more
+useful tools that people don't know, for example, some searching and debugging
+tools that I explained [here]({{ site.baseurl }}/posts-en/2023-02-13-git-debug).
+
+I stopped to think for about two minutes in a use case for squash. Here it is:
+supposing that you have an old branch with only one commit diverging from you
+main. Now you want to merge it, but the main branch changed so much that the
+code would need to be compatible with those changes. 
+
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/useful_squash.svg">
+    <figcaption> This is the situation </figcaption>
+  </figure>
+</div>
+
+An option here is to rebase `foo` onto `main`, make the code compatible with the
+new `main`, and then `git commit --amend`. Other is to cherry-pick foo (in
+practice, it would be the same as rebasing). But you can also do this:
+
+~~~bash
+
+git checkout main
+git checkout -b bar
+git merge --squash foo
+
+# edit the code in order to make it compatible
+
+git commit
+~~~
+
+In that situation, we're using `git merge --squash` to apply the changes
+introduced in `foo` to our files, without commiting. Then we make the code
+compatible and create a new commit.
+
+<div class="img-container">
+  <figure>
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/useful_squash_2.svg">
+    <figcaption> After squashing `foo` on `bar`, changing it, and then commiting.</figcaption>
+  </figure>
+</div>
+
+
+And that's it. A simple tool that may be useful in very specific situations.
 
 ## Conclusion
 
-Thanks for your time!
+Thanks for your time! I hope that this may be useful.
+If something is wrong, please open a
+[issue](https://github.com/lucasoshiro/lucasoshiro.github.io/issues). 
+
+And for the last time, remember:
+**Git commits don't store changes, they store snapshots**!
