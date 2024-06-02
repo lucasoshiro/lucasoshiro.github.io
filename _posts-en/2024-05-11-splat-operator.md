@@ -1,5 +1,5 @@
 ---
-title: "Python: X cool tricks with the * operator"
+title: "Python: 9 cool tricks with the * operator"
 excerpt: "Expanding args are more useful than you think!"
 
 lang: en
@@ -30,41 +30,59 @@ a `pandas.Series`) into named arguments:
 def sum3(a=0, b=0, c=0):
     return a + b + c
     
-my_dict = {'a': 1, 'b': 2, 'c': 3}
-s = sum3(*my_dict) # = sum3(a=1, b=2, c=3) = 6
+my_dict = {'a': 1, 'b': 2}
+s = sum3(*my_dict) # = sum3(a=1, b=2) = 3, as c is using the default value (0)
 ```
 
 It seems to be not so useful? Well, they're more then you think!
 Here I'll show some cool constructions using `*` and `**`.
 
+### Goals
+
+- Show some tricks using `*` that can be helpful when dealing with lists, sets,
+  tuples and dictionaries;
+
+- Compare their performance to other imperative or functional
+  constructions;
+
+### Non-goals
+
+- Replace `numpy`, `pandas`, `polars` or any other library that implements
+  efficient data structures and their operations;
+
+- Create a "good practice", "code standard", "do this because it is better",
+  etc. **Be skeptical with everything that you read**.
+
 ## 1: Cast any iterator to lists, tuples or sets
 
-The `*` can also be used in list, tuple and set declaration syntax, so, you can
-use them to easily cast between those types:
+I mentioned about the `*` being used in parameter expansion in functions, but it
+can also be used to expand elements in list, tuple and set declaration syntax,
+so, you can use them to easily cast between those types:
 
 ```python
 # casting lists, tuples and sets
 my_list = [1, 2, 3]
+[*my_list]  # = [1, 2, 3]
 {*my_list}  # = {1, 2, 3}
 (*my_list,) # = (1, 2, 3), note the comma to ensure it's a tuple!
-
 ```
 
 ### How does it compare to using a constructor?
 
 Perhaps you're thinking you can do the same using list, tuple and set
-constructors, this way:
+**constructors**, like this:
 
 ```python
 # casting lists, tuples and sets
 my_list = [1, 2, 3]
+list(my_list)  # = [1, 2, 3]
 set(my_list)   # = {1, 2, 3}
 tuple(my_list) # = (1, 2, 3)
 ```
 
-No problem, use what you prefer. But let's analyse what happens under the
-hood. We can check the bytecode using the module `dis`. We can check the Python
-bytecode by running this:
+No problem, use what you prefer. But let's analyse what happens under the hood
+and compare both approaches. We can check the bytecode using the module
+`dis`. We can check the Python bytecode by running this:
 
 ```python
 from dis import dis
@@ -75,6 +93,8 @@ def f(x):
 
 dis(f)
 ```
+
+<!-- TODO: Refazer com a versão 3.12 do python e arrumar os links! -->
 
 This is the result:
 
@@ -94,25 +114,48 @@ This is the result:
 
 The first half of that bytecode refers to `[*x]` and the second to `list(x)`.
 
-In the first case (`[*x]`):
+In the **first** half (`[*x]`):
 
 1. it creates an empty list (`BUILD_LIST 0`) and pushes it into the stack;
-2. it loads the `x` to the stack;
+2. it loads the `x` into the stack;
 3. it extends the empty list (`LIST_EXTEND 1`) with the iterable `x`. Equivalent to `list.extend(x)`;
 4. it stores the resulting list in the variable `_`.
 
-In the second case (`list(x)`):
+In the **second** half (`list(x)`):
 
 1. it loads the `list` constructor to the stack (`LOAD_GLOBAL 0`);
-2. it loads `x` to the stack (`LOAD_FAST 0`)
+2. it loads `x` into the stack (`LOAD_FAST 0`)
 3. it calls `list(x)` (`CALL_FUNCTION 1`)
 4. it stores the resulting list in the variable `_`.
+
+>
+> Note: `LOAD_CONST 0` and `RETURN_VALUE` are used as an implicit `return None`!
+> After Python 3.12, that would be a single instruction `RETURN_CONST`.
+> 
 
 So, the key difference between them is that the first **creates an empty list**
 then extend it, and the second calls the `list` constructor. Which is better?
 Let's check the CPython source code!
 
+- the `BUILD_LIST` instruction implementation 
+  ([here](https://github.com/python/cpython/blob/caf6064a1bc15ac344afd78b780188e60b9c628e/Python/bytecodes.c#L1628-L1631))
+  calls `_PyList_FromArraySteal`([this](https://github.com/python/cpython/blob/caf6064a1bc15ac344afd78b780188e60b9c628e/Objects/listobject.c#L3180-L3199)).
+  When the size of the list is 0, it only calls `PyList_New`. It is, basically,
+  memory allocation;
 
+- the `LIST_EXTEND`instruction implementation ([here](https://github.com/python/cpython/blob/caf6064a1bc15ac344afd78b780188e60b9c628e/Python/bytecodes.c#L1633-L1649))
+  calls `_PyListExtend`
+  ([this](https://github.com/python/cpython/blob/caf6064a1bc15ac344afd78b780188e60b9c628e/Objects/listobject.c#L1430-L1434)),
+  that is only a wrapper for `list_extend`
+  ([this](https://github.com/python/cpython/blob/caf6064a1bc15ac344afd78b780188e60b9c628e/Objects/listobject.c#L1420-L1428))
+  that is also only a wrapper for `_list_extend`
+  ([this](https://github.com/python/cpython/blob/caf6064a1bc15ac344afd78b780188e60b9c628e/Objects/listobject.c#L1354-L1409)). 
+  Then, `_list_extend` will perform different actions depending on the type of
+  the parameter that was passed to it. But is enough for us to stop here;
+
+- the `list` constructor also calls `_PyListExtend`
+
+<!-- falar do init -->
 
 ## 2: Create lists from generators
 
@@ -137,6 +180,8 @@ from functools import permutations, pairwise
 # Map each element to its next
 [*pairwise([1, 2, 3, 4])]  # = [(1, 2), (2, 3), (3, 4)]
 ```
+
+The same could be done for tuples and sets, just like before. Of couse
 
 ## 3: Concatenate lists, tuples or sets
 
@@ -363,3 +408,10 @@ not in `d`), and it is still `O(len(a) + len(d))` in the worst case (all
 elements of `a` are in `d`). But for small lists where this kind of concern is
 not relevant I still prefer the first one only because it is so beautiful to
 read.
+
+
+## Conclusion
+
+### Further readin
+
+- [Python disassembler documentation](https://docs.python.org/3/library/dis.html)
