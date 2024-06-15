@@ -31,7 +31,7 @@ def sum3(a=0, b=0, c=0):
     return a + b + c
     
 my_dict = {'a': 1, 'b': 2}
-s = sum3(*my_dict) # = sum3(a=1, b=2) = 3, as c is using the default value (0)
+s = sum3(**my_dict) # = sum3(a=1, b=2) = 3, as c is using the default value (0)
 ```
 
 It seems to be not so useful? Well, they're more then you think!
@@ -338,7 +338,7 @@ The `zip` function iterates simultaneously over two iterators, for example:
 
 ```python
 for pair in zip(range(3), range(3, 6)):
-    print(pair)   # (0, 3) (1, 5) (2, 6)
+    print(pair)   # (0, 3) (1, 4) (2, 5)
 ```
 
 This way, you can use `*` to iterate over the elements from all the rows at the
@@ -359,7 +359,7 @@ If you create a list of columns, you'll have a transposed matrix! We only need
 to cast `zip(*my_matrix)` into a list using the same syntax as before:
 
 ```python
-[*zip(*my_matrix)] # transposed matrix!
+[*zip(*my_matrix)] # [(1, 4, 7), (2, 5, 8), (3, 6, 9)]
 ```
 
 ### What about NumPy?
@@ -459,7 +459,7 @@ You can also use `==` that to check if the elements of two lists are the same
 You can even use it with strings. This example checks if the string contains
 only vowels:
 
-~~~python3
+~~~python
 {*my_string} <= {*'aeiou'}
 ~~~
 

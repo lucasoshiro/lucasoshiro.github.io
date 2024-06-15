@@ -3,7 +3,7 @@ title: "Python: 9 truques legais com o operador *"
 excerpt: "Expandir argumentos é mais útil do que você pensa!"
 
 lang: pt_br
-path-en: /_posts/2024-05-11-splat-operator
+path-en: /posts-en/2024-05-11-splat-operator
 ---
 
 **TRADUÇÃO INCOMPLETA!**
@@ -34,7 +34,7 @@ def sum3(a=0, b=0, c=0):
     return a + b + c
     
 my_dict = {'a': 1, 'b': 2}
-s = sum3(*my_dict) # = sum3(a=1, b=2) = 3, já que c usa o valor padrão (0)
+s = sum3(**my_dict) # = sum3(a=1, b=2) = 3, já que c usa o valor padrão (0)
 ```
 
 Isso não parece muito útil? Bom, eles são mais do que você pensa! Aqui vou
@@ -341,7 +341,7 @@ The `zip` function iterates simultaneously over two iterators, for example:
 
 ```python
 for pair in zip(range(3), range(3, 6)):
-    print(pair)   # (0, 3) (1, 5) (2, 6)
+    print(pair)   # (0, 3) (1, 4) (2, 5)
 ```
 
 This way, you can use `*` to iterate over the elements from all the rows at the
@@ -362,13 +362,13 @@ If you create a list of columns, you'll have a transposed matrix! We only need
 to cast `zip(*my_matrix)` into a list using the same syntax as before:
 
 ```python
-[*zip(*my_matrix)] # transposed matrix!
+[*zip(*my_matrix)] # [(1, 4, 7), (2, 5, 8), (3, 6, 9)]
 ```
 
 ### What about NumPy?
 
 **NumPy** is great, of course! You can transpose a matrix only using `my_matrix.T`,
-and it is **`O(1)`**. But you need to:
+and it is `O(1)`. But you need to:
 
 1. import NumPy
 2. use `numpy.array` or similar
@@ -462,7 +462,7 @@ You can also use `==` that to check if the elements of two lists are the same
 You can even use it with strings. This example checks if the string contains
 only vowels:
 
-~~~python3
+~~~python
 {*my_string} <= {*'aeiou'}
 ~~~
 
