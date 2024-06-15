@@ -94,9 +94,7 @@ def f(x):
 dis(f)
 ```
 
-<!-- TODO: Refazer com a versão 3.12 do python e arrumar os links! -->
-
-This is the result:
+This is the result (I'm running Python 3.9):
 
 ```armasm
   2           0 BUILD_LIST               0
