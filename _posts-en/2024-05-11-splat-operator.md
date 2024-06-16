@@ -2,6 +2,9 @@
 title: "Python: 9 cool tricks with the * operator"
 excerpt: "Expanding args are more useful than you think!"
 
+header:
+  teaser: /assets/images/posts/2024-05-11-splat-operator/python.jpg
+
 lang: en
 path-pt_br: /posts/2024-05-11-splat-operator
 ---
@@ -134,14 +137,14 @@ then extend it, and the second calls the `list` constructor. Which is better?
 Let's check the CPython source code!
 
 - the `BUILD_LIST` instruction implementation 
-  ([here](https://github.com/python/cpython/blob/3.12/Python/bytecodes.c#L1501-L1504)
+  ([here](https://github.com/python/cpython/blob/3.12/Python/bytecodes.c#L1501-L1504))
   calls `_PyList_FromArraySteal`([this](https://github.com/python/cpython/blob/3.12/Objects/listobject.c#L2566-L2579)).
   When the size of the list is 0, it only calls `PyList_New`. It is, basically,
   memory allocation;
 
 - the `LIST_EXTEND`instruction implementation ([here](https://github.com/python/cpython/blob/3.12/Python/bytecodes.c#L1506-L1522))
   calls `_PyListExtend`
-  ([this](https://github.com/python/cpython/blob/3.12/Objects/listobject.c#L979-L995),
+  ([this](https://github.com/python/cpython/blob/3.12/Objects/listobject.c#L979-L995)),
   that is only a wrapper for `list_extend`, that will extend the empty list with
   the values from `x`;
 
@@ -239,7 +242,7 @@ concatenating 3 lists).
 ## 4: Concatenate dicts
 
 Similarly, you can concatenate two or more dictionaries, but using `**` as we're
-dealing with a mapping instead of a iterator:
+dealing with a mapping instead of an iterator:
 
 ```python
 d1 = {'I': 1, 'V': 5, 'X': 10}
@@ -268,7 +271,7 @@ can join two dictionaries this way:
 d1 | d2 # = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100}
 ```
 
-It doesn't mean that it is useless. You can use it to create a new dictionary from other
+It doesn't mean that this trick is useless. You can use it to create a new dictionary from other
 dictionaries and new keys, for example:
 
 ```python
@@ -288,7 +291,7 @@ comprehensions**. But we don't have **tuple comprehensions**:
 ```
 
 But we can sort of have a tuple comprehension by casting a generator to a tuple,
-using the trick 1:
+using the trick 2:
 
 ```python
 (*(2 * x for x in range(10)),) # "tuple comprehension"
@@ -315,10 +318,11 @@ as a parameter. Then you can specify what separator you want to use (by default,
 space):
 
 ```python
+print(*my_list)             # 1 2 3
 print(*my_list, sep=' -> ') # 1 -> 2 -> 3
 ```
 
-Much cleaner. Another example: a simple code to generate a CSV output in only 3
+Much cleaner. Another example: a simple code to generate a CSV file in only 3
 lines:
 
 ```python
@@ -330,7 +334,7 @@ data = [
 
 with open('output.csv', 'w') as f:
     for row in data:
-        print(*row, sep=',')
+        print(*row, sep=',', file=f)
 ```
 
 ## 7: Transpose matrices
@@ -366,7 +370,7 @@ to cast `zip(*my_matrix)` into a list using the same syntax as before:
 ### What about NumPy?
 
 **NumPy** is great, of course! You can transpose a matrix only using `my_matrix.T`,
-and it is **`O(1)`**. But you need to:
+and it is `O(1)`. But you need to:
 
 1. import NumPy
 2. use `numpy.array` or similar
@@ -474,6 +478,7 @@ result = True
 for x in a:               # O(len(a))
    if x not in d:         # O(len(d))
        result = False
+       break
 ```
 
 The `in` operation on lists is `O(n)`, so, this **imperative** approach is
@@ -509,3 +514,4 @@ you find something wrong, or if you have any suggestion, please let me know
 
 - [Python disassembler documentation](https://docs.python.org/3/library/dis.html)
 - [Fluent Python by Luciano Ramalho](https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/)
+- [Time complexity Python](https://wiki.python.org/moin/TimeComplexity)

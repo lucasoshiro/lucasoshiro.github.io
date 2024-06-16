@@ -2,11 +2,12 @@
 title: "Python: 9 truques legais com o operador *"
 excerpt: "Expandir argumentos é mais útil do que você pensa!"
 
+header:
+  teaser: /assets/images/posts/2024-05-11-splat-operator/python.jpg
+
 lang: pt_br
 path-en: /posts-en/2024-05-11-splat-operator
 ---
-
-**TRADUÇÃO INCOMPLETA!**
 
 ## Introdução
 
@@ -138,14 +139,14 @@ vazia** e depois a estende, enquanto que a segunda chama o construtor
 `list`. Qual é melhor? Vamos ver o código fonte do CPython!
 
 - a implementação da instrução `BUILD_LIST` 
-  ([aqui](https://github.com/python/cpython/blob/3.12/Python/bytecodes.c#L1501-L1504)
+  ([aqui](https://github.com/python/cpython/blob/3.12/Python/bytecodes.c#L1501-L1504))
   chama a função `_PyList_FromArraySteal`([esta](https://github.com/python/cpython/blob/3.12/Objects/listobject.c#L2566-L2579)).
   Quando o tamanho da lista é 0, ela somente chama `PyList_New`. Ela é, basicamente
   alocação de memória;
 
 - a implementação da instrução `LIST_EXTEND` ([aqui](https://github.com/python/cpython/blob/3.12/Python/bytecodes.c#L1506-L1522))
   chama a função `_PyListExtend`
-  ([esta](https://github.com/python/cpython/blob/3.12/Objects/listobject.c#L979-L995),
+  ([esta](https://github.com/python/cpython/blob/3.12/Objects/listobject.c#L979-L995)),
   que é só uma casca para `list_extend`, que vai estender a lista vazia com os 
   valores  de `x`;
 
@@ -277,7 +278,7 @@ da seguinte forma:
 d1 | d2 # = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100}
 ```
 
-Isso não significa que essa construção se tornou inútil. Você pode usá-la para
+Isso não significa que este truque se tornou inútil. Você pode usá-la para
 criar um novo dicionário a partir de outros dicionários e de novas chaves, por
 exemplo:
 
@@ -298,7 +299,7 @@ comprehensions**. Mas não temos **tuple comprehensions**:
 ```
 
 Mas a gente meio que pode ter uma "tuple comprhension" convertendo um gerador
-para uma tupla usando o truque 1:
+para uma tupla usando o truque 2:
 
 ```python
 (*(2 * x for x in range(10)),) # "tuple comprehension"
@@ -325,10 +326,11 @@ elemento da lista como um parâmetro. Depois você pode especificar qual separad
 você quer usar (por padrão, espaço):
 
 ```python
+print(*my_list)             # 1 2 3
 print(*my_list, sep=' -> ') # 1 -> 2 -> 3
 ```
 
-Muito mais limpo. Outro exemplo, um código simples para gerar uma saída CSV
+Muito mais limpo. Outro exemplo, um código simples para gerar um arquivo CSV
 em apenas 3 linhas:
 
 ```python
@@ -340,7 +342,7 @@ data = [
 
 with open('output.csv', 'w') as f:
     for row in data:
-        print(*row, sep=',')
+        print(*row, sep=',', file=f)
 ```
 
 ## 7: Transpor matrizes
@@ -449,7 +451,7 @@ Counter(list).elements()
 ## 9: Conferir se todos os elementos estão em um conjunto
 
 Este é meu preferido. Se você quer conferir se todos os elementos de uma lista
-estão contidos em outras lista, você pode fazer isso (quando os operandos são
+estão contidos em outra lista, você pode fazer isso (quando os operandos são
 conjuntos, o operador `<=` significa "é um subconjunto de"):
 
 ```python
@@ -487,11 +489,10 @@ result = True
 for x in a:               # O(len(a))
    if x not in d:         # O(len(d))
        result = False
+       break
 ```
 
-A operação `in` sobre listas é `
-
-The `in` operation on lists is `O(n)`, então, essa abordagem **imperativa** é 
+A operação `in` sobre listas é `O(n)`, então, essa abordagem **imperativa** é 
 `O(len(a) * len(d))` no pior caso e `O(len(d))` no melhor caso. 
 
 De volta à nossa solução anterior, a criação de um conjunto é `O(n)` e a operaçao
@@ -524,3 +525,4 @@ alguma sugestão, por favor me diga
 
 - [Documentação do disassembler do Python](https://docs.python.org/3/library/dis.html)
 - [Python Fluente, de Luciano Ramalho](https://pythonfluente.com/)
+- [Complexidade de tempo em Python](https://wiki.python.org/moin/TimeComplexity)
