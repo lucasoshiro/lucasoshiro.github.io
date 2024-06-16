@@ -311,13 +311,14 @@ print(' -> '.join([str(x) for x in my_list])) # 1 -> 2 -> 3
 ```
 
 But there's a cleaner solution: you can use `*` to pass each element of the list
-as a parameter. Then you can specify what separator you want to use:
+as a parameter. Then you can specify what separator you want to use (by default,
+space):
 
 ```python
 print(*my_list, sep=' -> ') # 1 -> 2 -> 3
 ```
 
-Much cleaner. Another example: a simple code to generate a `.csv` file in only 3
+Much cleaner. Another example: a simple code to generate a CSV output in only 3
 lines:
 
 ```python
@@ -475,7 +476,7 @@ for x in a:               # O(len(a))
        result = False
 ```
 
-The `in` operation on lists are `O(n)`, so, this **imperative** approach is
+The `in` operation on lists is `O(n)`, so, this **imperative** approach is
 `O(len(a) * len(d))` in the worst case and `O(len(d))` in the best case. 
 
 Back to our previous solution, the set creation is `O(n)` and the operation
@@ -495,7 +496,7 @@ all(x in set_d for x in a) # it will be false in the first divergence!
 Then, that solution is `O(len(d))` in the best case (the first element of `a` is
 not in `d`), and it is still `O(len(a) + len(d))` in the worst case (all
 elements of `a` are in `d`). But for **small lists** (or strings, tuples, etc)
-where this kind of concern is not so relevant.
+this kind of concern is not so relevant.
 
 
 ## Conclusion
