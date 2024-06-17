@@ -1,5 +1,5 @@
 ---
-title: "Python: 9 cool tricks with the * operator"
+title: "Python: 10 cool tricks with the * operator"
 excerpt: "Expanding args are more useful than you think!"
 
 header:
@@ -437,7 +437,84 @@ Counter(list).elements()
 
 > Just like before, you could use `numpy.unique`, but remember Confucius!
 
-## 9: Check if all elements are in a set of elements
+## 9: Create a list with placeholders for null elements
+
+Take a look at this list with data about superheroes (their
+names, their real names and their powers):
+
+```python
+heroes = [
+    {
+        'name': 'spider-man',
+        'real name': 'peter parker',
+        'powers': ['wall crawling', 'webbing'],
+    },
+    
+    {
+        'name': 'batman',
+        'real name': 'bruce wayne',
+        'powers': []
+    }
+]
+```
+
+If you want to create a human-readable representation of each of these heroes, you could
+do, for example, this:
+
+```python
+def hero_string(hero):
+    s = ''
+    s += f'name: {hero['name']}\n'
+    s += f'real name: {hero['real name']}\n'
+
+    if hero['powers']:
+        for power in hero['powers']:
+            s += f'power: {power}\n'
+    else:
+        s += 'No powers!'
+    return s
+```
+
+Note that for Spider-Man it will show its powers and for Batman it will show
+"No powers!".
+
+Ok, but, add strings is not so efficient as writing `str.join`. A second
+solution would be, perhaps, this:
+
+```python
+def hero_string(hero):
+    names = '\n'.join([
+        f'name: {hero["name"]}',
+        f'real name: {hero["real name"]}'
+    ])
+
+    if hero['powers']:
+        powers = '\n'.join(f'power: {power}' for power in hero['powers'])
+    else:
+        powers = 'No powers!'
+
+    return '\n'.join([names, powers])
+```
+
+Well, we couldn't do with only one `'\n'.join` as we need to treat the case of
+Batman... But our friend `*` can help us here:
+
+```python
+def hero_string(hero):
+    powers = [f'power: {power}' for power in hero['powers']] or ['No powers!']
+
+    return '\n'.join([
+        f'name: {hero["name"]}',
+        f'real name: {hero["real name"]}',
+        *powers
+    ])
+```
+
+This way, `powers` will be a list of lines containing the powers or containing
+"No Powers!" if the hero doesn't have powers. Then, it will be expanded in the
+`join`.
+
+## 10: Check if all elements are in a set of elements
 
 That's my favorite. If you want to check if all elements from a list are
 contained in another list, you can do this (when the operands are sets, `<=`

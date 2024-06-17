@@ -1,5 +1,5 @@
 ---
-title: "Python: 9 truques legais com o operador *"
+title: "Python: 10 truques legais com o operador *"
 excerpt: "Expandir argumentos é mais útil do que você pensa!"
 
 header:
@@ -245,7 +245,7 @@ Bem parecido com a saída do truque 1, mas aqui `LOAD_FAST` e `LIST_EXTEND` são
 chamados 3 vezes em vez de apenas 1 (como esperado, já que estamos concatenando
 3 listas).
 
-## 4: Concatenando dicionários
+## 4: Concatenar dicionários
 
 Da mesma forma, você pode concatenar dois ou mais dicionários, porém usando `**`
     já que estamos lidando com mapeamentos em vez de um iterador:
@@ -448,7 +448,84 @@ Counter(list).elements()
 
 > Da mesma forma que antes, você poderia usar `numpy.unique`, mas lembre-se de Confúcio!
 
-## 9: Conferir se todos os elementos estão em um conjunto
+## 9: Criar uma lista com substitutos para elementos nulos
+
+Olhe esta lista com dados sobre super-herois (seus nomes, seus nomes reais e
+seus poderes):
+
+```python
+heroes = [
+    {
+        'name': 'spider-man',
+        'real name': 'peter parker',
+        'powers': ['wall crawling', 'webbing'],
+    },
+    
+    {
+        'name': 'batman',
+        'real name': 'bruce wayne',
+        'powers': []
+    }
+]
+```
+
+Se você quer criar uma representação legível para humanos de cada um desses
+herois, você poderia, por exemplo, fazer isso:
+
+```python
+def hero_string(hero):
+    s = ''
+    s += f'name: {hero['name']}\n'
+    s += f'real name: {hero['real name']}\n'
+
+    if hero['powers']:
+        for power in hero['powers']:
+            s += f'power: {power}\n'
+    else:
+        s += 'No powers!'
+    return s
+```
+
+Repare que para o Spider-Man ele vai mostrar seus poderes e para o Batman ele
+vai mostrar "No powers!".
+
+Ok, mas somar strings não é tão eficiente quanto escrever `str.join`. Uma
+segunda solução seria:
+
+```python
+def hero_string(hero):
+    names = '\n'.join([
+        f'name: {hero["name"]}',
+        f'real name: {hero["real name"]}'
+    ])
+
+    if hero['powers']:
+        powers = '\n'.join(f'power: {power}' for power in hero['powers'])
+    else:
+        powers = 'No powers!'
+
+    return '\n'.join([names, powers])
+```
+
+Bem, nós não conseguimos escrever com só um `'\n'.join` já que precisamos tratar
+o caso especial do Batman... Mas nosso amigo `*` pode nos ajudar aqui:
+
+```python
+def hero_string(hero):
+    powers = [f'power: {power}' for power in hero['powers']] or ['No powers!']
+
+    return '\n'.join([
+        f'name: {hero["name"]}',
+        f'real name: {hero["real name"]}',
+        *powers
+    ])
+```
+
+Dessa forma, `powers` vai ser uma lista de linhas contendo os poderes ou
+contendo "No Powers!" caso o heroi não tenha poderes. Então, ela será expandida
+depois com `join`.
+
+## 10: Conferir se todos os elementos estão em um conjunto
 
 Este é meu preferido. Se você quer conferir se todos os elementos de uma lista
 estão contidos em outra lista, você pode fazer isso (quando os operandos são
