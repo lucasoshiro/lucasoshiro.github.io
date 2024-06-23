@@ -94,10 +94,6 @@ command output:
 puts `ls`.lines.map { |name| name.strip.length } # prints the lengths of the filenames
 ~~~
 
-> Note for Git lovers: I know that I could do that only using `git branch
-> --show-current`, but that was the first example that came in my mind to
-> demonstrate the use of regex...
-
 ## Feature 5: regex matching
 
 Regex is a type in Ruby, and operations using regex are built-in in the
@@ -113,6 +109,10 @@ output_lines.each do |line|
   end
 end
 ~~~
+
+> Note for Git lovers: I know that I could do that only using `git branch
+> --show-current`, but that was the first example that came in my mind to
+> demonstrate the use of regex...
 
 ## Feature 6: easy threads
 
@@ -166,3 +166,16 @@ Ruby is the most complete and easier Bash replacement for that!
 
 If you find something wrong, or if you have any suggestion, please let me know
 [here](https://github.com/lucasoshiro/lucasoshiro.github.io/issues).
+
+## Update
+
+This reached #1 on [Hacker News](https://news.ycombinator.com/item?id=40763640)!
+Not only that, but it started some interesting discussions in the comments.
+Thanks everyone!
+
+<div class="img-container">
+  <figure>
+    <img class="small" src="{{ site.baseurl }}/assets/images/posts/2024-06-17-ruby-shellscript/hn.png">
+    <figcaption>#1 on HN!</figcaption>
+  </figure>
+</div>

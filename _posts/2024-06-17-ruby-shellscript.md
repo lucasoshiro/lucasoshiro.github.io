@@ -171,3 +171,15 @@ completa para isso!
 
 Se você encontrou alguma coisa errada, ou se você tem alguma sugestão, por favor
 me diga [aqui](https://github.com/lucasoshiro/lucasoshiro.github.io/issues).
+
+## Update
+
+Isto ficou em primeiro no [Hacker News](https://news.ycombinator.com/item?id=40763640)!  Não apenas isso, mas
+começou discussões bem interessante nos comentários. Obrigado a todos!
+
+<div class="img-container">
+  <figure>
+    <img class="small" src="{{ site.baseurl }}/assets/images/posts/2024-06-17-ruby-shellscript/hn.png">
+    <figcaption>#1 no HN!</figcaption>
+  </figure>
+</div>
