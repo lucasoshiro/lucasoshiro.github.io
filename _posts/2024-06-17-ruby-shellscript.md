@@ -1,60 +1,69 @@
 ---
-title: "Ruby: a great language for shell scrips!"
-excerpt: "It's more than rails!"
+title: "Ruby: uma ótima linguagem para shell scripts!"
+excerpt: "É mais do que o Rails"
 
 header:
   teaser: https://upload.wikimedia.org/wikipedia/commons/7/73/Ruby_logo.svg
 
 lang: pt_br
-path-en: /posts/2024-06-17-ruby-shellscript
+path-en: /posts-en/2024-06-17-ruby-shellscript
 ---
 
-**Tradução incompleta!**
+## Introdução
 
-## Intro
+Ruby é tão associada com seu framework mais famoso, Rails, que muitas pessoas
+esquecem o quanto incrível essa linguagem é. Quero dizer, eu conheço muita gente
+que diz "eu não gosto de Ruby" e quando eu pergunto o porquê, eles dizem alguma
+coisa sobre o Rails. Pessoalmente, considero Ruby uma das minhas linguagens de
+programação preferidas, e a última vez que eu encostei em algum código de Rails
+foi há 7 anos...
 
-Ruby is so associated with its most framework, Rails, that many people forget
-how amazing this language is. I mean, I know a lot of people who says "I don't
-like Ruby" and when I ask why, they say something about Rails. I consider Ruby
-one of my favorite programming languages, and the last time I touched any Rails
-code was 7 years ago...
+Então, se eu não uso mais Rails, o que é que eu faço com Ruby? Bem, Ruby é uma
+linguagem bem rica e completa, talvez até mais que sua parente mais famosa,
+Python (infelizmente, não posso dizer a mesma coisa sobre seu ecossistema...). 
+E uma das coisas que eu considero que Ruby é melhor que Python é para escrever
+shell scripts.
 
-So, if I don't use Rails anymore, what I do with Ruby? Well, Ruby is a very rich
-language, and could replace, for example, Python for most tasks (except that it
-doesn't have as may libraries as Python do...). And there are some thing that
-Ruby is even better than Python, and one of them is for writing shell scripts!
+Isso é, na maior parte dos casos Bash é suficiente pra mim, mas se o script
+começa a ficar complexo, então eu vou para Ruby. Aqui vou mostrar as principais
+_features_ da linguagem para esse caso de uso.
 
-### Goals
+### Objetivos
 
-- Show features of Ruby that are useful for writing shell scripts;
+- Mostrar features de Ruby que possam ser úteis para escrever shell scripts;
 
-- Compare Ruby to Bash and Python;
+- Comparar Ruby com Bash e Python;
 
-### Non-goals
+### Não-objetivos
 
-- Replace _entirely_ Bash scripts by Ruby scripts;
+- Substituir _completamente_ scripts Bash por scripts Ruby.
 
-## Feature 1: calling external commands
+## Feature 1: chamar comandos externos
 
-The first thing that you expect of language for writing shell scripts is how to
-call external commands. In Ruby, you do that using backticks (`` ` ``):
+A primeira coisa que você espera de uma linguagem para escrever shell scripts é
+chamar comandos externos. Em Ruby, você pode fazer isso usando backticks (`` ` ``):
 
 ~~~ruby
 `ls`
 ~~~
 
-That's it! You don't need `system`, `popen` or something like that, or import
-a library. And if you set that to a variable, you'll have the output of the
-command:
+E é isso! Você não precisa de `system`, `popen` ou similares, ou importar uma
+biblioteca. E se você atribuir isso a uma variável, você terá a saída do
+comando:
 
 ~~~ruby
 my_date=`date`
 ~~~
 
+> Nota: se você quiser usar `system` (ex: se você quer que a saída seja
+> redirecionada para o stdout em vez de uma string) ou `popen` (se você quiser
+> ler e escrever dados de ou para um subprocesso), eles também estão disponíveis
+> em Ruby!
+
 ## Feature 2: status code
 
-This is real quick: in Ruby, the variable `$?` contains the status code of the
-last executed command. So, it's really close to Bash:
+Este é bem rápido: em Ruby, a variável `$?` contém o status code do último
+comando executado. Então, é bem próximo de Bash:
 
 ~~~ruby
 `true`
@@ -64,92 +73,101 @@ puts $? # 0
 puts $? # 1
 ~~~
 
-## Feature 3: it's a typed language
+## Feature 3: Ruby tem tipos
 
-Ruby is not a _statically_ typed language, but it has types. In fact, it is a
-object-oriented language, and it follow strictly the OOP paradigm (more than
-Python, even more than Java!). Bash, on the other hand, has only one type, the
-strings.
+Ruby não é uma linguagem _estaticamente_ tipada, mas tem tipos. Na verdade, é
+uma linguagem orientada a objetos e segue estritamente o paradigma de POO (mais
+que Python, em alguns aspectos até mais do que Java!). Bash, por outro lado,
+tudo é uma string, e isso leva a vários problemas de segurança...
 
-So, you can take all advantage of this:
-
-~~~ruby
-total_lines = `wc -l my_file`.to_i # an int containing the number of lines of a file
-half = total_lines.div 2           # integer division
-puts `head -n half my_file`        # print half of the file
-~~~
-
-## Feature 4: functional constructions
-
-Ruby implements `map`, `select` (filter), `reduce`, `flat_map` and other
-functional operations as methods. So, you can, for example, apply a `map` over a
-command output:
+Então, você pode tirar proveito disso:
 
 ~~~ruby
-puts `ls`.lines.map { |name| name.strip.length } # puts the lengths of the filenames
+total_lines = `wc -l my_file`.to_i # um int contendo o número de linhas de um arquivo
+half = total_lines.div 2           # divisão inteira
+puts `head -n #{half} my_file`     # imprime metade de um arquivo
 ~~~
 
-## Feature 5: regex matching
+## Feature 4: construções funcionais
 
-Regex is a type in Ruby, and operations using regex are builtin in Ruby. Look at
-this example, where we get the current git branch name calling `git branch`:
+Ruby implementa `map`, `select` (filter), `reduce`, `flat_map` e outras
+operações funcionais como métodos. Então, você pode, por exemplo, aplicar um
+`map` sobre a saída de um comando:
+
+~~~ruby
+puts `ls`.lines.map { |name| name.strip.length } # imprime os comprimentos dos nomes de arquivos.
+~~~
+
+## Feature 5: casamento de regex
+
+Regex é um tipo em Ruby, e as operações usando regex são parte da
+linguagem. Olhe este exemplo, em que a gente obtêm o nome da branch atual do Git
+chamando `git branch`:
 
 ~~~ruby
 current_branch_regex = /^\* (\S+)/
 output_lines = `git branch`.lines
 output_lines.each do |line|
-  if line =~ current_branch_regex # match the string with the regex
-    puts $1                       # prints the match of the first group  
+  if line =~ current_branch_regex # casa a string com a regex
+    puts $1                       # imprime o primeiro grupo
   end
 end
 ~~~
 
-## Feature 6: easy threads
+> Nota para amantes de Git: eu sei que eu podia ter feito isso usando `git
+> branch --show current`, mas esse foi o primeiro exemplo que veio na minha
+> cabeça para demonstrar o uso de regex...
 
-If want to work with multiple threads, Ruby is perhaps the easiest language to
-do it. Look:
+## Feature 6: threads fáceis
+
+Se você quer trabalhar com várias threads, Ruby é talvez a linguagem mais fácil
+de fazer isso. Veja:
 
 ~~~ruby
 thread = Thread.new do
-    puts "I'm in a thread!"
+    puts "Estou dentro da thread!"
 end
 
-puts "I'm outside a thread!"
+puts "Estou fora da thread!"
 
 thread.join
 ~~~
 
-So, it can be useful for, for example, downloading several files:
+Então, isso pode ser útil, por exemplo, para baixar vários arquivos ao mesmo
+tempo:
 
 ~~~ruby
-(1..10).map do |i|                       # iterates from i=0 to i=10, inclusive
+(1..10).map do |i|                       # itera de i=1 a i=10, inclusivamente
   Thread.new do
-    `wget http://my_site.com/file_#{i}`  # you can use variables inside commands!  
+    `wget http://my_site.com/file_#{i}`  # você pode usar variáveis dentro de comandos!  
   end
-end.each { |thread| thread.join }        # do/end and curly braces have the same purpose!
+end.each { |thread| thread.join }        # do/end e chaves servem para a mesma coisa
 ~~~
 
+## Feature 7: operações de arquivo e diretório embutidas
 
-## Feature 7: builtin file and dir operations
+Em Ruby, todas as operações de arquivos são métodos da classe `File` e todas as
+operações de diretório são métodos da classe `Dir`, como deveriam ser. Em
+Python, por exemplo, se você quer ler um arquivo você usa `open`, mas se você
+quer apagá-lo você precisa usar `os.remove`, e `os` tem várias outras coisas
+que não são relacionadas a arquivos.
 
-In Ruby, all the file operations are methods of the `File` class and all the
-directory operations are methods of the `Dir` class, as it should be. In Python,
-for example, if you want to read a file you use `open`, but if you want to
-delete you need to use `os.remove`, and `os` does a lot of other things that are
-not related to files.
-
-So, in Ruby:
+Então, em Ruby:
 
 ~~~ruby
-exists = File.exists? 'My File'           # boolean methods ends in ?
+exists = File.exists? 'My File'           # métodos que retornam booleanos são terminados em ?
 file_content = File.open('My File').read
-File.delete 'My File'                     # parentheses are optional if it's not ambiguous
+File.delete 'My File'                     # parênteses são opcionais se não há ambiguidade
 ~~~
 
-## Conclusion
+## Conclusão
 
-I hope that after reading this short text you consider using Ruby as a
-replacemente for complex shell scripts. I mean, I don't expect that you drop
-Bash entirely, but consider using Ruby when things get complex. Of course, you
-can do that in Python, Perl, even JS, but, as my personal choice I think that
-Ruby is a more complete and easier Bash replacement for writing scripts!
+Espero que depois de ler este pequeno texto você considere usar Ruby como uma
+substituta para shell scripts complexos. Quero dizer, não espero que você deixe
+o Bash completamente, mas considere usar Ruby quando as coisas ficarem mais
+complexas. Claro que você poderia fazer isso tudo em Python, Perl, até JS, mas,
+como minha principal escolha eu acredito que Ruby é a escolha mais fácil e
+completa para isso!
+
+Se você encontrou alguma coisa errada, ou se você tem alguma sugestão, por favor
+me diga [aqui](https://github.com/lucasoshiro/lucasoshiro.github.io/issues).
