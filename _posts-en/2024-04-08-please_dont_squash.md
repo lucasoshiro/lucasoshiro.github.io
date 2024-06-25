@@ -19,39 +19,48 @@ from my life", well, I must say that it is not an excuse. If you don't want to
 read this, you don't need to, you can have a squash-less life without it, but
 **stop doing squash merges**.
 
-But if you are brave to reconsider what you know and what you do, you'll
+But if you are brave enough to reconsider what you know and what you do, you'll
 probably won't want to squash your anymore after reading this, except in some
-**very specific cases** (and those cases probably are not what you're expecting).
+**very specific cases** (and those cases probably are not what you're
+expecting).
+
+So here go.
 
 ### Goals
 
 - Explain what squash merges **actually** are, detailing how Git works under the
 hood;
 <!-- - Show good practices written by specists to make the commit history, in fact, **cleaner**; -->
-- Show how the "pros" about squash merging are conceptually wrong;
+- Show how the most well-known "pros" about squash merging are conceptually **wrong**;
 - Discuss about situations that squash merges can be **harmful**;
 
 ### Non-goals
 
-- Tell how something "works for me";
-- Create another "good practice" guide for people follow without questioning if is true;
+- Tell something that works for me and dictating that it will also work for you;
+- Create another "good practice guide" for people follow without questioning if
+  is true. **Be skeptical**;
 
-### Why do you squash merge?
+### Why do you use squash merge?
 
-If you consider that squash and merge is a good practice, have you ever thought
-why, or are you only repeating something that you heard? Be honest. In the past,
-I also thought it was cool, but as I studied Git a little deeper soon I figured
-out that it doesn't make sense. Not only that, but it is **never mentioned** as
-good practice in Git documentation, not even as a _practice_:
+If you consider that squash merge is a good practice, have you ever thought
+**why** it is a good practice? Or are you only repeating something that you
+heard?
 
-- [Pro Git](https://git-scm.com/book/en/v2) has two chapters and a appendix about
-merge and it barely mentions squash in the merge context (it only mentions
+Be honest.
+
+In the past, I also thought it was cool, but as I studied Git a little deeper
+soon I figured out that it doesn't make sense. Not only that, but it is **never
+mentioned** as good practice in Git documentation, not even as a _practice_:
+
+- [Pro Git](https://git-scm.com/book/en/v2) (the official Git book) has **two
+chapters** and a appendix about **merge** and it barely mentions squash in the
+merge context (it only mentions
 [here](https://git-scm.com/book/en/v2/Git-Tools-Advanced-Merging#_subtree_merge)
 and
 [here](https://git-scm.com/book/en/v2/Git-and-Other-Systems-Git-as-a-Client#_git_branching_issues),
-using squash only as intermediate tool);
+using squash only as an intermediate tool);
 
-- Apart from `git merge` manpage and Pro Git, the official Git documentation only mentions
+- Apart from `git merge` manpage and Pro Git, the official Git **documentation** only mentions
 squash in
 [gitfaq](https://git-scm.com/docs/gitfaq#Documentation/gitfaq.txt-Whatkindsofproblemscanoccurwhenmerginglong-livedbrancheswithsquashmerges),
 focusing on the _problems_ of doing that;
@@ -59,23 +68,23 @@ focusing on the _problems_ of doing that;
 - Last but not least, Git itself doesn't have a single "squash and merge"
 command, you have to run two commands to perform it (we'll discuss about that later).
 
-Well, before we go deeper, I need you to ask you two things:
+So, before we go deeper, I need you to ask you two things:
 
-First, what do you think that a **squash** is in Git? 
+First, what do you think that a **squash merge** is? 
 
 <textarea id="what_is_squash" style="border: 1px solid black;" placeholder="What do you think that squash is?"></textarea>
 
 (go ahead, write it, it's only a textarea without any hidden JavaScript)
 
-Second, why do you think you should do it, given the first answer?
+Second, why do you think you **should do it**, given the first answer?
 
 <textarea id="why_squash" style="border: 1px solid black;" placeholder="Why do you squash?"></textarea>
 
 Ok, thanks! We'll come here later. Now, before I tell you why you shouldn't
 squash your commits (and before you squash your commits again), we need to have
 it clear what a squash actually is. And I must say most people who squash do it
-because they **don't know** what a squash is. And, again, I must say this is
-because they have two major misconceptions about Git.
+because they **don't know** what a squash merge is. And, again, I must say this
+is because they have two major misconceptions about Git.
 
 There's where we start.
 
@@ -233,8 +242,8 @@ By now, we know what is a merge. But how about a squash merge? I just googled
 - "Squashing retains the changes but discards all the individual commits"
 
 Well, time to revisit your answer. Click [here](#what_is_squash) to see it. Is
-your answer similar to those? Well, I ask you that because somthing that those
-answers have in common: **they are all wrong!**
+your answer similar to those? Well, I ask you that because there's something
+that all those answers have in common: **they are all wrong!**
 
 And they are wrong because, remember: **Git commits don't store changes, they store snapshots**.
 
@@ -247,8 +256,9 @@ your convenience:
 
 <textarea style="border: 1px solid black;" placeholder="Come on, write!"></textarea>
 
-Was it hard? Well, this is because that idea of a squash merge is based on a
-wrong idea of Git is, and it doesn't make any sense in real life.
+Was it hard? Well, this is because that idea of **what a squash merge is** is
+based on a wrong idea of what **Git is**, and it doesn't make any sense in real
+life.
 
 I bet that if you squash you do it by using the UI of GitHub or similar, and you
 never did it locally on your machine through CLI. 
@@ -277,16 +287,17 @@ Several useful Git commands that are a single command originally were a set of
 commands, such as [`git stash`](https://marc.info/?l=git&m=118318197312297&w=2),
 [`git subtree`](https://marc.info/?l=git&m=132569307707479&w=2) and so on, but this
 never managed (at least so far) to be a single command. That should raise an
-alert on you that something is out of place here. Do you have any idea why do we
-need two commands and what they do? So:
+alert on you that something is out of place here. 
 
-- The first one is the squash itself. It merges the current branch with the other
+Let's check what happens when we perform a squash merge locally:
+
+- The first command is the squash itself. It merges the current branch with the other
   one, but it **doesn't create a merge commit**. Instead, it only merges the
   files (using the mechanism that we discussed before) in the filesystem (in Git
   jargon, working directory) and stages them just like `git add` (in Git jargon,
   it adds them to the index);
 
-- The second is just a standard `git commit`. When we perform a `git commit` we
+- The second command is just a standard `git commit`. When we perform a `git commit` we
   create a new commit after the state of the index (the staging area), that
   contains the merged files and the untouched ones.
   
@@ -329,8 +340,8 @@ This leads to the second misconception.
 ## The second misconception: the fallacy of the clean history
 
 I don't know if you still think that squash is a good idea after knowing what it
-really is, but I'll give you a chance to read again what you said before about
-why squash merging is a good thing, [click here](#why_squash).
+really is. But anyway, let's read again why you think that squash merges are
+good: [click here](#why_squash).
 
 Just like I did before, here are some answers from some of the first results
 after a quick Google search for "why squash merge":
@@ -348,9 +359,41 @@ with fewer commits are the better? Here's another textar... (no, enough textarea
 If it is true, the best commit history is not commiting at all. So, the best way
 to use Git is not using Git? Something is wrong here.
 
+<div class="img-container">
+  <figure>
+    <img class="small" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/clean_history-en.svg">
+    <figcaption>The best Git history is not using Git at all (<b>this is a joke</b>)</figcaption>
+  </figure>
+</div>
+
+
 That is our second misconception. Cleaner commit histories are better, indeed,
-but a history with fewer commits is not better. So, what is a good commit
+but a history with **fewer commits is not better**. So, what is a good commit
 history?
+
+### A good commit history
+
+A good commit history is a history that contains **good commits**.
+
+Personally, I'm intrigued that it is a common sense that most developers agree
+that **code quality** and **data quality** are important while it is harder to
+find someone that really cares about the quality of the **code repository**,
+which is the **database where we store code**.
+
+Lets recap some practices that we commonly associate with **code quality**:
+
+- Code that is **easy to understand**;
+- Code that implements **simple solutions**;
+- Code that is **easy to debug**, when needed;
+- Code that is **simple**;
+- Code that can be **tested**;
+- Code that follow the same **codestyle**;
+- Good **documentation**.
+
+And about **data quality**:
+
+- Data that is **easy to retrieve**;
+- Data that is 
 
 <!-- To com preguiça
 Mas precisa por aqui as coisas que o matheus falou aqui: https://matheustavares.gitlab.io/slides/git_101.pdf
@@ -363,7 +406,18 @@ falar de standard commits e git flow
 
 ### Case study: the repository that Git was made for
 
-<!-- falar do kernel -->
+If you don't know, Git was created in 2005 by Linus Torvalds for being used by
+the Linux kernel as its version control system (read more about that
+[here](https://git-scm.com/book/en/v2/Getting-Started-A-Short-History-of-Git)).
+
+Git is flexible enough to have several "right ways" to be used, so even though
+the Linux kernel was the project that Git was created for, it doesn't mean that
+you should do _exactly_ what they do. But of course, we can learn something
+from there.
+
+<!-- 
+https://kernelnewbies.org/PatchPhilosophy
+-->
 
 ## When squash can be evil
 
@@ -567,7 +621,7 @@ main. Now you want to merge it, but the main branch changed so much that the
 code would need to be compatible with those changes. 
 
 <div class="img-container">
-  <figure>
+  <figure  style="padding-left: 25%; padding-right: 25%">
     <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/useful_squash.svg">
     <figcaption> This is the situation </figcaption>
   </figure>
@@ -578,7 +632,6 @@ new `main`, and then `git commit --amend`. Other is to cherry-pick foo (in
 practice, it would be the same as rebasing). But you can also do this:
 
 ~~~bash
-
 git checkout main
 git checkout -b bar
 git merge --squash foo
@@ -610,3 +663,9 @@ If something is wrong, please open a
 
 And for the last time, remember:
 **Git commits don't store changes, they store snapshots**!
+
+
+### Further reading
+
+- [Pro Git](https://git-scm.com/book/pt-br/v2)
+
