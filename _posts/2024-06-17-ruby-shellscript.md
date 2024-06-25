@@ -183,3 +183,10 @@ começou discussões bem interessante nos comentários. Obrigado a todos!
     <figcaption>#1 no HN!</figcaption>
   </figure>
 </div>
+
+## Update #2
+
+De alguma forma isto chegou no Matz, o criador de Ruby! E isso foi twitado por
+ele! Eu... não acredito!
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Link: Ruby: a great language for shell scripts! - Lucas Seiki Oshiro : <a href="https://t.co/lestntomSR">https://t.co/lestntomSR</a><br> <a href="https://t.co/lestntomSR">https://t.co/lestntomSR</a></p>&mdash; Yukihiro Matz (@yukihiro_matz) <a href="https://twitter.com/yukihiro_matz/status/1805475764013252815?ref_src=twsrc%5Etfw">June 25, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
