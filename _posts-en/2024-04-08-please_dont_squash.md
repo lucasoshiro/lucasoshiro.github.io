@@ -380,6 +380,13 @@ that **code quality** and **data quality** are important while it is harder to
 find someone that really cares about the quality of the **code repository**,
 which is the **database where we store code**.
 
+<div class="img-container">
+  <figure style="padding-left: 25%; padding-right: 25%">
+    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/data_repo_code-en.svg">
+    <figcaption>Your project repository is both a codebase and a database.</figcaption>
+  </figure>
+</div>
+
 Lets recap some practices that we commonly associate with **code quality**:
 
 - Code that is **easy to understand**;
@@ -393,7 +400,25 @@ Lets recap some practices that we commonly associate with **code quality**:
 And about **data quality**:
 
 - Data that is **easy to retrieve**;
-- Data that is 
+- Data that is **accurate**;
+- Data that is **clean**.
+
+I don't want to write a commit guideline here, but there is **a lot** of good
+resources that you can read about. I'll leave some of them at the
+[bottom of this page](#further-reading). I don't think that you should follow them as a
+religion, but there are some practices that I think I should mention here:
+
+1. **Atomic changes**: each commit should introduce an indivisible codeset;
+2. **Write good commit messages**: use the commit message to describe the change
+   you introduced;
+3. **Don't commit incomplete work**: if it is not ready, then don't commit (use
+   the staging area);
+
+And we if we do that, we'll have **more commits**, but they will be
+**good commits**.  They will be **meaningful** and they will be easier to debug with
+tools such as the ones that I mentioned
+[here]({{ site.baseurl }}/posts-en/2023-02-13-git-debug). Not only that, it will
+be easier to **cherry-pick** and **revert** specific changes.
 
 <!-- To com preguiça
 Mas precisa por aqui as coisas que o matheus falou aqui: https://matheustavares.gitlab.io/slides/git_101.pdf
@@ -667,5 +692,13 @@ And for the last time, remember:
 
 ### Further reading
 
+For general Git information:
+
 - [Pro Git](https://git-scm.com/book/pt-br/v2)
+
+About commiting:
+- [How to Write a Git Commit Message](https://cbea.ms/git-commit/)
+- [Git 101](https://matheustavares.gitlab.io/slides/git_101.pdf)
+- [Pro Git - commit guidelines](https://www.git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project#_commit_guidelines)
+
 
