@@ -1,10 +1,9 @@
 ---
-title: Please stop squash merging!
+title: "Git: please stop squash merging!"
 excerpt: At least not before reading this!
 
 header:
-  image:
-  teaser: 
+  teaser: /assets/images/posts/2024-04-08-please_dont_squash/evil_squash.svg
 
 lang: en
 path-pt_br: /_posts-en/2024-04-08-please_dont_squash
@@ -316,9 +315,10 @@ the commit pointed by the current branch before merging. This way,
 there's no reference to the other branch, and that's **the only difference**
 between the so-called "squash and merge" and the merge commit.
 
+<!-- TA ERRADO -->
 <div class="img-container">
   <figure>
-    <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/squash_merge-en.svg">
+    <!-- <img class="large" src="{{ site.baseurl }}/assets/images/posts/2024-04-08-please_dont_squash/squash_merge-en.svg"> -->
     <figcaption>Squash merging B on A</figcaption>
   </figure>
 </div>
@@ -602,11 +602,33 @@ And for the last time, remember:
 
 For general Git information:
 
-- [Pro Git](https://git-scm.com/book/pt-br/v2)
+- [Pro Git](https://git-scm.com/book/pt-br/v2) by Scott Chacon. It's the
+  official Git Book. I'll select the sections that are most important here.
+
+About merge:
+- [Wikipedia - Merge (version control)](https://en.wikipedia.org/wiki/Merge_(version_control)):
+  explains merge and three way merge
 
 About commiting:
-- [How to Write a Git Commit Message](https://cbea.ms/git-commit/)
-- [Git 101](https://matheustavares.gitlab.io/slides/git_101.pdf)
+- [How to Write a Git Commit Message](https://cbea.ms/git-commit/) by
+  cbeams. Advices about what to put in a commit message;
+- [Git 101](https://matheustavares.gitlab.io/slides/git_101.pdf) by Matheus
+  Tavares. Is a general presentation about Git but it focus on commits after
+  slide 29;
 - [Pro Git - commit guidelines](https://www.git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project#_commit_guidelines)
+  Chapter of Pro Git about how to commit;
+- [Philosophy of Linux kernel patches](https://kernelnewbies.org/PatchPhilosophy)
+  about patches (commits) in the Linux Kernel;
 
+About rewriting history:
+- [Git: Rewriting History 101](https://matheustavares.gitlab.io/posts/rewriting-history-101)
+  by Matheus Tavares, about when, how and why rewrite the commit history;
+- [Pro Git - rewriting history](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History)
+  Chapter of Pro Git about rewriting history;
 
+About squash merging (note that both discuss about the fallacy of the clean history):
+- [Squash commits considered harmful](https://dev.to/wesen/squash-commits-considered-harmful-ob1)
+  by Manuel Odendahl. After writing some sections here I found this article
+  that is quite similar.
+- [Squash merges are evil](https://medium.com/bananatag-engineering-blog/squash-merges-are-evil-171f55139c51) by
+  L. Holanda. Another good article against squash merge.
