@@ -5,15 +5,17 @@ excerpt: At least not before reading this!
 header:
   teaser: /assets/images/posts/2024-04-08-please_dont_squash/evil_squash.svg
 
-lang: en
-path-pt_br: /posts/2024-04-08-please_dont_squash
+lang: pt_br
+path-en: /posts-en/2024-04-08-please_dont_squash
 ---
+
+**TRADUÇÃO INCOMPLETA**
 
 ## Intro
 
-It says "20 minute read". 
+It says "19 minute read". 
 
-If you're thinking "it's easy, I'll keep squashing so I can save those 20 minutes
+If you're thinking "it's easy, I'll keep squashing so I can save those 19 minutes
 of my life", well, I must say that it is not an excuse, you can **stop
 squashing** right now without reading this. But if you still thinking that using
 squash merging is a good idea, please, keep reading this. You'll probably won't

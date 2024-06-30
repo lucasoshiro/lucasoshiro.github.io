@@ -5,9 +5,11 @@ excerpt: "Or: how to silently break your deploy"
 header:
     teaser: /assets/images/posts/2024-04-08-please_dont_squash/evil_squash.svg
 
-lang: en
-path-pt_br: /posts/2024-06-27-squash-submodule
+lang: pt_br
+path-en: /posts-en/2024-06-27-squash-submodule
 ---
+
+**TRADUÇÃO INCOMPLETA**
 
 ## Intro
 
