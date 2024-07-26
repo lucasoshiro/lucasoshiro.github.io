@@ -155,7 +155,7 @@ que não são relacionadas a arquivos.
 Então, em Ruby:
 
 ~~~ruby
-exists = File.exists? 'My File'           # métodos que retornam booleanos são terminados em ?
+exists = File.exist? 'My File'           # métodos que retornam booleanos são terminados em ?
 file_content = File.open('My File').read
 File.delete 'My File'                     # parênteses são opcionais se não há ambiguidade
 ~~~

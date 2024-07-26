@@ -151,7 +151,7 @@ not related to files.
 So, in Ruby:
 
 ~~~ruby
-exists = File.exists? 'My File'           # methods that return booleans end in ?
+exists = File.exist? 'My File'           # methods that return booleans end in ?
 file_content = File.open('My File').read
 File.delete 'My File'                     # parentheses are optional if it's not ambiguous
 ~~~
