@@ -5,6 +5,8 @@ excerpt: "Para aqueles que precisam de um Linux x86-64 em um Mac com Apple Silic
 header:
   teaser: /assets/images/posts/2024-02-29-lima-development-setup/lima-logo.svg
 
+last_modified_at: 2024-08-23
+
 lang: pt_br
 path-en: "/posts-en/2024-02-29-lima-development-setup"
 ---
@@ -316,3 +318,40 @@ mac$ scp -P 2022 localhost:my_file destination
 # ou, se você adicionou a instancia ao .ssh/ssh_config:
 mac$ scp lima-debian:my_file destination
 ~~~
+
+## Montando a VM do Lima no seu sistema de arquivos
+
+Também é possível montar o Lima como um drive através do SSH de forma que você
+consegue de forma simples abrir arquivos da VM como se eles estivessem
+localizados na sua máquina hospedeira. Isso é possível com o SSHFS.
+
+Mas tenha cuidado! Isso é baseado no MacFUSE, um port do FUSE para Mac. O FUSE é
+uma forma interessante de criar sistemas de arquivos falsos no Linux, mas o Mac
+não o suporta por padrão. Então, o MacFUSE é um kext (uma extensão de kernel)
+que habilita o FUSE no kernel do Mac. Para instalar você precisa desinstalar
+algumas proteções no Mac, então, siga com cuidado.
+
+Você pode encontrar mais informação sobre como instalar e configurar o MacFUSE e o SSHFS
+[aqui](https://osxfuse.github.io).
+
+Uma vez instalado, crie um diretório vazio em algum lugar no seu sistema de
+arquivos do seu Mac (estou usando`~/sshfs/lima`). Seguindo a configuração de SSH
+que temos até agora, você pode montar a raiz do Lima no seu sistema de arquivos
+rodando:
+
+```
+mac$ sshfs lima-debian:/ <o diretório que você criou>
+```
+
+Leva alguns segundos para montar.
+
+Você pode ler mais sobre o `sshfs` rodando `sshfs --help`. No meu setup, eu
+monto a VM do Lima rodando `sshfs lima-debian:/ ~/sshfs/lima`. Então, se eu
+abro  `~/sshfs/lima` eu consigo ver os arquivos da minha VM:
+
+<div class="img-container">
+  <figure>
+    <img class="small" src="{{ site.baseurl }}/assets/images/posts/2024-02-29-lima-development-setup/sshfs.png">
+  </figure>
+  <figcaption>O Finder mostrando o sistema de arquivos da VM como se fosse um diretório local</figcaption>
+</div>

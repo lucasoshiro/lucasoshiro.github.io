@@ -5,6 +5,8 @@ excerpt: "For those who need a x86-64 Linux on a Apple Silicon Mac"
 header:
   teaser: /assets/images/posts/2024-02-29-lima-development-setup/lima-logo.svg
 
+last_modified_at: 2024-08-23
+
 lang: en
 path-pt_br: "/posts/2024-02-29-lima-development-setup"
 ---
@@ -308,3 +310,39 @@ mac$ scp -P 2022 localhost:my_file destination
 # or, if you added the instance to .ssh/ssh_config:
 mac$ scp lima-debian:my_file destination
 ~~~
+
+## Mounting Lima VM in you filesystem
+
+It's also possible to mount Lima as a drive through SSH, so you can seamlessly
+open files from the VM as they were located in your host machine. We can do that
+using SSHFS.
+
+But be careful! This relies on MacFUSE, a port of FUSE for Mac. FUSE are a cool
+way to create fake filesystems on Linux, but Mac doesn't support it by
+default. Then, MacFUSE is a kext (a kernel extension) that enables FUSE on the
+Mac kernel. In order to install it you need to disable some protections on Mac,
+so, proceed with caution.
+
+You may find more information about how to install and configure MacFUSE and
+SSHFS [here](https://osxfuse.github.io).
+
+Once installed, create an empty directory somewhere in your Mac filesystem (I'm
+using `~/sshfs/lima`). Following the SSH setup that we have so far, you can mount the Lima root in your
+filesystem by running:
+
+```
+mac$ sshfs lima-debian:/ <the directory you created>
+```
+
+It takes some seconds to mount.
+
+You can read more about `sshfs` by running `sshfs --help`. In my setup, I can
+mount the Lima VM by running `sshfs lima:/ ~/sshfs/lima`. Then, if I open
+`~/sshfs/lima` I can see the files from my VM:
+
+<div class="img-container">
+  <figure>
+    <img class="small" src="{{ site.baseurl }}/assets/images/posts/2024-02-29-lima-development-setup/sshfs.png">
+  </figure>
+  <figcaption>Finder showing Lima filesystem mounted as a local directory</figcaption>
+</div>
