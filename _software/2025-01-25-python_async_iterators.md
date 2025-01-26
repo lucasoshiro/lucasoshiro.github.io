@@ -1,6 +1,7 @@
 ---
 title: "Python: recriando async em 10 linhas usando generators"
 excerpt: "Generators + threads serão suficientes, com a benção dos funtores"
+author_profile: true
 
 header:
   teaser: /assets/images/posts/2024-05-11-splat-operator/python.jpg

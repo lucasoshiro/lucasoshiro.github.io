@@ -1,6 +1,7 @@
 ---
 title: "Python: re-creating async in 10 lines using generators"
 excerpt: "Iterators + threads will be enough, blessed by functors"
+author_profile: true
 
 header:
   teaser: /assets/images/posts/2024-05-11-splat-operator/python.jpg
