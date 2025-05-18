@@ -24,7 +24,6 @@ straightforward assembly tutorial.
   - [Blender Forge](https://www.youtube.com/watch?v=sjcpPOioHUk&list=PLeuPK3OugzJpzIkHMAKXsyHMeVsM7KSg2):
   Excelent videos for beginners.
 
-
 ## Emacs
 - [Emacs Wiki](https://www.emacswiki.org/): **A lot of things** about Emacs.
 
@@ -50,10 +49,18 @@ straightforward assembly tutorial.
   - [Thingiverse](https://www.thingiverse.com/): 3D models
   - [Marlin - G-Code](https://marlinfw.org/docs/gcode/G000-G001.html): List of
     G-Code commands, manly for Marlin firmware.
+  - [Design for 3D-Printing](https://blog.rahix.de/design-for-3d-printing/):
+    Covers many aspects of 3D modeling for 3D printing. 
 
 - YouTube channels:
   - [Thinkyhead software](https://www.youtube.com/channel/UCXIq_IbBktwW5aHVAo0ODOw):
-    vídeos técnicos sobre o firmware Marlin, feitos pelo mantenedor (em inglês)
+    technical videos about the Marlin firmware, created by its maintainer.
+
+## Operating systems
+  - [Putting the “You” in CPU](https://cpu.land/): Covers everything about
+    running a software in a modern operating system, covering low-level aspects
+    (machine language, system calls), memory management, executable formats,
+    multitasking, etc. Excellent reading.
 
 ## Python
 - [Automate the Boring Stuff with Python](https://automatetheboringstuff.com/):

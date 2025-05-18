@@ -73,6 +73,8 @@ tutorial de assembly bem direto ao ponto.
   - [Thingiverse](https://www.thingiverse.com/): Modelos 3D
   - [Marlin - G-Code](https://marlinfw.org/docs/gcode/G000-G001.html): Lista de comandos do G-Code, principalmente para o
     firmware Marlin (em inglês).
+  - [Design for 3D-Printing](https://blog.rahix.de/design-for-3d-printing/):
+    Cobre vários aspectos de modelagem 3D para impressão 3D (em inglês)
 
 - Canais do YouTube:
   - [3D Print Academy](https://www.youtube.com/c/3DPrintAcademy): Dicas de
@@ -87,7 +89,15 @@ tutorial de assembly bem direto ao ponto.
 - [FLUSP - tutoriais IIO](https://flusp.ime.usp.br/kernel_iio/): Tutoriais sobre
   o funcionamento do subsistema IIO do kernel do Linux (em inglês).
   
+## Sistemas operacionais
+  - [Putting the “You” in CPU](https://cpu.land/): Abrange tudo que envolve
+    executar um software em um sistema operacional moderno, cobrindo aspectos de
+    baixo nível (linguagem de máquina, chamadas de sistema), gerenciamento de
+    memória, formatos de executáveis, multitarefa, etc. Excelente leitura (em
+    inglês).
+
 ## Python
+
 - [Automate the Boring Stuff with Python](https://automatetheboringstuff.com/):
   Livro introdutório de Python, bastante prático e com foco na automação de
   tarefas repetitivas.
