@@ -33,10 +33,11 @@ g { color: Green }
 |userdiff: add builtin driver for INI files                         |[PATCH](https://lore.kernel.org/git/20250331031309.94682-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |revision: remove log_reencode field from rev_info                  |[PATCH](https://lore.kernel.org/git/20250414151438.22232-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |json-writer: add docstrings to jw_* functions                      |[PATCH](https://lore.kernel.org/git/20250516010159.27042-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>next</b></g>    |
+|Update MyFirstObjectWalk with struct repository and meson          |[PATCH](https://lore.kernel.org/git/20250529192036.75408-1-lucasseikioshiro@gmail.com/)| <o>Under revision</o>           |
 
 ## Weeks
 
-### Application
+### Application (Jan 20th to May 8th)
 
 During the application period, I sent in total 6 patches to the Git codebase and
 one patch to git.github.io. 5 of them were accepted, while one was rejected and
@@ -49,7 +50,7 @@ Development classes:
 - One about Git send-email, available [here, in Portuguese](/assets/pdf/gsoc/send-email.pdf)
 - Other about contributing to Git, available [here, in Portuguese](/assets/pdf/gsoc/contributing.pdf)
 
-### Community Bonding Period
+### Community Bonding Period (May 8th to Jun 1st)
 
 After being accepted in GSoC, I had two calls: one with all the other GSoC
 mentees and other with the GSoC mentors and mentees from Git.
@@ -60,3 +61,10 @@ exactly what I need. Even though its source code is clear and easy to use, it
 lacked an overview for people who are not familiarized with it yet. I sent a
 [PATCH](https://lore.kernel.org/git/20250516010159.27042-1-lucasseikioshiro@gmail.com/)
 documenting how to use this module. It was already accepted and merged to `next`.
+
+In the last days, I followed the tutorial 
+[My First Object Walk](https://github.com/git/git/blob/master/Documentation/MyFirstObjectWalk.adoc),
+for learning how to declare a new command on Git. It was a little outdated, and 
+it was an opportunity to send another
+[patch](https://lore.kernel.org/git/20250529192036.75408-1-lucasseikioshiro@gmail.com/)
+fixing it.
