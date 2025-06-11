@@ -32,8 +32,9 @@ g { color: Green }
 |Microproject Info: replace [Mentoring][PATCH] by [Mentoring PATCH] |[PATCH](https://github.com/git/git.github.io/pull/756)                                 | <g>Merged to <b>master</b></g>  |
 |userdiff: add builtin driver for INI files                         |[PATCH](https://lore.kernel.org/git/20250331031309.94682-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |revision: remove log_reencode field from rev_info                  |[PATCH](https://lore.kernel.org/git/20250414151438.22232-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
-|json-writer: add docstrings to jw_* functions                      |[PATCH](https://lore.kernel.org/git/20250516010159.27042-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>next</b></g>    |
-|Update MyFirstObjectWalk with struct repository and meson          |[PATCH](https://lore.kernel.org/git/20250529192036.75408-1-lucasseikioshiro@gmail.com/)| <o>Under revision</o>           |
+|json-writer: add docstrings to jw_* functions                      |[PATCH](https://lore.kernel.org/git/20250516010159.27042-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
+|Update MyFirstObjectWalk with struct repository and meson          |[PATCH](https://lore.kernel.org/git/20250529192036.75408-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>next</b></g>    |
+|repo-info: add new command for retrieving repository info          |[PATCH](https://lore.kernel.org/git/20250610152117.14826-1-lucasseikioshiro@gmail.com/)| <o>Under review</o>             |
 
 ## Weeks
 
@@ -68,3 +69,13 @@ for learning how to declare a new command on Git. It was a little outdated, and
 it was an opportunity to send another
 [patch](https://lore.kernel.org/git/20250529192036.75408-1-lucasseikioshiro@gmail.com/)
 fixing it.
+
+
+### Week 1 (Jun 2nd to Jun 9th)
+
+In this first week, I sent a first RFC to my mentors (Karthik and Patrick). I
+was asking for internal feedback, and this patch wasn't sent to the Git mailing
+list. However, it is ab
+
+Then I sent another RFC ([this](https://lore.kernel.org/git/20250610152117.14826-1-lucasseikioshiro@gmail.com/))
+to the Git mailing list. This first
