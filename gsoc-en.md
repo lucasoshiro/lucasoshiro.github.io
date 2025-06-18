@@ -71,7 +71,7 @@ it was an opportunity to send another
 fixing it.
 
 
-### Week 1 (Jun 2nd to Jun 9th)
+### Week 1 (Jun 2nd to Jun 8th)
 
 #### First draft of `git repo-info`
 
@@ -164,3 +164,66 @@ $ git repo-info --format=json layout.bare references.format layout.shallow
   }
 }
 ~~~
+
+### Week 2 (Jun 9th to Jun 15th)
+
+After sending [the first version](https://lore.kernel.org/git/20250610152117.14826-1-lucasseikioshiro@gmail.com/)
+in the previous week, this second week was mostly focused on receiving feedback
+from the mailing list.
+
+### Review about the plaintext format
+
+Two questions have arisen about the plaintext format:
+
+1. [Ben Knoble](https://lore.kernel.org/git/CE4644B2-3FCF-47D2-B869-8926BD58A8AE@gmail.com/) and
+   [Junio Hamano](https://lore.kernel.org/git/xmqqfrfzz4xq.fsf@gitster.g/)
+   questioned why not use a `key=value` format in the plaintext output.
+   Karthik Nayak also questioned about this in our weekly meeting, so after
+   three people asking it, this looks like it's the right path :-).
+   This will be implemented the next version.
+   
+2. [Junio Hamano](https://lore.kernel.org/git/xmqq4iwkd68p.fsf@gitster.g/)
+   suggested a better output format, considering the fields may contain
+   line breaks. Currently, `rev-parse` doesn't take it correctly into account
+   and it breaks the assumption that each field will be returned in its own
+   lines. For example, this asks for two fields and returns three lines:
+   
+~~~
+$ git init 'my
+ repo'
+
+$ cd my\nrepo/
+$ git rev-parse --show-toplevel --is-bare-repository
+/private/tmp/my
+repo
+false
+~~~
+   
+   Junio also said:
+
+> As often said, an earlier mistake is not an excuse to pile more of
+> them on top.  Isn't the whole point of this new command to remove
+> these kitchen-sink options out of rev-parse and give them better
+> home?  Let's learn from our earlier mistakes and do it right in the
+> new incarnation.
+
+   So let's do it correctly now!
+
+### Review about the CLI
+
+About the CLI, the only reviews were from Karthik:
+
+1. It wasn't clear why I added the `--allow-empty` flag. Karthik is not against
+   it, but he thinks that it should be clear why it existed. In fact, I added
+   this flag targeting the use case of scripts, this way, the scripts can
+   assume one field per requested option.
+   
+2. Karthik suggested in our weekly meeting that the option list also could also
+   accept the category (e.g. `objects` or `path`) as an option, so the user
+   won't need to select each of its fields.
+
+### Long running server mode
+
+Junio asked if I'm planning to add a long-running mode like `cat-file` has
+`--batch-command`. I didn't plan that at first, but after his review, I'm
+considering adding this feature after having the basic functionality working.
