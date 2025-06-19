@@ -33,7 +33,7 @@ g { color: Green }
 |userdiff: add builtin driver for INI files                         |[PATCH](https://lore.kernel.org/git/20250331031309.94682-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |revision: remove log_reencode field from rev_info                  |[PATCH](https://lore.kernel.org/git/20250414151438.22232-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |json-writer: add docstrings to jw_* functions                      |[PATCH](https://lore.kernel.org/git/20250516010159.27042-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
-|Update MyFirstObjectWalk with struct repository and meson          |[PATCH](https://lore.kernel.org/git/20250529192036.75408-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>next</b></g>    |
+|Update MyFirstObjectWalk with struct repository and meson          |[PATCH](https://lore.kernel.org/git/20250529192036.75408-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |repo-info: add new command for retrieving repository info          |[PATCH](https://lore.kernel.org/git/20250610152117.14826-1-lucasseikioshiro@gmail.com/)| <o>Under review</o>             |
 
 ## Weeks
@@ -171,7 +171,7 @@ After sending [the first version](https://lore.kernel.org/git/20250610152117.148
 in the previous week, this second week was mostly focused on receiving feedback
 from the mailing list.
 
-### Review about the plaintext format
+#### Review about the plaintext format
 
 Two questions have arisen about the plaintext format:
 
@@ -209,7 +209,7 @@ false
 
    So let's do it correctly now!
 
-### Review about the CLI
+#### Review about the CLI
 
 About the CLI, the only reviews were from Karthik:
 
@@ -222,7 +222,7 @@ About the CLI, the only reviews were from Karthik:
    accept the category (e.g. `objects` or `path`) as an option, so the user
    won't need to select each of its fields.
 
-### Long running server mode
+#### Long running server mode
 
 Junio asked if I'm planning to add a long-running mode like `cat-file` has
 `--batch-command`. I didn't plan that at first, but after his review, I'm
