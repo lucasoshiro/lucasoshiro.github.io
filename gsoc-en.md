@@ -227,3 +227,83 @@ About the CLI, the only reviews were from Karthik:
 Junio asked if I'm planning to add a long-running mode like `cat-file` has
 `--batch-command`. I didn't plan that at first, but after his review, I'm
 considering adding this feature after having the basic functionality working.
+
+
+### Week 3 (Jun 16th to Jun 22th)
+
+Given the feedback of the v1, it was time to send the v2
+(which can be seen
+[here](https://lore.kernel.org/git/20250619225751.99699-1-lucasseikioshiro@gmail.com/))
+
+#### Major changes in v2
+
+The major changes were:
+
+- The plaintext format now returns its fields in a key=value format
+
+- The tests were renumbered to t1900, since it's a new command (the previous was
+  t1518, following the numbering of rev-parse)
+
+- The test function 'test_repo_info' now has a docstring, and it is more flexible
+  for using more complex repository initializations
+
+- The flag --allow-empty is now introduced in its own commit
+
+- The plaintext and the JSON formats are now introduced in their own commits
+
+- The JSON format tests, which depends on the Perl's JSON module, are now marked
+  with the PERLJSON lazy prereq, being skipped in environments that don't have
+  that module installed
+
+#### Tasks left for future versions
+
+Some things pointed in the last review weren't implemented as I prefer to do
+them in another iteration of repo-info after having its basic functionality
+working:
+
+- Remove the dependency on `the_repository` when calling `is_bare_repository`
+
+- Add a `--batch-command` mode, based on the `--batch-command` flag of
+  `cat-file`, which is a long-running mode where the data is requested from
+  `stdin` instead of the CLI
+
+- Add documentation for this new command
+
+- Use the category as key instead of only accepting category.key. In the current
+  patchset, `git repo-info layout` would equivalent to
+  `git repo-info layout.bare layout.shallow`
+
+The task of removing this dependency is related to the project of 
+[Ayush](https://ayu-ch.github.io/), another GSoC '25 mentee. I asked him if he
+intends to do it, and he'll consider that for other patches in the future
+[discussion here](https://lore.kernel.org/git/CAE7as+bTKE5opov-Xn0P8R+cy+=-XRkX9Wpie_W0717XMF1b_w@mail.gmail.com/)
+
+About the `--batch-command` mode, I asked Karthik about the use cases of
+`cat-file --batch-command` and if it would be useful to have a similar feature
+in `repo-info`. He told me that `cat-file --batch-command` is used for
+retrieving several data that `cat-file` already returned in its CLI mode, but
+keeping the same process running instead of calling `git cat-file` for each
+object. However, `cat-file` deals with every object stored in Git, or in other
+words, the set of data that it can return contains, at least, every version of
+every tracked file, every version of every tracked directory, and every commit
+in the history. `git repo-info` will return a fixed and small set of data, which
+shouldn't be a problem to be entirely retrieved if the user doesn't know
+beforehand which fields will be necessary. This way, I decided to discard
+`--batch-command`.
+
+The reviews (Karthik and Junio) missed the documentation in this v2, which I
+must admit that it was my bad :-(.
+
+The last feature (using a category as a key in CLI) is not discarded. It'll be
+implemented in a future version after having the basic functionality working and
+ready to use.
+
+#### The UTF-8 problem
+
+By now, I'm not dealing with paths, however, Phillip Wood presented an important
+discussion about it: JSON is an UTF-8 encoded format, but this charset
+restriction can't be supposed in different filesystems.
+
+This way, it's not safe to just dump a path as a value when serializing to JSON.
+Since I'm not dealing with paths yet I'll not address this issue by now, but
+dealing with charset issues is something that I can't avoid in the future.
