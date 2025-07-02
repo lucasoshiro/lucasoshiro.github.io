@@ -307,3 +307,42 @@ restriction can't be supposed in different filesystems.
 This way, it's not safe to just dump a path as a value when serializing to JSON.
 Since I'm not dealing with paths yet I'll not address this issue by now, but
 dealing with charset issues is something that I can't avoid in the future.
+
+### Week 4 (Jun 23th ~ Jun 29th)
+
+The fourth week, unlike the previous ones, didn't result in another version of
+the patchset. However, during that week I was working on trying to address the
+issues from the previous review:
+
+- About the documentation, I finally wrote one for `git repo-info`. It basically
+  describes the new command syntax, its two output formats, and the data that it
+  currently retrieves.
+  
+- Karthik also told me that the commits weren't descriptive enough. I also fixed
+  that.
+
+- About the tests, Phillip Wood asked me to fix
+  [several issues]((https://lore.kernel.org/git/254e4819-a693-4fb7-aa92-260038cbfbe2@gmail.com/))
+  in the tests for this command (`t1900`), which I did in this week.
+
+- About the `--allow-empty` flag, I decided to remove it and add a `--all` flag
+  in the future, after the comments of
+  [Junio](https://lore.kernel.org/git/xmqq1pre14ae.fsf@gitster.g/) and
+  [Karthik](https://lore.kernel.org/git/CAOLa=ZTCoc9vfeMrWxqU5psmbxGzW=B-QULeSR+uvF9kQi9WzQ@mail.gmail.com/).
+
+- Phillip [suggested](https://lore.kernel.org/git/223c7cbd-610e-49e2-90e2-5914cbc0f1d7@gmail.com/)
+  another format instead of the key=value that I was using: a null-terminated
+  format where the keys and values are separated by a line feed
+  (`<key><LF><value><NUL>`). Given that it solves the problem of parsing special
+  characters, that it is already used by `git config --list -z` and that it
+  doesn't have any downsides, I'll use it.
+
+- There were some minor code changes that I also addressed.
+
+[Phillip](https://lore.kernel.org/git/223c7cbd-610e-49e2-90e2-5914cbc0f1d7@gmail.com/)
+is concerned about the (yet to be implemented) field `git-dir`, which may induce
+users to try to build some paths using this value instead of using `git
+rev-parse --path`. Given that the `--path` options handles several special
+cases, my first idea is to list all of them under the `path` category. But I'll
+leave that decision to a future iteration, as I'm focusing more on the
+documentation and the machinery of this command by now.
