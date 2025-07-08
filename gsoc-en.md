@@ -346,3 +346,42 @@ rev-parse --path`. Given that the `--path` options handles several special
 cases, my first idea is to list all of them under the `path` category. But I'll
 leave that decision to a future iteration, as I'm focusing more on the
 documentation and the machinery of this command by now.
+
+### Week 5 (Jun 30th ~ Jul 7th)
+
+This week was dedicated to finish the work that still remained from the last
+week and then I could send a v3 with the pending changes. This third version
+can be seen [here](https://lore.kernel.org/git/20250706231938.16113-1-lucasseikioshiro@gmail.com/).
+
+There were two reviews from Patrick that I didn't include in my v3 and that
+should be highlighted:
+
+- The [first](https://lore.kernel.org/git/aGZqK5eBA18vHAa_@pks.im/)
+  is about `git survey`, another command that is still under development
+  (as seen [here](https://gitlab.com/gitlab-org/git/-/merge_requests/369)).
+  Patrick was thinking about merging `git survey` and `git repo-info` in a
+  new command called `git repo`, with subcommands housing the functionality
+  of those two commands.
+
+- The [second](https://lore.kernel.org/git/aGZqN-oqctJ79Chz@pks.im/)
+  is about refactoring the category and field declaration, which would reduce
+  the number of nested `switch`es.
+  [Phillip](https://lore.kernel.org/git/c1f871ec-96a0-4dbc-b84b-4add36bec682@gmail.com/)
+  and [Junio](https://lore.kernel.org/git/xmqqh60ayrqp.fsf@gitster.g/) also
+  have similar proposals of refactoring. This will be done in v4.
+
+Besides my work in `repo-info`, there are one extra thing that I would like to
+comment. In the [application period](#application-jan-20th-to-may-8th) entry of
+this blog I mentioned the Free Software Development subject of my university,
+where the students needs to contribute to free software. After my short talks
+about Git, some students became interested in contributing to Git and about GSoC.
+Some of those students sent some small patches and
+[one of those patches](https://lore.kernel.org/git/20250617002939.24478-1-rodmichelassi@gmail.com/),
+developed by Isabella Caselli and Rodrigo Michelassi, is already merged to `master`!
+The experiences of Isabella and Rodrigo are related in [her blog](https://isacaselli.github.io/posts/git/).
+
+Apart from that university subject, a friend of mine (Rodrigo Carvalho) was also
+interested in contributing to Git. He sent two patches
+[this](https://lore.kernel.org/git/20250529221805.97036-1-rodrigorsdc@gmail.com/)
+and [this](https://lore.kernel.org/git/20250510230909.65519-1-rodrigorsdc@gmail.com/#t),
+which are also already merged to `master`.
