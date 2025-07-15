@@ -385,3 +385,60 @@ interested in contributing to Git. He sent two patches
 [this](https://lore.kernel.org/git/20250529221805.97036-1-rodrigorsdc@gmail.com/)
 and [this](https://lore.kernel.org/git/20250510230909.65519-1-rodrigorsdc@gmail.com/#t),
 which are also already merged to `master`.
+
+### Week 6 (Jul 8th ~ Jul 13th)
+
+In the previous week, Patrick
+[told me](https://lore.kernel.org/git/aGZqK5eBA18vHAa_@pks.im/) that Justin
+Tobler was working on the
+[git-survey](https://gitlab.com/gitlab-org/git/-/merge_requests/369),
+which would be a Git-native replacement for
+[git-sizer](https://github.com/github/git-sizer).
+
+After a meeting with my mentors, we agreed that merging Justin's work and 
+mine would be a good idea. In the context of GSoC, I would still focus on
+developing the `git repo-info` features while making room for the new
+functionality from `git survey`.
+
+Justin contacted me, and we had a call last Friday (July 11th) about this
+collaboration. Some highlights of our discussion:
+
+1. How would this integration be done? Making this `git repo` command only as a
+   house for two different subcommands, or making it a common interface for our
+   work? An argument for separated subcommands is that `repo-info` is a light
+   command, while `survey` is more computationally expensive. An argument for
+   having a common interface is having a standard format for requesting and
+   retrieving data from both sources.
+
+2. A solution for 1. would be keeping the idea of having `repo-info` and
+   `survey` as two subcommands (perhaps called `git repo info` and `git repo
+   survey`), following the same output format. This would also make room for a
+   third command which would return data from both commands. Then `git repo`
+   would be a plumbing command (`git survey` is more porcelain-ish), and its
+   machinery could be used by a separate porcelain command for formatting its
+   output in a more human-readable way.
+
+3. Justin asked me about "why JSON?". And yeah, to be honest I'm using JSON
+   because it was listed in the GSoC idea of a machine-readable format that could
+   be easily parsed by other applications. Given that this would be (as far as I
+   remember) the only Git command that outputs JSON, it would be out of place,
+   while the other format (null-terminated) is easier to manipulate (e.g. JSON
+   has Unicode issues mentioned by Phillip) and follows an already used syntax
+   (the same as `git config --list -z`). This way, it seems to me that dropping
+   JSON is the way to go.
+
+Then, instead of introducing a new command `git repo-info`, I would declare a
+new command called `git repo` with two subcommands:
+
+- `git repo info`, which is my GSoC project.
+- `git repo survey`, which will include Justin's work.
+
+Additionally, JSON formatting will be dropped, as the null-terminated format is
+good enough and JSON offers no significant advantages for this command. Removing
+JSON will also simplify the code, as I won't need to handle the details of those
+formats.
+
+I have submitted a
+[v4](https://lore.kernel.org/git/20250714235231.10137-1-lucasseikioshiro@gmail.com/)
+with these changes. Let's wait for the review.
+
