@@ -442,3 +442,23 @@ I have submitted a
 [v4](https://lore.kernel.org/git/20250714235231.10137-1-lucasseikioshiro@gmail.com/)
 with these changes. Let's wait for the review.
 
+### Week 7 (Jul 14th ~ Jul 20th)
+
+After sending the [v4](https://lore.kernel.org/git/20250714235231.10137-1-lucasseikioshiro@gmail.com/),
+I feel that we're converging on what `git repo` will behave :-).
+
+There was a discussion on whether I should use the name `repo` for the command
+or not. After hearing some suggestions, I'll keep the name `repo`, even though
+it sounds a little bit generic.
+
+Justin suggested to bring back the idea of having more than one format, however
+this time is for also having a key-value format but more suitable for being read
+by humans. The format [he suggested](https://lore.kernel.org/git/mgdervgp34m6ipfbodsfn7cztcl7gdeggzemfgivzvuyk7qtba@wdijebkuioxg/)
+was a simple `key=value` format. That's the only new "feature request" of this
+iteration, while most of the other comments were about code style (which I
+reckon that I was consistently inconsistent...), typos and suggestions for
+refactoring.
+
+Then I sent
+[v5](https://lore.kernel.org/git/20250722002835.33428-1-lucasseikioshiro@gmail.com/)
+addressing all those issues.
