@@ -462,3 +462,41 @@ refactoring.
 Then I sent
 [v5](https://lore.kernel.org/git/20250722002835.33428-1-lucasseikioshiro@gmail.com/)
 addressing all those issues.
+
+### Week 8 (Jul 21th ~ Jul 27th)
+
+The review of v5 was focused in minor changes, such as naming of constants,
+CLI values and documentation.
+
+Perhaps the biggest issue was about the functions that retrieve the values.
+In v5 they returned constant strings, which would be a problem for future
+versions where I'll need to generate a new string.
+
+Patrick and Junio were [discussing](https://lore.kernel.org/git/aIHRCz_qswp7RgSy@pks.im/)
+about whether we should escape the values using `quote_c_style`. By now, it
+wouldn't affect the current values, so I decided to don't use it in v6.
+
+The v6 of this patchset, then, had smaller changes, without the rewrites in
+the previous versions. It can be seen 
+[here](https://lore.kernel.org/git/20250727175110.84770-1-lucasseikioshiro@gmail.com/).
+
+In parallel, I started working in the next fields, and thinking about what would
+be the next challenges about then:
+
+- `objects.object-format`: It will return the algorithm used for hashing the
+   objects (i.e. `sha1` or `sha256`), which will query the same data as
+   `git rev-parse --show-object-format`. However, the flag `--show-object-format`
+   comes in three flavours: `storage`, `input` and `output`, which currently
+   are the same but may change in the future. I can think in two solutions:
+
+  1. Split into three values: `objects.object-format-(storage|input|output)`,
+     which seems to be confusing
+
+  2. Use `objects.object-format` as a set of three values (
+  `objects.object-format.(storage|input|output)`), but it seems to be a little
+  bit overengineered
+
+- `path.*`: there are some things that need to be solved for retrieving those values:
+  1. Should we use absolute or relative paths? Or should we use a flag for that?
+  2. The same discussion about quoting
+
