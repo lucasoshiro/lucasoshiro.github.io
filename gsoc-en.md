@@ -500,3 +500,18 @@ be the next challenges about then:
   1. Should we use absolute or relative paths? Or should we use a flag for that?
   2. The same discussion about quoting
 
+### Week 9 (Jul 28th ~ Ago 3rd)
+
+The reviews of v6 were mainly focused in the tests. Eric Sunshine joined the
+discussion of this new command and suggested several changes in the tests.
+You can follow the discussion of v6 [here](https://lore.kernel.org/git/20250727175110.84770-1-lucasseikioshiro@gmail.com/).
+Those changes really improved the readability and the robustness of the tests.
+
+Given that the reviews didn't require major changes, I could also send a
+[v7](https://lore.kernel.org/git/20250801131111.8115-1-lucasseikioshiro@gmail.com/),
+addressing those issues. This new version already has some reviews by Eric and
+Patrick.
+
+In paralell, I started working on a patch to `git repo` for adding `-z` as an
+alias for `--format=null`. This patch will eventually be rebased and will be
+part of a patchset containing some of the features that I developed in week 8.
