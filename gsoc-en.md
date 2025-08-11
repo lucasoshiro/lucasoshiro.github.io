@@ -515,3 +515,36 @@ Patrick.
 In paralell, I started working on a patch to `git repo` for adding `-z` as an
 alias for `--format=null`. This patch will eventually be rebased and will be
 part of a patchset containing some of the features that I developed in week 8.
+
+### Week 10 (Ago 4th ~ Ago 7th)
+
+This week was focused in polishing the patchset in order to being accepted. The
+reviews of [v7](https://lore.kernel.org/git/20250801131111.8115-1-lucasseikioshiro@gmail.com/)
+were focused on small refactors in the tests, documentation and error handling.
+This resulted in a [v8](https://lore.kernel.org/git/20250806195537.93302-1-lucasseikioshiro@gmail.com/)
+that basically applies the suggestions from the reviewers.
+
+Karthik and Patrick reviewed the [v8](https://lore.kernel.org/git/20250806195537.93302-1-lucasseikioshiro@gmail.com/)
+asking for smaller nitpicks. Junio had already accepted and merged it to his
+`seen` branch, however, the suggestions from Karthik and Patrick were simple
+enough to be applied in a
+[v9](https://lore.kernel.org/git/20250807150239.6987-1-lucasseikioshiro@gmail.com/#t) 
+that was sent in the same day.
+
+The patch wasn't merged to `next` yet, however, Junio announced in his 
+["What's cooking" mail](https://lore.kernel.org/git/xmqqectl6unf.fsf@gitster.g/)
+that it will be merged. This way, I think I can say the basic functionality of
+this new command is finished! There are, of course, many features that still
+need to be added, however, the most important decisions have already been made
+in that first patchset.
+
+In week 8 I related that I started working on the next features. I already
+have branches for them:
+
+- [This](https://github.com/lucasoshiro/git/tree/repo-info-features) retrieves
+  the object format and adds a new flag `-z` as an alias for `--format=null`.
+  This is ready to be sent to the mailing list.
+
+- [This](https://github.com/lucasoshiro/git/tree/repo-info-path) adds the
+  infrastructure for retrieving path-related data. This needs more discussion,
+  as I said in Week 8.
