@@ -34,7 +34,8 @@ g { color: Green }
 |revision: remove log_reencode field from rev_info                  |[PATCH](https://lore.kernel.org/git/20250414151438.22232-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |json-writer: add docstrings to jw_* functions                      |[PATCH](https://lore.kernel.org/git/20250516010159.27042-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |Update MyFirstObjectWalk with struct repository and meson          |[PATCH](https://lore.kernel.org/git/20250529192036.75408-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
-|repo-info: add new command for retrieving repository info          |[PATCH](https://lore.kernel.org/git/20250610152117.14826-1-lucasseikioshiro@gmail.com/)| <o>Under review</o>             |
+|repo-info: add new command for retrieving repository info          |[PATCH](https://lore.kernel.org/git/20250610152117.14826-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>next</b></g>    |
+|repo: add -z and objects.format                                    |[PATCH](https://lore.kernel.org/git/20250820144247.79197-1-lucasseikioshiro@gmail.com/)| <o>Under review</o>             |
 
 ## Weeks
 
@@ -516,7 +517,7 @@ In paralell, I started working on a patch to `git repo` for adding `-z` as an
 alias for `--format=null`. This patch will eventually be rebased and will be
 part of a patchset containing some of the features that I developed in week 8.
 
-### Week 10 (Ago 4th ~ Ago 7th)
+### Week 10 (Ago 4th ~ Ago 10th)
 
 This week was focused in polishing the patchset in order to being accepted. The
 reviews of [v7](https://lore.kernel.org/git/20250801131111.8115-1-lucasseikioshiro@gmail.com/)
@@ -548,3 +549,26 @@ have branches for them:
 - [This](https://github.com/lucasoshiro/git/tree/repo-info-path) adds the
   infrastructure for retrieving path-related data. This needs more discussion,
   as I said in Week 8.
+
+### Week 11 (Ago 11th ~ Ago 17th)
+
+Last week, I told that my first patchset was ready to be merged. However, after
+that last email, Phillip, Eric and Junio requested to change some things in the
+command. The major change is that `git repo info` now doesn't return the
+key-value pairs sorted by the keys and now it doesn't drop duplicated keys.
+The values are now returned in the same order they were requested. This resulted
+in more two versions of this patchset
+([v10](https://lore.kernel.org/git/20250815135521.44044-1-lucasseikioshiro@gmail.com/)
+and
+[v11](https://lore.kernel.org/git/20250816224603.3307-1-lucasseikioshiro@gmail.com/)).
+
+During this week, I also asked my mentors to review
+[this patchset](https://github.com/lucasoshiro/git/tree/repo-info-features)
+mentioned in the last week. I couldn't send that to the mailing list yet as
+it depends on having the first patchset merged, so the internal review from
+Patrick and Karthik hopefully will make this be merged a little faster than the
+previous one.
+
+I also polished a little more the
+[support for path-related values](https://github.com/lucasoshiro/git/tree/repo-info-path),
+but it will only be sent after the two previous patchsets are merged.
