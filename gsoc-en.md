@@ -21,6 +21,113 @@ g { color: Green }
 ## Info
 
 - [Proposal PDF](/assets/pdf/gsoc/proposal.pdf)
+- [Project details](https://summerofcode.withgoogle.com/programs/2025/projects/fGgMYHwl)
+- [Interactions on the Git mailing list](https://lore.kernel.org/git/?q=%22Lucas+Seiki+Oshiro%22+%22GSoC%22)
+
+## Final report
+
+### Goals of the project
+
+The main goal of this project was to introduce a new command to Git that would
+be the main command for retrieving metadata from a repository. Initially called
+`git repo-info`, it was later renamed to `git repo`, with `info` being a
+subcommand. This allows expansions by other Git developers, for example, one
+called `git repo survey` which is planned to return statistics about the
+repository.
+
+This new command is a _plumbing_ command, which in the Git jargon means that it
+is a command that returns machine-readable values instead of a more
+human-readable output (which in the Git jargon is called _porcelain_).
+
+The first idea of this command was to use JSON as the output format, however, 
+during the GSoC program I dropped that format because it was harder to maintain,
+no other Git command returns JSON by default, and there's no real benefit on
+using it. It was replaced by two other formats already used by Git: a
+`<key>=<value>` and a null-terminated format.
+
+### What was done and current state
+
+During the GSoC period, I implemented the infrastructure of `git repo` and the
+basic functionality of `git repo info`:
+
+- Support for the `keyvalue` format
+- Support for the `nul` format
+- Retrieving the reference storage format (`references.format`)
+- Retrieving whether the repository is shallow (`layout.shallow`)
+- Retrieving whether the repository is bare (`layout.bare`)
+
+All those features were already merge to `master`. There are two more features
+under review:
+
+- Using `-z` as an alias for `--format=null`
+- Retrieving the object hashing algorithm (`object.format`)
+
+There is other feature that is currently under development and wasn't yet
+submitted for being reviewed: adding support for returning path-related values.
+
+You can find all my interactions in the mailing list including the source code
+that was submitted [here](https://lore.kernel.org/git/?q=%22Lucas+Seiki+Oshiro%22+%22GSoC%22).
+
+### Features left
+
+Some features that were planned but weren't submitted:
+
+- add a `--all` flag (or similar) for returning all the values
+- return path-related fields (even though it was started)
+- use the top-level category name as the key
+
+### Merged code
+
+During the period of GSoC, only [this patchset](https://lore.kernel.org/git/20250610152117.14826-1-lucasseikioshiro@gmail.com/)
+were merged. You can check its commit history by running
+~~~
+git log -p v2.50.0..a81224d
+~~~
+or you can check only the changes by running
+~~~
+git diff v2.50.0..a81224d
+~~~
+in the Git source code repository. If you don't have it cloned locally, you can
+check through [GitHub's compare](https://github.com/git/git/compare/v2.50.0..a81224d).
+
+Most of the work in this GSoC project was writing code, but interacting in the
+mailing list as this is a new command and the decisions about it must be done
+correctly. The dicussion about that patchset can be seen
+[here](https://lore.kernel.org/git/20250610152117.14826-1-lucasseikioshiro@gmail.com/T/#u).
+
+The other patches that I sent in the context of GSoC but before GSoC started
+itself can be seen in the section ["Patches"](#patches) of this page.
+
+### Challenges
+
+The main challenges in this project were related to the decisions of how this
+new command would behave. Writing the code itself wasn't really hard, however,
+I needed to make many decisions on the output formats, the names, the behavior
+and so on. The Git development is code-oriented, and even the first drafts of
+how this new command would behave needed to be delivered as a code, with
+documentation, tests and well-written commit history.
+
+The development being so code-oriented has its advantages, and one that I makes
+it a good approach is that one can apply the patches and see the proposal
+running instead of only being planned. However, I think it made the development
+slower than what I'm used to because some design decisions started to being
+questioned only in their 9th version.
+
+### Final words
+
+I found the experience very positive. Git is a tool that I really admire and it
+is very nice to be now part of it! Working on with while I was finishing my
+master's degree was tiring, but it was really fun! I also had the opportunity to
+work with great people, in special:
+
+- Karthik Nayak and Patrick Steinhardt, my GSoC mentors
+- Junio Hamano, the Git maintainer
+- Phillip Wood and Eric Sunshine, who weren't my mentors or part of GSoC but
+  reviewed almost every version of my patches
+- Justin Tobler, who was interested in join forces with me, planning to add his
+  work as the second subcommand of `git repo` in the future, which will perhaps
+  be called `git repo survey`
+- Kaartic Sivaraam and Christian Couder, the Org Admins of Git in GSoC
 
 ## Patches
 
