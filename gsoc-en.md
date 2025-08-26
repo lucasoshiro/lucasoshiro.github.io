@@ -34,7 +34,7 @@ g { color: Green }
 |revision: remove log_reencode field from rev_info                  |[PATCH](https://lore.kernel.org/git/20250414151438.22232-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |json-writer: add docstrings to jw_* functions                      |[PATCH](https://lore.kernel.org/git/20250516010159.27042-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |Update MyFirstObjectWalk with struct repository and meson          |[PATCH](https://lore.kernel.org/git/20250529192036.75408-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
-|repo-info: add new command for retrieving repository info          |[PATCH](https://lore.kernel.org/git/20250610152117.14826-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>next</b></g>    |
+|repo-info: add new command for retrieving repository info          |[PATCH](https://lore.kernel.org/git/20250610152117.14826-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |repo: add -z and objects.format                                    |[PATCH](https://lore.kernel.org/git/20250820144247.79197-1-lucasseikioshiro@gmail.com/)| <o>Under review</o>             |
 
 ## Weeks
@@ -572,3 +572,25 @@ previous one.
 I also polished a little more the
 [support for path-related values](https://github.com/lucasoshiro/git/tree/repo-info-path),
 but it will only be sent after the two previous patchsets are merged.
+
+### Week 12 (Ago 18th ~ Ago 25th)
+
+This was the final week of my GSoC, and it felt really fast!
+
+In this week, my first patchset was finally merged to `next` and `master`!
+This means that I would be free to do more things.
+
+The patchset that I was working on last week (the one that that adds `-z` and
+`objects.format`) could be finally sent to the Git mailing list, and its first
+version can be seen
+[here](https://lore.kernel.org/git/8EB9C032-6739-48F2-9097-9833FC3CAA28@gmail.com/T/#m23ebb30ec9002d9fdb94fae43b1f63a9d7739e19).
+
+After sending that first version, I received some reviews from Junio, Patrick,
+Karthik and Jean-Noël Avila. They asked me to change minor things:
+
+- fix the usage string, making it follow the guidelines
+
+- rename `objects.format` to `object.format`
+
+Then, I sent a [v2](https://lore.kernel.org/git/8EB9C032-6739-48F2-9097-9833FC3CAA28@gmail.com/T/#md2fe6d9993b829f21a575bec3b9564c8a05395a0)
+replacing that.
