@@ -142,7 +142,7 @@ work with great people, in special:
 |json-writer: add docstrings to jw_* functions                      |[PATCH](https://lore.kernel.org/git/20250516010159.27042-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |Update MyFirstObjectWalk with struct repository and meson          |[PATCH](https://lore.kernel.org/git/20250529192036.75408-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
 |repo-info: add new command for retrieving repository info          |[PATCH](https://lore.kernel.org/git/20250610152117.14826-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>master</b></g>  |
-|repo: add -z and objects.format                                    |[PATCH](https://lore.kernel.org/git/20250820144247.79197-1-lucasseikioshiro@gmail.com/)| <o>Under review</o>             |
+|repo: add -z and objects.format                                    |[PATCH](https://lore.kernel.org/git/20250820144247.79197-1-lucasseikioshiro@gmail.com/)| <g>Merged to <b>next</b></g>  |
 
 ## Weeks
 
