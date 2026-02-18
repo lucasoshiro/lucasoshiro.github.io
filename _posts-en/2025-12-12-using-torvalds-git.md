@@ -1,48 +1,49 @@
 ---
-title: Using the first and the last versions of Torvalds' Git
-excerpt:
+title: Using the first and the last versions of Torvalds's Git
+excerpt: Going back to 2005 to see what was going on
 
 header:
-  image:
-  teaser: 
+  image: 
+  teaser: /assets/images/posts/excaligit.png 
 
 lang: en
-path-pt_br: /_posts-en/2025-12-12-using-torvalds-git
+path-pt_br: /posts/2025-12-12-using-torvalds-git
 ---
 
 ## Intro
 
 Perhaps one of the most well-known stories of the Open Source world is the birth
-of Git: Linus torvalds needed a version control system for the kernel and gave
-us Git. While he is still the maintainer of the kernel, he was the maintainer of
-Git during only three months, from april to july of 2005. Since then, Git has
-been maintained by Junio Hamano.
+of Git: Linus Torvalds needed a version control system for the kernel Linux and
+gave us Git. While he is still the maintainer of the kernel, he was the
+maintainer of Git during only three months, from April to July of 2005. Since
+then, Git has been maintained by Junio Hamano.
 
 Even if 20 years has passed since the leadership change, Git is still remembered
 as the second masterpiece of Linus Torvalds. Personally, I think that what makes 
 Git great is its elegant core, which exists since its first version, and that's
 what Linus really gave us.
 
-However, how usable what Git when Torvalds was the maintainer? Let's found out
+However, how usable was Git when Torvalds was the maintainer? Let's found out
 this here, looking at two versions of Git:
 
 1. The first commit
 2. The last release by Torvalds
 
 
-So let's check out what happened in this moment of Git history (pun intended).
+So let's see what happened in this moment of Git history (pun intended).
 
 ## Setup
 
 Let's go back in time. My time machine is a Docker container running Ubuntu
 7.10 Gutsy Gibbon, released in 2007. It is old enough to have packages in the
-versions needed by the early Git versions, and fortunately, I could find
+versions needed by the early Git, and fortunately, I could find
 [a Docker image](https://hub.docker.com/r/icomputer7/ancient-ubuntu-docker/)
 for that. I really wanted to use it in my modern Linux, but sadly it wasn't easy
 to compile due to those library incompatibilities.
 
-It's really easy to obtain the source code of those versions. Git is versioned
-with Git and its first versions will be recorded forever in its history:
+It's really easy to obtain the source code of those old Git versions. It is, of
+course, versioned with Git and its first versions will be recorded forever in
+its history:
 
 ~~~bash
 git clone git@github.com:git/git.git
@@ -51,14 +52,14 @@ git clone git@github.com:git/git.git
 git log --reverse
 
 # Listing the versions prior to 1.0. We want the last released by Torvalds
-git tag --list v0.99
+git tag --list 'v0.*'
 ~~~
 
-We'll try to use the old Git to version a simple fizzbuzz in C:
-  1. First commit: a simple C code with only "#include <stdio.h>" + main return 0
-  2. Second commit: add for
-  3. Third and fourth commit: one adding fizz and other buzz, in parallel
-  4. Fifth commit: merge fizz and buzz
+We'll try to use the old Git for versionioning a simple fizzbuzz in C:
+1. First commit: a simple C code with only "#include <stdio.h>" and main function
+2. Second commit: add the printing loop
+3. Third and fourth commit: parallel commits, one adding fizz and other buzz
+4. Fifth commit: merge fizz and buzz
 
 This is the commit graph that we want:
 
@@ -116,13 +117,13 @@ int main() {
 
 ![](/assets/images/posts/2025-12-12-using-torvalds-git/from_hell.png)
 
-Let's go back to the first commit, `e83c5163`. Only 9 source files, a Makefile
+Let's go back to Git's first commit, `e83c5163`. Only 9 source files, a Makefile
 and a README. Only 1036 lines of C code. There were some small problems in the
 code and I couldn't compile it by only running `make`. Luckly, they were easy to
 fix ([here's the fixed code](https://github.com/lucasoshiro/git/tree/first-commit)).
 
-First weird thing it didn't create a `git` executable. Instead, we have 7
-executables:
+First weird thing that I noticed is that it didn't create a `git`
+executable. Instead, we have 7 executables:
 
 - `init-db`: equivalent to `git init`
 - `update-cache`: equivalent to `git update-index` or `git-add`
@@ -135,24 +136,23 @@ executables:
 
 The first one doesn't exist anymore, at least with their original names. The
 last 4 still exist, but they are low-level plumbing commands. `git cat-file`,
-however, is very different to the original `cat-file`. For example, `cat-file.c`
-in Git 2.52 contains 1213 lines of code, while this first version contains only
-23!
+however, is very different to the original `cat-file`. 
 
-Ok, so let's play with them.
+Ok, so let's play with it.
 
 ### Initializing
 
 Firstly, I initialized a repository with `init-db`. It showed a mysterious
-"defaulting to private storage area" and doesn't create `.git`, but a
+message "defaulting to private storage area" and doesn't create `.git`, but a
 `.dircache` directory, containing only the `objects` directory, which looks very
-familiar, but already containing all the 00~ff directories by default:
+familiar to `.git/objects` but containing all the 00~ff directories by
+default:
 
 ![](/assets/images/posts/2025-12-12-using-torvalds-git/dircache.png)
 
-### Adding a simple C code to the inde
+### Adding a simple C code to the index
 
-Before we commit, we need to add our files to the staging area (the index). We
+Before we commit, wen eed to add our files to the staging area (the index). We
 use `update-cache` to do that, just like we would do with `git add`:
 
 ~~~
@@ -163,7 +163,7 @@ We can see that we now have a file name `fac3c1271f86c06acb743615aa5b8fd3748401`
 inside `.dircache/objects/88`, which means that a new object
 `88fac3c1271f86c06acb743615aa5b8fd3748401` was created. In modern Git we could
 inspect that using `git cat-file -p` and see the contents of that object. In
-this first version we'll need to use `cat-file` and it shows that the object is
+this first version we need to use `cat-file` and it shows that the object is
 a blob (i.e. contains the content of a file) and creates a temporary file with
 its contents:
 
@@ -171,14 +171,14 @@ its contents:
 
 A new file `index` was created inside `.dircache`, just like what we have in
 modern Git. We don't have a command for inspecting it (like `git status` or 
-`git ls-files`), so we'll need to use hexdump here. We can see that it is
+`git ls-files`). We can use `hexdump` here, showing that it is
 mapping that `fizzbuzz.c` to that blob. So it seems to be working.
 
 ### Commiting
 
 Now we want to commit. We don't have `git commit` here, but we try to do it
 manually like in modern Git we would through `git write-tree` +
-`git commit-tree` [more info here](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects).
+`git commit-tree` ([more info here](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)).
 This version already has primitive versions of those two commands, so let's use
 them.
 
@@ -208,9 +208,9 @@ restore it using `cat-file`, but it requires the hash of the blob.
 
 ![](/assets/images/posts/2025-12-12-using-torvalds-git/show-diff.png)
 
-But what if we want to restore the content from another commit, like we do
-usually with `git switch` or `git checkout`? We'll need to get the commit, then
-get its tree, and then check the tree contents with `hexdump`, like this:
+But what if we want to restore the content from another commit, like we usally
+do with`git checkout`? We'll need to get the commit, then get its tree, and then
+check the tree contents with `hexdump`, like this:
 
 ~~~bash
 commit_content=$(cat-file <commit> | cut -d ':' -f 1)
@@ -222,17 +222,17 @@ In our setup we only have one file, so the tree contains only one entry. This
 way, the last 20 bytes is the hash of the blob that we want. If we use
 `cat-file` to get that blob, we can move rename the file to `fizzbuzz.c`.
 
-~~~
+~~~bash
 blob_hash=$(tail -c 20 < $(cat-file $tree_hash | cut -d ':' -f 1) | xxd -p)
 mv $(cat-file $blob_hash | cut -d ':' -f 1) fizzbuzz.c
 ~~~
 
 ### Creating the other commits
 
-The only difference in the next non-merge commits is that they need to reference
-their parent. We use the same sequence of `update-cache`, `write-tree` and
-`commit-tree`, but using `-p <parent>` in `commit-tree`, like we would do using
-the modern `git commit-tree`. 
+The only difference in the next commits before merge is that they need to
+reference their parent. We use the same sequence of `update-cache`, `write-tree`
+and `commit-tree`, but using `-p <parent>` in `commit-tree`, like we would do
+using the modern `git commit-tree`.
 
 Our commit history now looks like this:
 
@@ -243,10 +243,6 @@ Our commit history now looks like this:
 * for
 * initial
 ~~~
-
-
-fizz 55b7c0cbfbe6402fd2a603cb274e223f882c5b06
-buzz fc69cfcaef54aa7e24b29c022802ea6cb9d3e86c
 
 ### Merge
 
@@ -259,6 +255,8 @@ can use the same sequence, but providing two `-p <parent>` to commit-tree.
 Now it's time to see if this repository is compatible with a new Git version
 (I'm using 2.50.1). We can copy the `index` file and the `objects`
 directory from `.dircache` to a new `.git` directory. Let's what happens.
+
+![](/assets/images/posts/2025-12-12-using-torvalds-git/compatibility_hell.png)
 
 Oh no, all the copied files are considered broken by the new Git. `git log`
 works, but `git checkout` doesn't.
@@ -285,7 +283,7 @@ Torvalds? We need to dive a little more in Git's history and Git's Git history
 to try to find where that happened.
 
 Our first clue is the ["Meet the new maintainer"](https://lore.kernel.org/git/Pine.LNX.4.58.0507262004320.3227@g5.osdl.org/)
-messagem from Linus to the Git mailing list. It was sent in July 15, 2005, only
+message from Linus to the Git mailing list. It was sent in July 15, 2005, only
 after three months of the first commit. We can check the release tags around
 that date and see who generated them:
 
@@ -297,7 +295,7 @@ that date and see who generated them:
   new maintainer" e-mail
 - `v0.99.2` is authored and Signed-off-by Junio
 
-This way, Linus only released to versions of Git: `v0.99` (in July 10) and
+This way, Linus only released two versions of Git: `v0.99` (in July 10) and
 `v0.99.1` (in July 15, only 5 days after). The first version (`v0.99.1`) by Junio
 was release only two weeks later. It is worth noting that `v0.99.1` is the last
 version with Linus as the **maintainer**, but not the last version with him
@@ -317,7 +315,7 @@ Just like the first commit, it didn't compile at first. I needed to remove
 Now all the Git commands are under the `git` command, just like modern Git
 (although we can still call them directly). Now `git init-db` generates a `.git`
 directory containing `HEAD` and `refs` (where branches and tags live). In this
-version `HEAD` is a symlink to the branch that it points to, unlike newer Git
+version, `HEAD` is a symlink to the branch that it points to, unlike newer Git
 versions where it is a plaintext file.
 
 ### Adding and commiting
@@ -339,7 +337,7 @@ plumbing commands to create new commits. We can also create new branches with
 `git checkout`, so this step is really like using a modern
 Git. `git checkout`, however, can't detach HEAD yet.
 
-However, `git rev-parse`, `git log`, `git branch` doesn't show the
+However, `git rev-parse`, `git log` e `git branch` doesn't show the
 current branch and `git-symbolic-ref` also doesn't exist yet. The only way I
 could find it was checking the symlink `.git/HEAD`.
 

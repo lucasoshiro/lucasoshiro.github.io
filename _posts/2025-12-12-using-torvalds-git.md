@@ -11,57 +11,59 @@ path-en: /posts-en/2025-12-12-using-torvalds-git
 ---
 
 
-## Intro
+## Introdução
 
-Perhaps one of the most well-known stories of the Open Source world is the birth
-of Git: Linus torvalds needed a version control system for the kernel and gave
-us Git. While he is still the maintainer of the kernel, he was the maintainer of
-Git during only three months, from april to july of 2005. Since then, Git has
-been maintained by Junio Hamano.
+Talvez uma das histórias mais conhecidas do mundo Open Source é o nascimento do
+Git: Linus torvalds precisava de um sistema de controle de versão para o kernel
+Linux e nos deu o Git. Enquanto até hoje ele é o mantenedor do kernel, ele foi
+o mantenedor do Git por apenas três meses, de abril a julho de 2005. Desde
+então, o Git é mantido por Junio Hamano.
 
-Even if 20 years has passed since the leadership change, Git is still remembered
-as the second masterpiece of Linus Torvalds. Personally, I think that what makes 
-Git great is its elegant core, which exists since its first version, and that's
-what Linus really gave us.
+Mesmo após 20 desde a troca de liderança, o Git ainda é lembrado como a segunda
+obra-prima de Linus Torvalds. Pessoalmente, acredito que o que torna o Git
+excelente é seu elegante núcleo que existe desde sua primeira versão e isso é o
+que o Linus realmente nos deu.
 
-However, how usable was Git when Torvalds was the maintainer? Let's found out
-this here, looking at two versions of Git:
+Porém, o quão usável era o Git quando o Torvalds ainda era o mantenedor? Veremos
+isso aqui, olhando para duas versões do Git:
 
-1. The first commit
-2. The last release by Torvalds
+1. O primeiro commit
+2. A última release feita pelo Torvalds
 
-
-So let's check out what happened in this moment of Git history (pun intended).
+Então, vamos ver o que aconteceu nesse momento da história do Git.
 
 ## Setup
 
-Let's go back in time. My time machine is a Docker container running Ubuntu
-7.10 Gutsy Gibbon, released in 2007. It is old enough to have packages in the
-versions needed by the early Git versions, and fortunately, I could find
-[a Docker image](https://hub.docker.com/r/icomputer7/ancient-ubuntu-docker/)
-for that. I really wanted to use it in my modern Linux, but sadly it wasn't easy
-to compile due to those library incompatibilities.
+Voltemos no tempo. Minha máquina do tempo é um conteiner do Docker rodando
+7.10 Gutsy Gibbon, lançado in 2007. Ele é velho o suficiente para ter pacotes 
+nas versões que o Git antigo precisa e, por sorte, encontrei uma
+[imagem Docker](https://hub.docker.com/r/icomputer7/ancient-ubuntu-docker/)
+para isso. Eu realmente queria usá-lo no meu Linux moderno, porém, não é tão
+fácil compilá-lo por conta dessas incompatibilidades de bibliotecas.
 
-It's really easy to obtain the source code of those versions. Git is versioned
-with Git and its first versions will be recorded forever in its history:
+É bem fácil obter o código-fonte das versões antigas do Git. Ele é, obviamente,
+versionado com Git e suas primeiras versões ficarão guardadas para sempre em
+seu histórico:
 
 ~~~bash
 git clone git@github.com:git/git.git
 
-# Listing the commits from oldest to newest. We want the first
+# Listando os commits do mais velho para o mais novo. Queremos o primeiro
 git log --reverse
 
-# Listing the versions prior to 1.0. We want the last released by Torvalds
-git tag --list v0.99
+# Listando as versões anteriores à 1.0. We want the last released by Torvalds
+git tag --list 'v0.*'
 ~~~
 
-We'll try to use the old Git to version a simple fizzbuzz in C:
-  1. First commit: a simple C code with only "#include <stdio.h>" and main function
-  2. Second commit: add the printing loop
-  3. Third and fourth commit: one adding fizz and other buzz, in parallel branchhes
-  4. Fifth commit: merge fizz and buzz
+Tentaremos usar o Git antigo para versionar um simples fizzbuzz em C:
 
-This is the commit graph that we want:
+1. Primeiro commit: um código C simples apenas com "#include <stdio.h>" e a
+   função `main`
+2. Segundo commit: o laço com o print
+3. Terceiro e quarto commit: commits paralelos, um adicionando fizz e o outro buzz
+4. Quinto commit: merge de fizz e buzz:
+
+Este é o grafo de commits que queremos:
 
 ~~~
 *   merge
@@ -73,7 +75,7 @@ This is the commit graph that we want:
 * initial
 ~~~
 
-This is fizzbuzz code, written in a style that avoids merge conflicts:
+Este é o código do fizzbuzz, escrito de uma forma que evita conflitos de merge:
 
 ~~~c
 #include <stdio.h>
@@ -81,21 +83,21 @@ This is fizzbuzz code, written in a style that avoids merge conflicts:
 void print(int i) {
     int fizzbuzz = 0;
 
-    // fizz numbers
+    // números fizz
 
     if (i % 3 == 0) {
         printf("fizz");
         fizzbuzz = 1;
     }
 
-    // buzz number
+    // números buzz
 
     if (i % 5 == 0) {
         printf("buzz");
         fizzbuzz = 1;
     }
 
-    // other numbers
+    // outros números
 
     if (!fizzbuzz)
         printf("%d", i);
@@ -113,81 +115,83 @@ int main() {
 }
 ~~~
 
-## First version: "The information manager from hell"
+## Primeira versão: "o gerenciador de informações do inferno"
 
 ![](/assets/images/posts/2025-12-12-using-torvalds-git/from_hell.png)
 
-Let's go back to the first commit, `e83c5163`. Only 9 source files, a Makefile
-and a README. Only 1036 lines of C code. There were some small problems in the
-code and I couldn't compile it by only running `make`. Luckly, they were easy to
-fix ([here's the fixed code](https://github.com/lucasoshiro/git/tree/first-commit)).
+Voltemos ao primeiro commit do Git, `e83c5163`. Só 9 arquivos, um Makefile e um
+README. Apenas 1036 linhas de código C. Havia alguns pequenos problemas no
+código e não foi possível compilar apenas com `make`. Felizmente, os problemas
+eram fáceis de corrigir (
+[aqui está o código corrigido](https://github.com/lucasoshiro/git/tree/first-commit)
+).
 
-First weird thing it didn't create a `git` executable. Instead, we have 7
-executables:
+Primeira coisa estranha que notei é que ele não cria um executável chamado
+`git`. Em vez disso, ele cria 7 executáveis:
 
-- `init-db`: equivalent to `git init`
-- `update-cache`: equivalent to `git update-index` or `git-add`
-- `show-diff`: somehow equivalent to `git diff` on workdir
-- `cat-file`: equivalent to `git cat-file -t` + `git cat-file -p` redirecting
-  the output to a temp file
-- `commit-tree`: like `git commit-tree`
-- `read-tree`: like `git read-tree`
-- `write-tree`: like `git write-tree`
+- `init-db`: equivalente a `git init`
+- `update-cache`: equivalente a `git update-index` ou `git-add`
+- `show-diff`: mais ou menos parecido com um `git diff` no diretório de trabalho
+- `cat-file`: equivalente a `git cat-file -t` + `git cat-file -p`,
+  redirecionando a saída para um arquivo temporário
+- `commit-tree`: equivalente a `git commit-tree`
+- `read-tree`: equivalente `git read-tree`
+- `write-tree`: equivalente a `git write-tree`
 
-The first one doesn't exist anymore, at least with their original names. The
-last 4 still exist, but they are low-level plumbing commands. `git cat-file`,
-however, is very different to the original `cat-file`. For example, `cat-file.c`
-in Git 2.52 contains 1213 lines of code, while this first version contains only
-23!
+O primeiro não existe mais, ao menos não no seu nome original. Os últimos 4
+ainda existem como comandos _plumbing_ de baixo nível. `git cat-file` é bem
+diferente do `cat-file` original.
 
-Ok, so let's play with them.
+Ok, podemos brincar com ele.
 
-### Initializing
+### Initializando
 
-Firstly, I initialized a repository with `init-db`. It showed a mysterious
-"defaulting to private storage area" and doesn't create `.git`, but a
-`.dircache` directory, containing only the `objects` directory, which looks very
-familiar, but already containing all the 00~ff directories by default:
+Primeiramente, inicializei um repositório com `init-db`. Ele me mostrou uma
+mensagem misteriosa "defaulting to private storage area" e em vez de criar um
+diretório `.git` ele criou um diretório `.dircache`, contendo apenas um
+diretório `objetos` que parece bastante familiar ao `.git/objects`, porém,
+contendoo todos os diretórios 00~ff por padrão:
 
 ![](/assets/images/posts/2025-12-12-using-torvalds-git/dircache.png)
 
-### Adding a simple C code to the inde
+### Adicionando um código C simples ao index
 
-Before we commit, we need to add our files to the staging area (the index). We
-use `update-cache` to do that, just like we would do with `git add`:
+Antes de criarmos um commit, precisamos adicionar nossos arquivos à área de
+staging (o index). Usamos `update-cache` para fazer isso, da mesma como hoje
+fazemos com `git add`:
 
 ~~~
 update-cache fizzbuzz.c
 ~~~
 
-We can see that we now have a file name `fac3c1271f86c06acb743615aa5b8fd3748401`
-inside `.dircache/objects/88`, which means that a new object
-`88fac3c1271f86c06acb743615aa5b8fd3748401` was created. In modern Git we could
-inspect that using `git cat-file -p` and see the contents of that object. In
-this first version we'll need to use `cat-file` and it shows that the object is
-a blob (i.e. contains the content of a file) and creates a temporary file with
-its contents:
+Podemos ver que agora temos um arquivo `fac3c1271f86c06acb743615aa5b8fd3748401`
+dentro de `.dircache/objects/88`, o que significa que foi criado um objeto
+`88fac3c1271f86c06acb743615aa5b8fd3748401`. No Git moderno poderíamos
+inspecioná-lo com `git cat-file -p` e ver os conteúdos desse objeto. Nesta
+primeira versão é necessário usar `cat-file` e ele mostra que o objeto é um blob
+(um conteúdo de um arquivo) e ele cria um arquivo temporário com seu conteúdo:
 
 ![](/assets/images/posts/2025-12-12-using-torvalds-git/cat-file.png)
 
-A new file `index` was created inside `.dircache`, just like what we have in
-modern Git. We don't have a command for inspecting it (like `git status` or 
-`git ls-files`), so we'll need to use hexdump here. We can see that it is
-mapping that `fizzbuzz.c` to that blob. So it seems to be working.
+Um novo arquivo `index` foi criado dentro `.dircache`, assim como temos no Git
+modeno. Não temos um comando para inspecioná-lo (como `git status` ou
+`git ls-files`). Podemos usar `hexdump` aqui e ele mostra que esse arquivo
+mapeia `fizzbuzz.c` ao blob criado. Então, parece estar tudo funcionando.
 
-### Commiting
+### Criando um commit
 
-Now we want to commit. We don't have `git commit` here, but we try to do it
-manually like in modern Git we would through `git write-tree` +
-`git commit-tree` [more info here](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects).
-This version already has primitive versions of those two commands, so let's use
-them.
+Queremos agora criar um commit. Não temos `git commit` aqui, mas podemos fazer
+isso de forma manual da mesma forma que no Git moderno poderíamos fazer com 
+`git write-tree` + `git commit-tree` (
+[mais infos aqui](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)
+). Essa versão já tem versões primitivas desses dois comandos, então vamos
+usá-los.
 
-We can see through `cat-file` that the commit was successfully created. It is
-very similar to modern commits, however, we can see that it stores the
-datetimes as plaintext instead of a timestamp with timezone.
+Podemos ver através de `cat-file` que o commit foi criado com sucesso. Ele é
+bastante similar aos commits modernos, porém, podemos ver que ele armazena as
+datas e horas como texto em vez de um timestamp com timezone.
 
-The `git add` + `git commit` sequence would be:
+Dessa forma, a sequência `git add` + `git commit` seria:
 
 ~~~bash
 # git add fizzbuzz.c
@@ -199,19 +203,21 @@ echo "my commit" | commit-tree $(write-tree) -p <parent commit>
 
 ![](/assets/images/posts/2025-12-12-using-torvalds-git/commit-tree.png)
 
-### Restoring the content
+### Restaurando o conteúdo
 
-We don't have `git restore`, `git reset` or `git checkout` here, so if we want
-to retrieve an old version of a file we need to do that through `cat-file`.
-Let's change `fizzbuzz.c` and try to restore it. `show-diff` show us the diff
-compared to the index, so we can see the differences. Then, it's possible
-restore it using `cat-file`, but it requires the hash of the blob.
+Não temos `git restore`, `git reset` ou `git checkout` aqui, então se quisermos
+obter uma versão anterior de um arquivo precisamos fazê-lo atravées de
+`cat-file`. Vamos alterar o `fizzbuzz.c` e tentar restaurá-lo. `show-diff` nos
+mostra o diff em relação ao index, podemos usá-lo para ver as diferenças. Então,
+é possível restaurar usando `cat-file`, mas para isso precisamos do hash do
+blob.
 
 ![](/assets/images/posts/2025-12-12-using-torvalds-git/show-diff.png)
 
-But what if we want to restore the content from another commit, like we do
-usually with `git switch` or `git checkout`? We'll need to get the commit, then
-get its tree, and then check the tree contents with `hexdump`, like this:
+Mas e se quisermos restaurar o conteúdo de outro commit, como normalmente
+fazemos com `git checkout`? Precisamos obter o commit, depois sua tree e por
+fim, olhar os conteúdos da tree com `hexdump`, assim:
+
 
 ~~~bash
 commit_content=$(cat-file <commit> | cut -d ':' -f 1)
@@ -219,23 +225,23 @@ tree_hash=$(cat $commit_content | head -n 1 | cut -d ' ' -f 2)
 hexdump -C $(cat-file $tree_hash | cut -d ':' -f 1)
 ~~~
 
-In our setup we only have one file, so the tree contains only one entry. This
-way, the last 20 bytes is the hash of the blob that we want. If we use
-`cat-file` to get that blob, we can move rename the file to `fizzbuzz.c`.
+Em nosso setup temos apenas um arquivo, então a tree só tem uma única entrada.
+Desta forma, os últimos 20 bytes são o hash do blob que queremos. Se usarmos
+`cat-file` para obter esse blob, podemos renomear o arquivo como `fizzbuzz.c`.
 
 ~~~bash
 blob_hash=$(tail -c 20 < $(cat-file $tree_hash | cut -d ':' -f 1) | xxd -p)
 mv $(cat-file $blob_hash | cut -d ':' -f 1) fizzbuzz.c
 ~~~
 
-### Creating the other commits
+### Criando os outros commits
 
-The only difference in the next non-merge commits is that they need to reference
-their parent. We use the same sequence of `update-cache`, `write-tree` and
-`commit-tree`, but using `-p <parent>` in `commit-tree`, like we would do using
-the modern `git commit-tree`. 
+A única diferença próximos commits antes do merge é que eles precisam
+referenciar seu commit pai. Podemos fazer isso usando a mesma sequência de
+`update-cache`, `write-tree` e `commit-tree`, porém, usando `-p <pai>` no
+`commit-tree`, da mesma forma que no `git commit-tree` moderno.
 
-Our commit history now looks like this:
+Nosso histórico de commits está assim:
 
 ~~~
 * buzz
@@ -247,125 +253,132 @@ Our commit history now looks like this:
 
 ### Merge
 
-There's no merging algorithm yet. We can only merge the files manually and
-create the merge commit. The merge commit is a commit with two parents, so we
-can use the same sequence, but providing two `-p <parent>` to commit-tree.
+Ainda não há um algoritmo de mere. Podemos mesclar os arquivos manualmente e
+criar o commit de merge. O commit de merge é um commit com dois pais, então
+podemos usar a mesma sequência, mas fornecendo dois `-p <parent>` ao
+commit-tree.
 
-### Compatibility
+### Compatibilidade
 
-Now it's time to see if this repository is compatible with a new Git version
-(I'm using 2.50.1). We can copy the `index` file and the `objects`
-directory from `.dircache` to a new `.git` directory. Let's what happens.
+Chegou a hora de saber se o repositório é compatível com um Git moderno (estou
+usando 2.50.1). Podemos copiar o arquivo `index` e o diretório `objects` do
+`.dircache` para um `.git` novo. Vamos ver o que acontece.
 
-Oh no, all the copied files are considered broken by the new Git. `git log`
-works, but `git checkout` doesn't.
+![](/assets/images/posts/2025-12-12-using-torvalds-git/compatibility_hell.png)
 
-### HEAD and branches
+Ah não, todos os arquivos copiados são considerados quebrados pelo Git.
+`git log` até funciona, mas `git checkout` não.
 
-Perhaps you noticed that I didn't mentioned anything about branches or the
-current commit (`HEAD`). And that's because these concepts don't exist yet. We
-only operate at the object and index level. You need to remember the hash of
-each commit
+### HEAD e branches
 
-### Is it usable?
+Talvez você reparou que eu não mencionei nada sobre branches ou o commit atual
+(`HEAD`). E isso é porque esses conceitos não existem ainda. Nós apenas operamos
+a nível de objetos e index. É necessario saber o hash de cada commit.
 
-Not at all. Even if you know well how to manipulate Git objects, you'll need to
-copy the hashes all the time. It's hard to see what's happening with those
-primitive commands and the lack of references makes things really hard. To make
-it a little more usable you'll need to write a set of scripts to manipulate
-those objects.
+### É usável?
 
-## The last version from Git's father
+Nem um pouco. Mesmo se você souber bem como manipular objetos do Git, você
+precisará copiar os hash toda hora. É difícil de saber o que está acontecendo
+com esses comandos primitivos e a falta de referências torna tudo realmente
+difícil. Para ser um pouco mais usável você precisa escrever scripts para
+manipular os objetos.
 
-The first commit is easy to find, but what about the last version by Linus
-Torvalds? We need to dive a little more in Git's history and Git's Git history
-to try to find where that happened.
+## A última versão do pai do Git
 
-Our first clue is the ["Meet the new maintainer"](https://lore.kernel.org/git/Pine.LNX.4.58.0507262004320.3227@g5.osdl.org/)
-messagem from Linus to the Git mailing list. It was sent in July 15, 2005, only
-after three months of the first commit. We can check the release tags around
-that date and see who generated them:
+O primeiro commit é fácil de encontrar, mas e quanto à última versão lançada por
+Linus Torvalds? Precisamos ir um pouco mais fundo na história do Git e no
+histórico de Git do Git para encontrar o que aconteceu.
 
-- `v0.99` points to a commit by Junio, but still Signed-off-by Linus. This tag
-  doesn't have author info because it wasn't implemented yet, it would take some
-  _days_ until we have the tagger information
-  [introduced here](https://lore.kernel.org/git/m17jfsyj8t.fsf@ebiederm.dsl.xmission.com/)!
-- `v0.99.1` is authored by Linus, and it's the last version before the "Meet the
-  new maintainer" e-mail
-- `v0.99.2` is authored and Signed-off-by Junio
+Nossa primeira pista é a mensagem
+["Meet the new maintainer"](https://lore.kernel.org/git/Pine.LNX.4.58.0507262004320.3227@g5.osdl.org/)
+enviada do Linus para a lista de email do Git. Ela foi enviada em 15 de julho de
+2005, apenas três meses após o primeiro commit. Podemos verificar as tags de
+release próximas a essa data e ver quem as gerou:
 
-This way, Linus only released two versions of Git: `v0.99` (in July 10) and
-`v0.99.1` (in July 15, only 5 days after). The first version (`v0.99.1`) by Junio
-was release only two weeks later. It is worth noting that `v0.99.1` is the last
-version with Linus as the **maintainer**, but not the last version with him
-involved. Actually, you can see by running `git log --author='Linus Torvalds'`
-that he sent several patches since then.
+- `v0.99` aponta para um commit feito pelo Junio, mas ainda assinado pelo
+  Linus. Essa tag não tem nenhuma informação de autor porque isso ainda não
+  tinha sido implementado, ainda ia levar alguns _dias_ até que a informação do
+  tagger ser
+  [introduzida aqui](https://lore.kernel.org/git/m17jfsyj8t.fsf@ebiederm.dsl.xmission.com/)!
+- `v0.99.1` tem Linus como autor e é a última versão antes do e-mail "Meet the
+  new maintainer"
+- `v0.99.2` tem Junio como autor e é assinado por ele
 
-`v0.99.1` already has the `git` executable, but it is only a script for calling
-other commands. You'll see that this version is much more familiar. It has grown
-in size, now it has 20292 lines of C code, 1092 lines of Perl code and 8673
-lines of shellscripts (including tests).
+Dessa forma, Linus só criou duas release do Git: `v0.99` (em 10 de julho) e
+`v0.99.1` (em 15 de julho, apenas 5 dias depois). A primeira versão do Junio
+(`v0.99.1`) foi lançada apenas duas semanas depois. Vale a pena notar que
+`v0.99.1` é a última versão com Linus como **maintainer**, mas não a última em
+que ele esteve envolvido. Na verdade, você pode ver com 
+`git log --author='Linus Torvalds'` que ele enviou vários patches desde então.
 
-Just like the first commit, it didn't compile at first. I needed to remove
-`git-http-push` from Makefile. I won't use it and it was breaking the build.
+`v0.99.1` já tem o executável `git`, mas ele é apenas um script para chamar
+outros comandos. Você verá que essa versão é muito mais familiar. Ele cresceu
+bastante em tamanho, já tendo 20292 linhas de código C, 1092 linhas de código
+Perl e 8673 linhas de shellscripts (incluindo testes).
 
-### Initializing
+Da mesma forma que o primeiro commit, ele não compila na primeira
+tentativa. Precisei remover o `git-http-push` do Makefile, já que eu não
+precisava dele e ele estava quebrando o build.
 
-Now all the Git commands are under the `git` command, just like modern Git
-(although we can still call them directly). Now `git init-db` generates a `.git`
-directory containing `HEAD` and `refs` (where branches and tags live). In this
-version `HEAD` is a symlink to the branch that it points to, unlike newer Git
-versions where it is a plaintext file.
+### Inicializando
 
-### Adding and commiting
+Agora todos os comandos estão debaixo do comando `git`, da mesma forma que o
+Git moderno (ainda que possamos chamar eles diretamente). Também agora
+`git init-db` gera um diretório `.git` contendo a `HEAD` e o diretório `refs`
+(onde ficam as branches e tags). Nesta versão, HEAD é um symlink para a branch
+que ela aponta, ao contrário de outras versões mais novas do Git onde ela é um
+arquivo de texto puro.
 
-In this version, Git already has `git add` and `git commit`. `git status`
-exists, but it doesn't work if we don't have at least one commit in our history.
-We also have `git log`, but it doesn't show the branch name.
+### Adicionando ao index and criando commits
 
-### Restoring the contents of a file
+Nesta versão, o Git já tem `git add` e `git commit`. `git status` existe, mas
+não funciona se não temos pelo menos um commit no nosso histórico. Também temos
+`git log`, mas ela não mostra o nome da branch.
 
-`git status` works if we already have a commit. It tell us that `fizzbuzz.c` was
-deleted, and we can restore it using `git checkout -f`. Nice.
+### Restaurando os conteúdos de um arquivo
 
-### Creating other commits and branches
+Se tivermos um commit, `git status` funciona. Ele nos diz que `fizzbuzz.c` foi
+deletado, e que podemos restaurá-lo usando `git checkout -f`. Legal.
 
-Since we have `git add` and `git commit`, we don't need to play with the
-plumbing commands to create new commits. We can also create new branches with
-`git checkout -b` or `git branch`, and navigate between them using 
-`git checkout`, so this step is really like using a modern
-Git. `git checkout`, however, can't detach HEAD yet.
+### Criando outros commits e branches
 
-However, `git rev-parse`, `git log`, `git branch` doesn't show the
-current branch and `git-symbolic-ref` also doesn't exist yet. The only way I
-could find it was checking the symlink `.git/HEAD`.
+Como já temos `git add` e `git commit`, não precisamos ficar brincando com
+comandos plumbing para criar novos commits. Também podemos criar novas branches
+com `git checkout -b` ou `git branch` e navegar entre eles usando
+`git checkout`, então essa etapa é realmente como se estivéssemos usando o Git
+moderno. O `git checkout`, porém, ainda não consegue entrar em detached HEAD.
+
+Porém, `git rev-parse`, `git log` e `git branch` não mostram o conteúdo da
+branch atual e `git-symbolic-ref` também não existe ainda. A única forma que
+consegui descobrir a branch atual foi olhando direto o link simbólico `.git/HEAD`.
 
 ### Merge
 
-`git merge` doesn't exist yet, but the README says how to perform a manual merge
-through `git read-tree`. We also have a script that Linus wrote for making it
-easier, called `git resolve`. Internally, it depends on the `merge` command from 
-[GNU RCS](https://www.gnu.org/software/rcs/), so we need to have it installed. 
-It could merge both branchs correctly.
+`git merge` ainda não existe, mas o README diz como fazer um merge manual usando
+`git read-tree`. Também temos um script que o Linus escreveu para tornar isso
+mais fácil, chamado `git resolve`. Internamente, ele depende do comando `merge`
+do [GNU RCS](https://www.gnu.org/software/rcs/), então precisamos dele instalado.
+Ele conseguiu mesclar as duas branches corretamente.
 
-### Compatibility
+### Compatibilidade
 
-Everything seems to be working fine when opening this Git repository with Git
-2.50. But this was only a simple repository with a single file, I don't what
-happens with more complex repositories.
+Aparentemente tudo parece funcionar normal quando abro este repositório com o
+Git 2.50. Mas este repositório é bem simples e com um único arquivo, não sei o
+que acontece com repositórios mais complexos.
 
-### Is it usable?
+### É usável?
 
-If you know what're you doing, this is usable. But you need to know what you're
-doing, the error messages doesn't help too much. Several important Git features
-wasn't implemented yet, so, even if this is familiar, you'll need to understand
-the Git internals to use it.
+Se você sabe o que está fazendo, esta versão já é usável. Mas você precisa saber
+o que está fazendo, as mensagens de erro não ajudam muito. Outros recursos
+importantes do Git ainda não foram implementados, então, mesmo que ele seja
+familiar, é necessário entender o funcionamento interno do Git para usá-lo.
 
-## Conclusion
+## Conclusão
 
-It's always nice to see the birth of something big. The first version of Git was
-a really simple set of utilities for manipulating some files, but it delivered
-the core that makes Git great. The last Torvalds' Git is much more mature, and
-even though it feels a little fragile, it seems to be usable enough to be used
-by someone who really knows how to use it (and Linus certainly did at the
-time). Linus delivered something good that still could be great.
+É sempre legal ver o nascimento de algo grandioso. A primeira versão do Git era
+apenas um conjunto simples de utilitários para manipular alguns arquivos, mas já
+continha o miolo que torna o Git excelente. A última versão do Git do Torvalds
+já era muito mais usável e, mesmo que ainda parecesse um tanto frágil, já
+parecia ser usável o suficiente para ser usada por alguém que realmente sabia o
+que estava fazendo (e na época certamente o Linus sabia). Linus Torvalds
+entregou algo bom que ainda estava para ser ótimo.
