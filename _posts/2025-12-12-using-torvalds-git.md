@@ -19,10 +19,10 @@ Linux e nos deu o Git. Enquanto até hoje ele é o mantenedor do kernel, ele foi
 o mantenedor do Git por apenas três meses, de abril a julho de 2005. Desde
 então, o Git é mantido por Junio Hamano.
 
-Mesmo após 20 desde a troca de liderança, o Git ainda é lembrado como a segunda
-obra-prima de Linus Torvalds. Pessoalmente, acredito que o que torna o Git
-excelente é seu elegante núcleo que existe desde sua primeira versão e isso é o
-que o Linus realmente nos deu.
+Mesmo após 20 anos desde a troca de liderança, o Git ainda é lembrado como a
+segunda obra-prima de Linus Torvalds. Pessoalmente, acredito que o que torna o
+Git excelente é seu elegante núcleo que existe desde sua primeira versão que
+seja o principal presente que Linus nos deu.
 
 Porém, o quão usável era o Git quando o Torvalds ainda era o mantenedor? Veremos
 isso aqui, olhando para duas versões do Git:
@@ -34,7 +34,7 @@ Então, vamos ver o que aconteceu nesse momento da história do Git.
 
 ## Setup
 
-Voltemos no tempo. Minha máquina do tempo é um conteiner do Docker rodando
+Voltemos no tempo. Minha máquina do tempo é o Ubuntu
 7.10 Gutsy Gibbon, lançado in 2007. Ele é velho o suficiente para ter pacotes 
 nas versões que o Git antigo precisa e, por sorte, encontrei uma
 [imagem Docker](https://hub.docker.com/r/icomputer7/ancient-ubuntu-docker/)
@@ -47,17 +47,18 @@ seu histórico:
 
 ~~~bash
 git clone git@github.com:git/git.git
+cd git
 
 # Listando os commits do mais velho para o mais novo. Queremos o primeiro
 git log --reverse
 
-# Listando as versões anteriores à 1.0. We want the last released by Torvalds
+# Listando as versões anteriores à 1.0. Queremos a última lançada por Torvalds
 git tag --list 'v0.*'
 ~~~
 
 Tentaremos usar o Git antigo para versionar um simples fizzbuzz em C:
 
-1. Primeiro commit: um código C simples apenas com "#include <stdio.h>" e a
+1. Primeiro commit: um código C simples apenas com `#include <stdio.h>` e a
    função `main`
 2. Segundo commit: o laço com o print
 3. Terceiro e quarto commit: commits paralelos, um adicionando fizz e o outro buzz
@@ -138,19 +139,18 @@ Primeira coisa estranha que notei é que ele não cria um executável chamado
 - `read-tree`: equivalente `git read-tree`
 - `write-tree`: equivalente a `git write-tree`
 
-O primeiro não existe mais, ao menos não no seu nome original. Os últimos 4
-ainda existem como comandos _plumbing_ de baixo nível. `git cat-file` é bem
-diferente do `cat-file` original.
+Deles, o primeiro não existe mais, ao menos não no seu nome original. Os últimos 4
+ainda existem como comandos _plumbing_ de baixo nível.
 
 Ok, podemos brincar com ele.
 
-### Initializando
+### Inicializando
 
 Primeiramente, inicializei um repositório com `init-db`. Ele me mostrou uma
-mensagem misteriosa "defaulting to private storage area" e em vez de criar um
-diretório `.git` ele criou um diretório `.dircache`, contendo apenas um
-diretório `objetos` que parece bastante familiar ao `.git/objects`, porém,
-contendoo todos os diretórios 00~ff por padrão:
+mensagem misteriosa "defaulting to private storage area". Em vez de criar um
+diretório `.git`, ele criou um diretório `.dircache` contendo apenas um
+diretório `objects` parecido com o `.git/objects`, porém,
+contendo todos os diretórios 00~ff por padrão:
 
 ![](/assets/images/posts/2025-12-12-using-torvalds-git/dircache.png)
 
@@ -173,10 +173,10 @@ primeira versão é necessário usar `cat-file` e ele mostra que o objeto é um 
 
 ![](/assets/images/posts/2025-12-12-using-torvalds-git/cat-file.png)
 
-Um novo arquivo `index` foi criado dentro `.dircache`, assim como temos no Git
-modeno. Não temos um comando para inspecioná-lo (como `git status` ou
-`git ls-files`). Podemos usar `hexdump` aqui e ele mostra que esse arquivo
-mapeia `fizzbuzz.c` ao blob criado. Então, parece estar tudo funcionando.
+Um novo arquivo `index` foi criado dentro de `.dircache`, assim como temos no
+Git modeno. Não temos um comando para inspecioná-lo (como `git status` ou `git
+ls-files`). Podemos usar `hexdump` aqui e ele mostra que esse arquivo mapeia
+`fizzbuzz.c` ao blob criado. Então, parece estar tudo funcionando.
 
 ### Criando um commit
 
@@ -191,6 +191,8 @@ Podemos ver através de `cat-file` que o commit foi criado com sucesso. Ele é
 bastante similar aos commits modernos, porém, podemos ver que ele armazena as
 datas e horas como texto em vez de um timestamp com timezone.
 
+![](/assets/images/posts/2025-12-12-using-torvalds-git/commit-tree.png)
+
 Dessa forma, a sequência `git add` + `git commit` seria:
 
 ~~~bash
@@ -200,8 +202,6 @@ update-cache fizzbuzz.c
 # git commit -m "my commit"
 echo "my commit" | commit-tree $(write-tree) -p <parent commit>
 ~~~
-
-![](/assets/images/posts/2025-12-12-using-torvalds-git/commit-tree.png)
 
 ### Restaurando o conteúdo
 
@@ -253,7 +253,7 @@ Nosso histórico de commits está assim:
 
 ### Merge
 
-Ainda não há um algoritmo de mere. Podemos mesclar os arquivos manualmente e
+Ainda não há um algoritmo de merge, temos que mesclar os arquivos manualmente e
 criar o commit de merge. O commit de merge é um commit com dois pais, então
 podemos usar a mesma sequência, mas fornecendo dois `-p <parent>` ao
 commit-tree.

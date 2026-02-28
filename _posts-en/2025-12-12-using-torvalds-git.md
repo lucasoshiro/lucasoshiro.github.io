@@ -19,9 +19,9 @@ maintainer of Git during only three months, from April to July of 2005. Since
 then, Git has been maintained by Junio Hamano.
 
 Even if 20 years has passed since the leadership change, Git is still remembered
-as the second masterpiece of Linus Torvalds. Personally, I think that what makes 
-Git great is its elegant core, which exists since its first version, and that's
-what Linus really gave us.
+as the second masterpiece of Linus Torvalds. Personally, I think that what makes
+Git great is its elegant core, which exists since its first version and that it
+is the main gift that Linus really gave us.
 
 However, how usable was Git when Torvalds was the maintainer? Let's found out
 this here, looking at two versions of Git:
@@ -34,7 +34,7 @@ So let's see what happened in this moment of Git history (pun intended).
 
 ## Setup
 
-Let's go back in time. My time machine is a Docker container running Ubuntu
+Let's go back in time. My time machine is Ubuntu
 7.10 Gutsy Gibbon, released in 2007. It is old enough to have packages in the
 versions needed by the early Git, and fortunately, I could find
 [a Docker image](https://hub.docker.com/r/icomputer7/ancient-ubuntu-docker/)
@@ -47,6 +47,7 @@ its history:
 
 ~~~bash
 git clone git@github.com:git/git.git
+cd git
 
 # Listing the commits from oldest to newest. We want the first
 git log --reverse
@@ -135,18 +136,17 @@ executable. Instead, we have 7 executables:
 - `write-tree`: like `git write-tree`
 
 The first one doesn't exist anymore, at least with their original names. The
-last 4 still exist, but they are low-level plumbing commands. `git cat-file`,
-however, is very different to the original `cat-file`. 
+last 4 still exist, but they are low-level plumbing commands.
 
 Ok, so let's play with it.
 
 ### Initializing
 
 Firstly, I initialized a repository with `init-db`. It showed a mysterious
-message "defaulting to private storage area" and doesn't create `.git`, but a
-`.dircache` directory, containing only the `objects` directory, which looks very
-familiar to `.git/objects` but containing all the 00~ff directories by
-default:
+message "defaulting to private storage area". Instead of creating `.git`, it
+creates a `.dircache` directory containing only the `objects` directory, which
+looks very familiar to `.git/objects` but containing all the 00~ff directories
+by default:
 
 ![](/assets/images/posts/2025-12-12-using-torvalds-git/dircache.png)
 
@@ -186,6 +186,8 @@ We can see through `cat-file` that the commit was successfully created. It is
 very similar to modern commits, however, we can see that it stores the
 datetimes as plaintext instead of a timestamp with timezone.
 
+![](/assets/images/posts/2025-12-12-using-torvalds-git/commit-tree.png)
+
 The `git add` + `git commit` sequence would be:
 
 ~~~bash
@@ -195,8 +197,6 @@ update-cache fizzbuzz.c
 # git commit -m "my commit"
 echo "my commit" | commit-tree $(write-tree) -p <parent commit>
 ~~~
-
-![](/assets/images/posts/2025-12-12-using-torvalds-git/commit-tree.png)
 
 ### Restoring the content
 
@@ -246,7 +246,7 @@ Our commit history now looks like this:
 
 ### Merge
 
-There's no merging algorithm yet. We can only merge the files manually and
+There's no merging algorithm yet, we have to merge the files manually and
 create the merge commit. The merge commit is a commit with two parents, so we
 can use the same sequence, but providing two `-p <parent>` to commit-tree.
 
