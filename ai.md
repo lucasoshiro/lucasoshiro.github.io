@@ -12,7 +12,7 @@ path-en: /ai-en
 ## Introdução
 
 O aumento do uso de IA generativa inundou a internet com artigos técnicos e
-infográficos que não foram cirados por humanos.
+infográficos que não foram criados por humanos.
 
 Esta página pessoal contém textos técnicos e (infelizmente) preciso deixar clara
 a minha posição quanto ao uso de IA generativa aqui. Então, aqui estamos.
@@ -20,7 +20,7 @@ a minha posição quanto ao uso de IA generativa aqui. Então, aqui estamos.
 ### Objetivos
 
 - Explicar porque eu não IA para gerar conteúdo para este site
-- Apresentar pensamentos pessoais sobre o uso de IA
+- Apresentar pensamentos pessoais sobre o uso de IA generativa
 - Apresentar como eu uso IA
 
 ### Não-objetivos
@@ -28,7 +28,6 @@ a minha posição quanto ao uso de IA generativa aqui. Então, aqui estamos.
 - Reclamar de IA
 - Criar um guia sobre o uso de IA
 - Dizer o que é bom ou ruim sobre IA
-- Tell what's good or bad about AI
 
 ## Eu uso IA? E os malvados "algoritmos"?
 
@@ -42,22 +41,18 @@ provavelmente você usa IA sem nem perceber. **Todos** usam algoritmos.
 
 ## Eu uso IA **generativa**?
 
-Às vezes.
-
-Às vezes preciso nomear algo e ela pode me sugerir algo bom. Às vezes eu preciso
-verificar a gramática e sintaxe de um texto que eu escrevi. Às vezes eu uso
-para gerar algum trecho de código bem simples e conhecido (ex: uma requisição
-HTTP simple em Python).
-
-Mas em **todos esses casos** eu verifico **tudo**. Não aceito cegamente as
-sugestões. Prefiro até **digitar** o conteúdo em vez de copiá-lo. **Eu** sou o
-autor e **eu** preciso fazê-lo, o conteúdo gerado por IA é só uma sugestão.
+Sim, mas não aqui.
 
 As LLMs têm seu próprio jeito de escrever (as vezes chamado de "AI accent", em
 tradução livre, "sotaque de IA"). Ele não tem alma e é muito perfeito, genérico,
 estéril e sem personalidade. Textos, mesmo os técnicos, não são só sobre as
 palavras ou o que elas estão dizendo, mas sobre como elas dizendo isso e o
 porque elas estão dizendo isso.
+
+Talvez seja suficiente apenas usar os textos gerados por IA quando a outra opção
+seria não ter texto algum. Não é o caso aqui, em que eu estaria perfeitamente
+tranquilo em não ter nada neste site pessoal ou nem mesmo em não ter um site
+pessoal.
 
 Talvez você não concorde comigo e está tudo bem. Não digo que estou certo, pelo
 contrário, acredito que é muito cedo pra dizer o que é certo ou não sobre o uso
@@ -86,25 +81,39 @@ Só escrevo aqui se tenho algo a contar.
 
 ## Eu odeio IA generativa?
 
-Como qualquer tecnologia, odiá-la é inútil.
+Como qualquer tecnologia, odiá-la é inútil. O melhor que podemos fazer é tentar
+encontrar se, quando e como ela pode ser útil.
 
 ## Eu gero código com IA?
 
-Atualmente, só em casos bem raros, por exemplo o já mencionado trecho de códgio
-que normalmente eu copiaria da documentação, StackOverflow e afins. Na maior
-parte das vezes para aquilo que eu não me importo se é um código ruim e que eu
-sou o único usuário. Eu nunca compartilhei um código-fonte gerado por IA no
-GitHub ou similar.
+Sim, mas **nenhum** de meus projetos que posto aqui foram gerados por LLMs
+(em outras palavras, "vibe-coded") **até o momento**. Se eu usar algum dia LLM
+para gerar algum deles, vou deixar isso claro em algum lugar (ex: adicionando o
+Claude ou o Copilot como co-autores em commits).
 
 Porém, não sou contra essa prática por si só. Se meu trabalho é fazer algo
 funcionar e o código gerado por IA me ajudar com isso, considero que faz muito
 sentido usar. Mas precisamos ser [**responsáveis**](https://pt.wikipedia.org/wiki/Ben_Parker)
-pelo que fazemnos. Se não posso explicar exatamente o que o código faz, eu não
+pelo que fazemos. Se não posso explicar exatamente o que o código faz, eu não
 devo entregá-lo.
+
+## Eu gero texto com IA?
+
+Sim, mas não aqui. Esta é minha página pessoal onde eu compartilho minhas coisas
+pessoais. O que eu gero com IA não é pessoal e não será postado aqui.
 
 ## Eu uso IA generativa em meus projetos?
 
-Atualmente não, mas tenho ideias de _side projects_ integrando LLMs através de
-suas APIs, mas seu código seria 100% escrito por mim. Eu faço _side projects_
-porque eu quero aprender e porque eu quero me divertir com eles, mas não vou 
-aprender nada e nem me divertir pedindo pra LLMs gerarem eles para mim.
+Tenho ideias de _side projects_ integrando LLMs através de suas APIs, mas seu
+código seria 100% escrito por mim. Eu faço _side projects_ porque eu quero
+aprender e porque eu quero me divertir com eles, mas não vou aprender nada e nem
+me divertir pedindo pra LLMs gerarem eles para mim.
+
+Talvez algum dia eu faça algum projeto pessoal com um impacto mais amplo. Então,
+irei considerá-lo como **trabalho** e se o _vibe-coding_ melhorar minha
+produtividade sem perdas de qualidade, eu o farei.
+
+Note, por favor, a diferença: algo pessoal que eu faço por diversão e
+aprendizado eu considero como **_side project_** e não tenho nenhum compromisso
+em ser _produtivo_ em seu desenvolvimento; projetos pessoais que são usados por
+outras pessoas é **trabalho**.
